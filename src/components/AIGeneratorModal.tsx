@@ -22,7 +22,7 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
     level: 'intermediate',
     equipment: ['Dumbbell', 'Barbell'] as string[],
     durationWeeks: 8,
-    experience: '有1年Training Experience',
+    experience: 'Has 1 year training experience',
     preferences: 'Prefers compound exercises, dislikes too many isolation exercises',
   });
   const [generating, setGenerating] = useState(false);
@@ -34,7 +34,7 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
   const [selectedCoachee, setSelectedCoachee] = useState('');
   const [savedProgramId, setSavedProgramId] = useState<string | null>(null);
 
-  const equipmentOptions = ['哑铃', '杠铃', 'Cable', 'Machine', 'Yoga mat', 'Jump rope', 'Resistance band', 'Bodyweight'];
+  const equipmentOptions = ['Dumbbell', 'Barbell', 'Cable', 'Machine', 'Yoga mat', 'Jump rope', 'Resistance band', 'Bodyweight'];
 
   const toggleEquipment = (item: string) => {
     setFormData((prev) => ({
@@ -133,7 +133,7 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
       const data = await res.json();
 
       if (!res.ok) {
-        showToast('error', 'Save failed: ' + (data.error || '未知错误'));
+        showToast('error', 'Save failed: ' + (data.error || 'Unknown error'));
       } else {
         const pid = data.program?.id || '';
         setSavedProgramId(pid);
@@ -141,7 +141,7 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
         onSaved?.(pid);
       }
     } catch (e: any) {
-      showToast('error', '保存Failed: ' + (e.message || '未知错误'));
+      showToast('error', 'Save failed: ' + (e.message || 'Unknown error'));
     }
 
     setSaving(false);
@@ -149,7 +149,7 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
 
   const handleAssign = async () => {
     if (!savedProgramId) {
-      showToast('error', '⚠️ 请先Save to Library');
+      showToast('error', 'Please save to library first');
       return;
     }
     if (!selectedCoachee) {
@@ -170,13 +170,13 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
       const data = await res.json();
 
       if (!res.ok) {
-        showToast('error', 'Assignment failed: ' + (data.error || '未知错误'));
+        showToast('error', 'Assignment failed: ' + (data.error || ''));
       } else {
         showToast('success', '✅ Assigned to client successfully!');
         setSelectedCoachee('');
       }
     } catch (e: any) {
-      showToast('error', '分配失败: ' + (e.message || '未知错误'));
+      showToast('error', 'Assignment failed: ' + (e.message || ''));
     }
 
     setAssigning(false);
@@ -211,7 +211,7 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
                   value={formData.goals}
                   onChange={(e) => setFormData({ ...formData, goals: e.target.value })}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                  placeholder="例如：增肌、减脂、力量提升"
+                  placeholder="E.g.: Muscle gain, fat loss, strength improvement"
                 />
               </div>
 
@@ -261,13 +261,13 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">训练经验</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Training Experience</label>
                 <input
                   type="text"
                   value={formData.experience}
                   onChange={(e) => setFormData({ ...formData, experience: e.target.value })}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                  placeholder="例如：Has 1 year training experience"
+                  placeholder="E.g.: Has 1 year training experience"
                 />
               </div>
 
@@ -278,7 +278,7 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
                   onChange={(e) => setFormData({ ...formData, preferences: e.target.value })}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                   rows={2}
-                  placeholder="例如：喜欢复合动作，不喜欢太多孤立训练"
+                  placeholder="E.g.: Prefers compound exercises, dislikes too many isolation exercises"
                 />
               </div>
             </div>
@@ -331,7 +331,7 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
               {program.phases?.map((phase: any, i: number) => (
                 <details key={i} className="border border-gray-200 rounded-lg">
                   <summary className="px-4 py-3 cursor-pointer font-medium text-gray-900 hover:bg-gray-50">
-                    阶段 {i + 1}: {phase.focus}
+                    Phase {i + 1}: {phase.focus}
                   </summary>
                   <div className="px-4 pb-4 space-y-3">
                     {phase.weeklySchedule?.map((day: any, j: number) => (
@@ -376,7 +376,7 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
                   ) : (
                     <>
                       <Save className="w-4 h-4" />
-                      保存到计划库
+                      Save to Library
                     </>
                   )}
                 </button>
@@ -410,7 +410,7 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
                       ) : (
                         <>
                           <Users className="w-4 h-4" />
-                          分配给学员
+                          Assign to Client
                         </>
                       )}
                     </button>

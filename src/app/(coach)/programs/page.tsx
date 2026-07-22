@@ -101,7 +101,7 @@ export default function ProgramsPage() {
         } catch (e: any) { failCount++; }
       }
       if (successCount > 0) {
-        const msg = `成功分配 ${successCount} clients` + (failCount > 0 ? `，${failCount} failed` : "") + "！";
+        const msg = ` ${successCount} clients` + (failCount > 0 ? `，${failCount} failed` : "") + "！";
         showToast("success", msg);
       } else {
         showToast("error", `Assignment failed (${failCount} )`);
@@ -122,7 +122,7 @@ export default function ProgramsPage() {
         fetchPrograms();
       } else {
         const data = await res.json();
-        showToast("error", "Delete failed: " + (data.error || "未知错误"));
+        showToast("error", "Delete failed: " + (data.error || "Unknown error"));
       }
     } catch (e: any) { showToast("error", "Network error: " + e.message); }
     finally { setDeleting(false); }
@@ -160,7 +160,7 @@ export default function ProgramsPage() {
       }
     } catch (e: any) {
       console.error("[FETCH] Exception:", e);
-      showToast("error", "Network error: " + (e.message || "未知错误"));
+      showToast("error", "Network error: " + (e.message || ""));
     } finally {
       setDetailLoading(false);
     }
@@ -339,8 +339,8 @@ export default function ProgramsPage() {
                       return ws.map((phase: any, pi: number) => (
                         <div key={pi} className="mb-4 border border-gray-200 rounded-lg overflow-hidden">
                           <div className="bg-purple-50 px-4 py-2 font-medium text-sm text-purple-700">
-                            {phase.phase || "第"+(pi+1)+"阶段"} - {phase.focus || ""}
-                            {phase.weeks && phase.weeks.length === 2 && <span className="ml-2 text-gray-400">(第{phase.weeks[0]}-{phase.weeks[1]}weeks)</span>}
+                            {phase.phase || "Phase "+(pi+1)+" Phase "} - {phase.focus || ""}
+                            {phase.weeks && phase.weeks.length === 2 && <span className="ml-2 text-gray-400">({phase.weeks[0]}-{phase.weeks[1]}weeks)</span>}
                           </div>
                           {(phase.weeklySchedule || []).map((day: any, di: number) => (
                             <div key={di} className="p-4">
@@ -350,7 +350,7 @@ export default function ProgramsPage() {
                                   <div key={ei} className="flex items-center justify-between text-sm bg-gray-50 rounded px-3 py-2">
                                     <span className="text-gray-900 font-medium">{ex.name}</span>
                                     <div className="flex items-center gap-3 text-gray-500">
-                                      <span>{ex.sets}组 x {ex.reps}</span>
+                                      <span>{ex.sets} sets x  {ex.reps}</span>
                                       {ex.restSeconds && ex.restSeconds > 0 && <span>rest{ex.restSeconds}s</span>}
                                     </div>
                                   </div>
@@ -364,7 +364,7 @@ export default function ProgramsPage() {
                     return ws.map((week: any, wi: number) => (
                       <div key={wi} className="mb-4 border border-gray-200 rounded-lg overflow-hidden">
                         <div className="bg-gray-50 px-4 py-2 font-medium text-sm text-gray-700">
-                          第{week.week || wi + 1}weeks - {week.focus || "常规训练"}
+                          {week.week || wi + 1}weeks - {week.focus || "General Training"}
                         </div>
                         {(week.days || []).map((day: any, di: number) => (
                           <div key={di} className="p-4">
@@ -374,8 +374,8 @@ export default function ProgramsPage() {
                                 <div key={ei} className="flex items-center justify-between text-sm bg-gray-50 rounded px-3 py-2">
                                   <span className="text-gray-900 font-medium">{ex.name}</span>
                                   <div className="flex items-center gap-3 text-gray-500">
-                                    <span>{ex.sets}组 x {ex.reps}</span>
-                                    {ex.rest_seconds && ex.rest_seconds > 0 && <span>休息{ex.rest_seconds}s</span>}
+                                    <span>{ex.sets} x {ex.reps}</span>
+                                    {ex.rest_seconds && ex.rest_seconds > 0 && <span>{ex.rest_seconds}s</span>}
                                   </div>
                                 </div>
                               ))}
@@ -387,12 +387,12 @@ export default function ProgramsPage() {
                   })() : (
                     <div className="text-center py-8 text-gray-400">
                       <Target className="w-10 h-10 mx-auto mb-2 opacity-50" />
-                      <p className="text-sm">暂无详细训练安排</p>
+                      <p className="text-sm">No detailed training schedule</p>
                     </div>
               )}
             </div>
               ) : (
-                <div className="text-center py-12 text-gray-500">无法加载计划详情</div>
+                <div className="text-center py-12 text-gray-500">Unable to load plan details</div>
               )}
             </div>
             <div className="flex-shrink-0 px-6 py-3 border-t border-gray-200 flex gap-2 justify-end">
@@ -416,11 +416,11 @@ export default function ProgramsPage() {
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Plan Name</label>
-                <input type="text" value={createForm.name} onChange={(e) => setCreateForm({...createForm, name: e.target.value})} className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="例如：增肌基础计划" required disabled={creating} />
+                <input type="text" value={createForm.name} onChange={(e) => setCreateForm({...createForm, name: e.target.value})} className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="：" required disabled={creating} />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                <textarea value={createForm.description} onChange={(e) => setCreateForm({...createForm, description: e.target.value})} className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" rows={3} placeholder="计划简介..." disabled={creating} />
+                <textarea value={createForm.description} onChange={(e) => setCreateForm({...createForm, description: e.target.value})} className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" rows={3} placeholder="..." disabled={creating} />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -460,7 +460,7 @@ export default function ProgramsPage() {
                       fetchPrograms();
                     }, 1000);
                   } else {
-                    setMsg({type:'error',text:'Create failed: '+(data.error||'未知错误')});
+                    setMsg({type:'error',text:'Create failed: '+(data.error||'')});
                   }
                 } catch (err: any) {
                   console.error('Create error:', err);
@@ -485,7 +485,7 @@ export default function ProgramsPage() {
             <h2 className="text-lg font-bold text-gray-900 mb-2">Confirm Delete</h2>
             <p className="text-sm text-gray-500 mb-6">This cannot be undone after deletion. Continue?</p>
             <div className="flex gap-3">
-              <button onClick={handleDelete} disabled={deleting} className="flex-1 py-2.5 bg-red-600 hover:bg-red-700 disabled:bg-red-300 text-white font-medium rounded-lg transition">{deleting ? "Delete中..." : "确认Delete"}</button>
+              <button onClick={handleDelete} disabled={deleting} className="flex-1 py-2.5 bg-red-600 hover:bg-red-700 disabled:bg-red-300 text-white font-medium rounded-lg transition">{deleting ? "Deleting..." : "Confirm Delete"}</button>
               <button onClick={() => setShowDeleteConfirm(false)} disabled={deleting} className="flex-1 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition">Cancel</button>
             </div>
           </div>
@@ -497,8 +497,8 @@ export default function ProgramsPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/50" onClick={() => !assigning && setShowAssignModal(false)} />
           <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 max-h-[80vh] flex flex-col">
-            <h2 className="text-lg font-bold text-gray-900 mb-1">分配Programs</h2>
-            <p className="text-sm text-gray-500 mb-4">选择学员接收此计划（可多选）</p>
+            <h2 className="text-lg font-bold text-gray-900 mb-1">Assign Programs</h2>
+            <p className="text-sm text-gray-500 mb-4">Select clients to assign this program to (multi-select)</p>
             <div className="flex-1 overflow-y-auto space-y-2">
               {loadingCoachees ? (
                 <div className="text-center py-8 text-gray-400">Loading...</div>
@@ -517,7 +517,7 @@ export default function ProgramsPage() {
                         {(c.full_name || c.email || "?")[0]}
                       </div>
                       <div className="min-w-0">
-                        <p className="text-sm font-medium text-gray-900 truncate">{c.full_name || "未命名"}</p>
+                        <p className="text-sm font-medium text-gray-900 truncate">{c.full_name || "Unnamed"}</p>
                         <p className="text-xs text-gray-500 truncate">{c.email}</p>
                       </div>
                     </button>
@@ -527,7 +527,7 @@ export default function ProgramsPage() {
             </div>
             <div className="flex gap-3 mt-4 pt-4 border-t border-gray-200">
               <button onClick={handleAssign} disabled={assigning || selectedCoacheeIds.length === 0} className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white font-medium rounded-lg transition">
-                {assigning ? "分配中..." : `确认分配 (${selectedCoacheeIds.length})`}
+                {assigning ? "Assigning..." : `Confirm Assignment (${selectedCoacheeIds.length})`}
               </button>
               <button onClick={() => { setShowAssignModal(false); setSelectedCoacheeIds([]); }} disabled={assigning} className="flex-1 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition">Cancel</button>
             </div>

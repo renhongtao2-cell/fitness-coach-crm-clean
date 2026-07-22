@@ -80,11 +80,11 @@ export default function DashboardPage() {
   };
 
   const mockActivities = [
-    { name: "张伟", exercise: "深蹲 4x12 @ 80kg", time: "2小时前", color: "from-blue-500 to-cyan-500" },
-    { name: "李娜", exercise: "卧推 3x10 @ 50kg", time: "3小时前", color: "from-purple-500 to-pink-500" },
-    { name: "王强", exercise: "硬拉 5x5 @ 100kg", time: "5小时前", color: "from-orange-500 to-red-500" },
-    { name: "刘洋", exercise: "引体向上 4xMax", time: "昨天", color: "from-green-500 to-emerald-500" },
-    { name: "陈静", exercise: "肩推 3x12 @ 30kg", time: "昨天", color: "from-indigo-500 to-blue-500" },
+    { name: "Zhang Wei", exercise: "Squat 4x12 @ 80kg", time: "2h ago", color: "from-blue-500 to-cyan-500" },
+    { name: "Li Na", exercise: "Bench Press 3x10 @ 50kg", time: "3h ago", color: "from-purple-500 to-pink-500" },
+    { name: "Wang Qiang", exercise: "Deadlift 5x5 @ 100kg", time: "5h ago", color: "from-orange-500 to-red-500" },
+    { name: "Liu Yang", exercise: "Pull-ups 4xMax", time: "Yesterday", color: "from-green-500 to-emerald-500" },
+    { name: "Chen Jing", exercise: "Shoulder Press 3x12 @ 30kg", time: "Yesterday", color: "from-indigo-500 to-blue-500" },
   ];
 
   return (
@@ -106,11 +106,11 @@ export default function DashboardPage() {
             <div className="hidden sm:flex items-center gap-3">
               <button className="px-4 py-2 bg-white/10 hover:bg-white/15 backdrop-blur-sm border border-white/10 rounded-xl text-sm text-white transition-all duration-200 flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
-                今天
+                Today
               </button>
             </div>
           </div>
-          <p className="mt-2 text-blue-200/70 max-w-md">以下是你的训练管理概览，Quickly track student progress。</p>
+          <p className="mt-2 text-blue-200/70 max-w-md">Here is your training management overview. Quickly track student progress.</p>
         </div>
       </div>
 
@@ -128,18 +128,18 @@ export default function DashboardPage() {
           />
           <StatCard 
             icon={<Activity className="w-5 h-5" />} 
-            label="This Week训练" 
+            label="This Week Training" 
             value={stats.weeklyWorkouts || 24} 
-            change="较上周 +15%" 
+            change="+15% vs Last Week" 
             color="green"
             gradient="from-emerald-500 to-green-500"
             shadowColor="shadow-emerald-500/25"
           />
           <StatCard 
             icon={<Dumbbell className="w-5 h-5" />} 
-            label="训练计划" 
+            label="Training Plans" 
             value={stats.programs} 
-            change="3 进行中" 
+            change="3 Active" 
             color="purple"
             gradient="from-purple-500 to-pink-500"
             shadowColor="shadow-purple-500/25"
@@ -170,8 +170,8 @@ export default function DashboardPage() {
                     <Gift className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h2 className="text-lg font-bold text-white mb-0.5">🎁 Invite Friends，各享免费一个月！</h2>
-                    <p className="text-sm text-white/70">Share Referral Code，Both parties receive任意套餐延长1个月Validity Period。</p>
+                    <h2 className="text-lg font-bold text-white mb-0.5">🎁 Invite Friends, both get 1 free month!</h2>
+                    <p className="text-sm text-white/70">Share your Referral Code. Both parties receive an extra month on any plan.</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
@@ -283,12 +283,12 @@ export default function DashboardPage() {
               <div className="relative">
                 <div className="flex items-center gap-2 mb-5">
                   <BarChart3 className="w-5 h-5 text-blue-400" />
-                  <h3 className="text-base font-semibold">This Week训练总结</h3>
+                  <h3 className="text-base font-semibold">This Week Training Summary</h3>
                 </div>
                 <div className="space-y-4">
                   <SummaryMetric label="Training Completion Rate" value="87%" barWidth="87%" barColor="from-blue-400 to-cyan-400" />
-                  <SummaryMetric label="平均RPE" value="7.2 / 10" barWidth="72%" barColor="from-purple-400 to-pink-400" showBar={false} />
-                  <SummaryMetric label="学员满意度" value="4.8 / 5" barWidth="96%" barColor="from-emerald-400 to-green-400" />
+                  <SummaryMetric label="Average RPE" value="7.2 / 10" barWidth="72%" barColor="from-purple-400 to-pink-400" showBar={false} />
+                  <SummaryMetric label="Student Satisfaction" value="4.8 / 5" barWidth="96%" barColor="from-emerald-400 to-green-400" />
                 </div>
               </div>
             </div>

@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const search = searchParams.get('search') || '';
 
-    // Method 1: 通过 coachee_programs 关联查询
+    // Method 1: Query via coachee_programs association
     const { data: assignments, error: assignError } = await adminSupabase
       .from('coachee_programs')
       .select('coachee_id')
@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {
-      return NextResponse.json({ error: '未授权' }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const adminSupabase = await createAdminClient();
@@ -116,7 +116,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (!coachProfile) {
-      return NextResponse.json({ error: '未找到教练档案' }, { status: 404 });
+      return NextResponse.json({ error: 'Coach profile not found' }, { status: 404 });
     }
 
     const { data: existing } = await adminSupabase

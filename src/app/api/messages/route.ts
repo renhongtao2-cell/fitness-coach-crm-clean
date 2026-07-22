@@ -94,7 +94,7 @@ export async function POST(request: NextRequest) {
   try {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return NextResponse.json({ error: '未授权' }, { status: 401 });
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const body = await request.json();
     const { coacheeId, content } = body;
@@ -110,7 +110,7 @@ export async function POST(request: NextRequest) {
       .select('id')
       .eq('email', user.email)
       .single();
-    if (!coachProfile) return NextResponse.json({ error: '未找到教练档案' }, { status: 404 });
+    if (!coachProfile) return NextResponse.json({ error: 'Coach profile not found' }, { status: 404 });
 
     const { data: msg, error } = await adminSupabase
       .from('messages')

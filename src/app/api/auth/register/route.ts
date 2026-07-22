@@ -6,12 +6,12 @@ export async function POST(request: NextRequest) {
     const { email, password, fullName, role, referralCode } = await request.json();
 
     if (!email || !password || !fullName) {
-      return NextResponse.json({ error: "请填写所有必填字段" }, { status: 400 });
+      return NextResponse.json({ error: "Please fill in all required fields" }, { status: 400 });
     }
 
     const allowedRoles = ["coach", "client"];
     if (!allowedRoles.includes(role)) {
-      return NextResponse.json({ error: "无效的用户角色" }, { status: 400 });
+      return NextResponse.json({ error: "Invalid user role" }, { status: 400 });
     }
 
     const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;

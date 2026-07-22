@@ -26,7 +26,7 @@ export default function MessagesPage() {
     try {
       const res = await fetch('/api/messages');
       const json = await res.json();
-      if (!res.ok) { setError(json.error || '加载失败'); }
+      if (!res.ok) { setError(json.error || 'Failed to load'); }
       else { setConversations(json.conversations || []); }
     } catch (e: any) { setError(e.message); }
     finally { setLoading(false); }
@@ -51,7 +51,7 @@ export default function MessagesPage() {
       });
       const json = await res.json();
       if (res.ok) {
-        showToast('success', '✅ 消息已发送');
+        showToast('success', 'Message sent successfully');
         setSendMessage('');
         const updated = { ...selectedConv, messages: [json.message, ...selectedConv.messages] };
         setSelectedConv(updated);
@@ -65,10 +65,10 @@ export default function MessagesPage() {
           return prev;
         });
       } else {
-        showToast('error', '发送失败: ' + (json.error || '未知错误'));
+        showToast('error', 'Send failed: ' + (json.error || 'Unknown error'));
       }
     } catch (e: any) {
-      showToast('error', '发送失败: ' + e.message);
+      showToast('error', 'Send failed: ' + e.message);
     } finally {
       setSending(false);
     }
@@ -94,8 +94,8 @@ export default function MessagesPage() {
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-6xl mx-auto px-4 py-6">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">消息</h1>
-          <p className="text-gray-500 mt-1">与学员沟通</p>
+          <h1 className="text-2xl font-bold text-gray-900">Messages</h1>
+          <p className="text-gray-500 mt-1">Communicate with clients</p>
         </div>
 
         {error && (
@@ -112,14 +112,14 @@ export default function MessagesPage() {
               <div className="p-4 border-b border-gray-200">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                  <input type="text" placeholder="搜索对话..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none" />
+                  <input type="text" placeholder="Search conversations..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none" />
                 </div>
               </div>
               <div className="flex-1 overflow-y-auto">
                 {filteredConversations.length === 0 ? (
                   <div className="p-8 text-center text-gray-400">
                     <MessageSquare className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                    <p className="text-sm">暂无对话</p>
+                    <p className="text-sm">No conversations yet</p>
                   </div>
                 ) : (
                   filteredConversations.map((conv: any) => (
@@ -154,7 +154,7 @@ export default function MessagesPage() {
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-medium">{selectedConv.avatar}</div>
                   <div>
                     <p className="text-sm font-medium text-gray-900">{selectedConv.name}</p>
-                    <p className="text-xs text-gray-400">学员</p>
+                    <p className="text-xs text-gray-400">Client</p>
                   </div>
                 </div>
                 <div className="flex-1 p-4 space-y-3 overflow-y-auto">
@@ -178,7 +178,7 @@ export default function MessagesPage() {
                 <div className="px-4 py-3 border-t border-gray-200">
                   <div className="flex items-center gap-2">
                     <input type="text" value={sendMessage} onChange={(e) => setSendMessage(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') handleSend(); }}
-                      placeholder="输入消息..." className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm" />
+                      placeholder="Type a message..." className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm" />
                     <button onClick={handleSend} disabled={sending || !sendMessage.trim()} className="p-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white rounded-lg transition">
                       {sending ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
                     </button>
@@ -189,7 +189,7 @@ export default function MessagesPage() {
               <div className="hidden sm:flex flex-1 items-center justify-center text-gray-400">
                 <div className="text-center">
                   <MessageSquare className="w-16 h-16 mx-auto mb-3 opacity-30" />
-                  <p>选择一个对话开始聊天</p>
+                  <p>Select a conversation to start chatting</p>
                 </div>
               </div>
             )}

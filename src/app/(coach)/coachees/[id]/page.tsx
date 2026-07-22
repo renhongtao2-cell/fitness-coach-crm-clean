@@ -22,7 +22,7 @@ export default function CoacheeDetailPage() {
 
   useEffect(() => {
     if (!coacheeId) {
-      setError("缺少学员ID");
+      setError("Missing client ID");
       setLoading(false);
       return;
     }
@@ -34,7 +34,7 @@ export default function CoacheeDetailPage() {
       const res = await fetch("/api/coachees/" + coacheeId);
       const json = await res.json();
       if (!res.ok) {
-        setError(json.error || "加载失败");
+        setError(json.error || "Failed to load");
       } else {
         setCoachee(json.coachee);
         setPrograms(json.programs || []);
@@ -64,7 +64,7 @@ export default function CoacheeDetailPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <p className="text-red-600 mb-4">{error}</p>
-          <button onClick={() => router.back()} className="px-4 py-2 bg-blue-600 text-white rounded-lg">返回</button>
+          <button onClick={() => router.back()} className="px-4 py-2 bg-blue-600 text-white rounded-lg">Back</button>
         </div>
       </div>
     );
@@ -85,7 +85,7 @@ export default function CoacheeDetailPage() {
               {(coachee?.full_name || "?")[0]}
             </div>
             <div>
-              <h1 className="text-xl font-bold text-gray-900">{coachee?.full_name || "未知学员"}</h1>
+              <h1 className="text-xl font-bold text-gray-900">{coachee?.full_name || "Unknown client"}</h1>
               <p className="text-sm text-gray-500">{coachee?.email || ""}</p>
             </div>
           </div>
@@ -93,17 +93,17 @@ export default function CoacheeDetailPage() {
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <QuickStat icon={<Users className="w-5 h-5" />} label="Programs" value={programs.length} color="blue" />
-          <QuickStat icon={<CheckCircle className="w-5 h-5" />} label="训练日志" value={sortedLogs.length} color="green" />
-          <QuickStat icon={<Weight className="w-5 h-5" />} label="最新体重" value={sortedMeasurements[0]?.weight || "-"} color="purple" />
-          <QuickStat icon={<Target className="w-5 h-5" />} label="训练水平" value={coachee?.fitness_level ? ({ beginner: "Beginner", intermediate: "Intermediate", advanced: "Advanced" } as Record<string, string>)[coachee.fitness_level] || "-" : "-"} color="orange" />
+          <QuickStat icon={<CheckCircle className="w-5 h-5" />} label="Training Logs" value={sortedLogs.length} color="green" />
+          <QuickStat icon={<Weight className="w-5 h-5" />} label="Latest Weight" value={sortedMeasurements[0]?.weight || "-"} color="purple" />
+          <QuickStat icon={<Target className="w-5 h-5" />} label="Fitness Level" value={coachee?.fitness_level ? ({ beginner: "Beginner", intermediate: "Intermediate", advanced: "Advanced" } as Record<string, string>)[coachee.fitness_level] || "-" : "-"} color="orange" />
         </div>
 
         <div className="flex gap-1 bg-gray-100 rounded-lg p-1 w-fit mb-6">
           {[
-            { key: "info", label: "基本信息" },
+            { key: "info", label: "Basic Info" },
             { key: "programs", label: "Programs" },
-            { key: "measurements", label: "身体数据" },
-            { key: "logs", label: "训练日志" },
+            { key: "measurements", label: "Body Measurements" },
+            { key: "logs", label: "Training Logs" },
           ].map((tab) => (
             <button
               key={tab.key}
@@ -118,15 +118,15 @@ export default function CoacheeDetailPage() {
         {selectedTab === "info" && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
-              <Dumbbell className="w-5 h-5 text-blue-600" />学员信息
+              <Dumbbell className="w-5 h-5 text-blue-600" />Client Info
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Field label="Name" value={coachee?.full_name || "-"} />
               <Field label="Email" value={coachee?.email || "-"} />
-              <Field label="训练水平" value={coachee?.fitness_level ? ({ beginner: "Beginner", intermediate: "Intermediate", advanced: "Advanced" } as Record<string, string>)[coachee.fitness_level] || "-" : "-"} />
-              <Field label="目标" value={Array.isArray(coachee?.goals) ? coachee.goals.join(", ") : "-"} />
-              <Field label="注册时间" value={coachee?.created_at ? new Date(coachee.created_at).toLocaleDateString("zh-CN") : "-"} />
-              <Field label="关联教练" value={programs[0]?.coach_name || "-"} />
+              <Field label="Fitness Level" value={coachee?.fitness_level ? ({ beginner: "Beginner", intermediate: "Intermediate", advanced: "Advanced" } as Record<string, string>)[coachee.fitness_level] || "-" : "-"} />
+              <Field label="Goals" value={Array.isArray(coachee?.goals) ? coachee.goals.join(", ") : "-"} />
+              <Field label="Joined Date" value={coachee?.created_at ? new Date(coachee.created_at).toLocaleDateString("zh-CN") : "-"} />
+              <Field label="Assigned Coach" value={programs[0]?.coach_name || "-"} />
             </div>
           </div>
         )}
@@ -141,7 +141,7 @@ export default function CoacheeDetailPage() {
             {programs.length === 0 ? (
               <div className="p-12 text-center text-gray-400">
                 <Calendar className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                <p>暂无Programs</p>
+                <p>No programs assigned</p>
               </div>
             ) : (
               <div className="divide-y divide-gray-100">
@@ -153,7 +153,7 @@ export default function CoacheeDetailPage() {
                       </div>
                       <div>
                         <p className="text-sm font-medium text-gray-900">{prog.name}</p>
-                        <p className="text-xs text-gray-500">{(prog.duration_weeks || "?")}weeks · {prog.level ? ({ beginner: "Beginner", intermediate: "Intermediate", advanced: "Advanced" } as Record<string, string>)[prog.level] || prog.level : "-"} · {prog.start_date ? new Date(prog.start_date).toLocaleDateString("zh-CN") : "未开始"}</p>
+                        <p className="text-xs text-gray-500">{(prog.duration_weeks || "?")}weeks · {prog.level ? ({ beginner: "Beginner", intermediate: "Intermediate", advanced: "Advanced" } as Record<string, string>)[prog.level] || prog.level : "-"} · {prog.start_date ? new Date(prog.start_date).toLocaleDateString("zh-CN") : ""}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
@@ -171,26 +171,26 @@ export default function CoacheeDetailPage() {
           <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-200">
               <h3 className="font-semibold text-gray-900 flex items-center gap-2">
-                <Activity className="w-5 h-5 text-green-600" />身体测量记录
+                <Activity className="w-5 h-5 text-green-600" />Body Measurement Records
               </h3>
             </div>
             {sortedMeasurements.length === 0 ? (
               <div className="p-12 text-center text-gray-400">
                 <Activity className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                <p>暂无身体数据</p>
-                <p className="text-sm mt-1">请让学员在学员端录入体测数据</p>
+                <p>No body data available</p>
+                <p className="text-sm mt-1">Ask the client to enter body measurements in their app</p>
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">日期</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">体重(kg)</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">体脂率(%)</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">胸围(cm)</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">腰围(cm)</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">臀围(cm)</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Weight (kg)</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Body Fat %</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Chest (cm)</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Waist (cm)</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Hip (cm)</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
@@ -215,15 +215,15 @@ export default function CoacheeDetailPage() {
           <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
               <h3 className="font-semibold text-gray-900 flex items-center gap-2">
-                <Clock className="w-5 h-5 text-purple-600" />训练日志
+                <Clock className="w-5 h-5 text-purple-600" />Training Logs
               </h3>
-              <span className="text-sm text-gray-500">共 {sortedLogs.length} 条</span>
+              <span className="text-sm text-gray-500">Total: {sortedLogs.length}</span>
             </div>
             {sortedLogs.length === 0 ? (
               <div className="p-12 text-center text-gray-400">
                 <Calendar className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                <p>暂无训练日志</p>
-                <p className="text-sm mt-1">学员完成训练后会在这里显示记录</p>
+                <p>No training logs yet</p>
+                <p className="text-sm mt-1">Training records will appear here when clients complete workouts</p>
               </div>
             ) : (
               <div className="divide-y divide-gray-100">
@@ -280,17 +280,17 @@ function getStatusColor(s: string) {
 
 function getStatusLabel(s: string) {
   const l: Record<string, string> = {
-    active: "进行中",
-    completed: "已完成",
-    paused: "已暂停",
-    cancelled: "已Cancel",
+    active: "Active",
+    completed: "Completed",
+    paused: "Paused",
+    cancelled: "Cancelled",
   };
   return l[s] || s;
 }
 
 function getDayLabel(day: number) {
-  const days = ["weeks一", "weeks二", "weeks三", "weeks四", "weeks五", "weeks六", "weeks日"];
-  return days[day - 1] || ("第" + day + "天");
+  const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  return days[day - 1] || ("Day " + day + "");
 }
 
 function ProgramDetailModal({ program, onClose }: { program: any; onClose: () => void }) {
@@ -337,13 +337,13 @@ function ProgramDetailModal({ program, onClose }: { program: any; onClose: () =>
         </div>
         <div className="flex-1 overflow-y-auto p-6">
           {normalizedPhases.length === 0 ? (
-            <div className="text-center text-gray-400 py-8">暂无计划明细</div>
+            <div className="text-center text-gray-400 py-8">No plan details available</div>
           ) : (
             <div className="space-y-6">
               {normalizedPhases.map((phase: any, pi: number) => (
                 <div key={pi} className="border border-gray-200 rounded-xl p-4">
                   <h3 className="font-semibold text-gray-900 mb-1">
-                    {phase.phase_name || ("阶段 " + (pi + 1))}
+                    {phase.phase_name || ("Phase " + (pi + 1))}
                     {phase.duration_weeks > 0 && <span className="text-sm font-normal text-gray-500 ml-2">(" + phase.duration_weeks + "weeks)</span>}
                   </h3>
                   {phase.focus && <p className="text-sm text-gray-500 mb-3">{phase.focus}</p>}
@@ -360,14 +360,14 @@ function ProgramDetailModal({ program, onClose }: { program: any; onClose: () =>
                                 <div key={ei} className="flex items-center justify-between text-xs">
                                   <span className="text-gray-700">{ex.name}</span>
                                   <span className="text-gray-500">
-                                    {ex.sets && ex.reps ? (ex.sets + "组×" + ex.reps + "") : ""}
-                                    {ex.rest_seconds ? (" 休息" + ex.rest_seconds + "s") : ""}
+                                    {ex.sets && ex.reps ? (ex.sets + " sets x " + ex.reps + "") : ""}
+                                    {ex.rest_seconds ? (" rest " + ex.rest_seconds + "s") : ""}
                                   </span>
                                 </div>
                               ))}
                             </div>
                           ) : (
-                            <p className="text-xs text-gray-400">暂无动作明细</p>
+                            <p className="text-xs text-gray-400">No exercise details</p>
                           )}
                         </div>
                       );
@@ -397,28 +397,28 @@ function LogDetailCard({ log, getDayLabel }: { log: any; getDayLabel: (d: number
             {log.completed ? <CheckCircle className="w-4 h-4 text-green-600" /> : <XCircle className="w-4 h-4 text-gray-400" />}
           </div>
           <div>
-            <p className="text-sm font-medium text-gray-900">第 {log.week_number} weeks · {getDayLabel(log.day_of_week)}</p>
+            <p className="text-sm font-medium text-gray-900">Week {log.week_number} · {getDayLabel(log.day_of_week)}</p>
             <p className="text-xs text-gray-500">{new Date(log.date).toLocaleDateString('zh-CN')}</p>
           </div>
         </div>
         <div className="text-right text-sm text-gray-500">
-          {totalDur > 0 && <span>{totalDur}分钟</span>}
+          {totalDur > 0 && <span>{totalDur}min</span>}
           {totalDur > 0 && totalVol !== 0 && <span className="mx-2">·</span>}
-          {totalVol !== 0 && <span>{totalVol}kg总量</span>}
+          {totalVol !== 0 && <span>{totalVol}kgtotal</span>}
         </div>
       </div>
       {sets.length > 0 && (
         <button onClick={() => setExpanded(!expanded)} className="ml-11 text-xs text-blue-600 hover:text-blue-700 font-medium flex items-center gap-1 mt-1">
-          {expanded ? '收起' : '查看明细'} ({sets.length}个动作)
+          {expanded ? 'Collapse' : 'View Details'} ({sets.length} exercises)
         </button>
       )}
       {expanded && sets.length > 0 && (
         <div className="ml-11 mt-2 bg-gray-50 rounded-lg p-3 space-y-2">
           {sets.map((s: any, i: number) => (
             <div key={i} className="flex items-center justify-between text-xs border-b border-gray-200 last:border-0 pb-2 last:pb-0">
-              <span className="font-medium text-gray-800">{s.exercise_name || ('动作' + (i + 1))}</span>
+              <span className="font-medium text-gray-800">{s.exercise_name || ('Exercise ' + (i + 1))}</span>
               <span className="text-gray-600">
-                {s.sets && s.reps ? s.sets + '组×' + s.reps + '' : ''}
+                {s.sets && s.reps ? s.sets + ' sets x ' + s.reps + '' : ''}
                 {s.weight ? ' ' + s.weight + (s.unit || 'kg') : ''}
               </span>
             </div>

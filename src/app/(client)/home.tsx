@@ -20,7 +20,7 @@ export default function ClientHome() {
     try {
       const res = await fetch('/api/client/home');
       const json = await res.json();
-      if (!res.ok) { setError(json.error || '加载失败'); }
+      if (!res.ok) { setError(json.error || 'Failed to load'); }
       else { setData(json); }
     } catch (e: any) { setError(e.message); }
     finally { setLoading(false); }
@@ -28,7 +28,7 @@ export default function ClientHome() {
 
   const handleSubmitLog = async () => {
     if (!todayLog.exercise.trim()) {
-      showToast('error', '请输入训练内容');
+      showToast('error', 'Please enter training content');
       return;
     }
     setSubmitting(true);
@@ -41,18 +41,18 @@ export default function ClientHome() {
       const json = await res.json();
       if (res.ok) {
         setTodayLog({ exercise: '', note: '' });
-        showToast('success', '✅ 训练记录已提交');
+        showToast('success', 'Training record submitted');
         fetchData();
       } else {
-        showToast('error', '记录失败: ' + (json.error || '未知错误'));
+        showToast('error', 'Record failed: ' + (json.error || 'Unknown error'));
       }
-    } catch (e: any) { showToast('error', '网络错误: ' + e.message); }
+    } catch (e: any) { showToast('error', 'Network error: ' + e.message); }
     finally { setSubmitting(false); }
   };
 
   const handleSendMessage = async () => {
     if (!msgText.trim()) {
-      showToast('error', '请输入消息内容');
+      showToast('error', 'Please enter message content');
       return;
     }
     setSending(true);
@@ -66,13 +66,13 @@ export default function ClientHome() {
       if (res.ok) {
         setMsgSent(true);
         setMsgText('');
-        showToast('success', '✅ 消息已Send');
+        showToast('success', 'Message sent');
         setTimeout(() => { setShowMsgModal(false); setMsgSent(false); }, 1500);
         fetchData();
       } else {
-        showToast('error', '发送失败: ' + (json.error || '未知错误'));
+        showToast('error', 'Send failed: ' + (json.error || 'Unknown error'));
       }
-    } catch (e: any) { showToast('error', '网络错误: ' + e.message); }
+    } catch (e: any) { showToast('error', 'Network error: ' + e.message); }
     finally { setSending(false); }
   };
 
@@ -81,7 +81,7 @@ export default function ClientHome() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">加载中...</p>
+          <p className="text-gray-600">Loading...</p>
         </div>
       </div>
     );
@@ -93,7 +93,7 @@ export default function ClientHome() {
         <div className="text-center">
           <AlertCircle className="w-10 h-10 text-red-500 mx-auto mb-3" />
           <p className="text-red-600 mb-4">{error}</p>
-          <button onClick={fetchData} className="px-4 py-2 bg-blue-600 text-white rounded-lg">重试</button>
+          <button onClick={fetchData} className="px-4 py-2 bg-blue-600 text-white rounded-lg">Retry</button>
         </div>
       </div>
     );
@@ -111,8 +111,8 @@ export default function ClientHome() {
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-4xl mx-auto px-4 py-6">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">你好，{data?.coachee?.full_name || '学员'}！</h1>
-          <p className="text-gray-500 mt-1">今天也要加油训练哦 💪</p>
+          <h1 className="text-2xl font-bold text-gray-900">Hello, {data?.coachee?.full_name || 'Client'}！</h1>
+          <p className="text-gray-500 mt-1">Keep up the great training today! 💪</p>
         </div>
 
         <div className="mb-6">
@@ -123,20 +123,20 @@ export default function ClientHome() {
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-          <SummaryCard icon={<Dumbbell className="w-6 h-6" />} label="训练计划" value={programs.length} color="blue" />
-          <SummaryCard icon={<CheckCircle className="w-6 h-6" />} label="今日完成" value={todayCompleted > 0 ? '是' : '否'} color={todayCompleted > 0 ? 'green' : 'orange'} />
-          <SummaryCard icon={<TrendingUp className="w-6 h-6" />} label="最新Weight" value={latestMeasurement?.weight ? latestMeasurement.weight + 'kg' : '-'} color="purple" />
-          <SummaryCard icon={<MessageSquare className="w-6 h-6" />} label="新消息" value={messages.length} color="pink" />
+          <SummaryCard icon={<Dumbbell className="w-6 h-6" />} label="Training Plan" value={programs.length} color="blue" />
+          <SummaryCard icon={<CheckCircle className="w-6 h-6" />} label="Completed Today" value={todayCompleted > 0 ? 'Yes' : 'No'} color={todayCompleted > 0 ? 'green' : 'orange'} />
+          <SummaryCard icon={<TrendingUp className="w-6 h-6" />} label="Latest Weight" value={latestMeasurement?.weight ? latestMeasurement.weight + 'kg' : '-'} color="purple" />
+          <SummaryCard icon={<MessageSquare className="w-6 h-6" />} label="New Messages" value={messages.length} color="pink" />
         </div>
 
         {/* Today's Log */}
         <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
-          <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2"><Clock className="w-5 h-5 text-blue-600" />今日训练记录</h3>
+          <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2"><Clock className="w-5 h-5 text-blue-600" />'s Training Log</h3>
           <div className="space-y-3">
-            <input type="text" value={todayLog.exercise} onChange={(e) => setTodayLog({...todayLog, exercise: e.target.value})} placeholder="做了什么训练？例如：卧推 3组x10次" className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm" disabled={submitting} />
-            <input type="text" value={todayLog.note} onChange={(e) => setTodayLog({...todayLog, note: e.target.value})} placeholder="备注（可选）" className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm" disabled={submitting} />
+            <input type="text" value={todayLog.exercise} onChange={(e) => setTodayLog({...todayLog, exercise: e.target.value})} placeholder="What training did you do? E.g.: Bench Press 3x10" className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm" disabled={submitting} />
+            <input type="text" value={todayLog.note} onChange={(e) => setTodayLog({...todayLog, note: e.target.value})} placeholder="Notes (optional)" className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm" disabled={submitting} />
             <button onClick={handleSubmitLog} disabled={submitting || !todayLog.exercise.trim()} className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white font-medium rounded-lg transition flex items-center justify-center gap-2">
-              {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle className="w-4 h-4" />}提交训练记录
+              {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle className="w-4 h-4" />}Submit Training Record
             </button>
           </div>
         </div>
@@ -145,8 +145,8 @@ export default function ClientHome() {
         {programs.length > 0 && (
           <div className="bg-white rounded-xl border border-gray-200 overflow-hidden mb-6">
             <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-              <h3 className="font-semibold text-gray-900 flex items-center gap-2"><Calendar className="w-5 h-5 text-blue-600" />Me的训练计划</h3>
-              <span className="text-sm text-gray-500">共 {programs.length} 个</span>
+              <h3 className="font-semibold text-gray-900 flex items-center gap-2"><Calendar className="w-5 h-5 text-blue-600" />My Trainining Plan</h3>
+              <span className="text-sm text-gray-500">Total: {programs.length}</span>
             </div>
             <div className="divide-y divide-gray-100">
               {programs.map((prog: any) => (
@@ -155,7 +155,7 @@ export default function ClientHome() {
                     <h4 className="font-medium text-gray-900">{prog.name}</h4>
                     <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${getStatusColor(prog.status)}`}>{getStatusLabel(prog.status)}</span>
                   </div>
-                  <p className="text-sm text-gray-500">{prog.description || prog.duration_weeks + '周计划'}</p>
+                  <p className="text-sm text-gray-500">{prog.description || prog.duration_weeks + ' week plan'}</p>
                 </div>
               ))}
             </div>
@@ -170,7 +170,7 @@ export default function ClientHome() {
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="bg-gray-50"><tr><th className="px-4 py-2 text-left">Date</th><th className="px-4 py-2 text-left">体重</th><th className="px-4 py-2 text-left">Body Fat %</th><th className="px-4 py-2 text-left">胸围</th><th className="px-4 py-2 text-left">腰围</th></tr></thead>
+                <thead className="bg-gray-50"><tr><th className="px-4 py-2 text-left">Date</th><th className="px-4 py-2 text-left">Weight</th><th className="px-4 py-2 text-left">Body Fat %</th><th className="px-4 py-2 text-left">Chest</th><th className="px-4 py-2 text-left">Waist</th></tr></thead>
                 <tbody className="divide-y divide-gray-100">
                   {measurements.slice(0, 5).map((m: any) => (
                     <tr key={m.id}><td className="px-4 py-3 text-sm">{new Date(m.date).toLocaleDateString('zh-CN')}</td><td className="px-4 py-3 text-sm font-medium">{m.weight || '-'}</td><td className="px-4 py-3 text-sm">{m.body_fat_percent ? m.body_fat_percent + '%' : '-'}</td><td className="px-4 py-3 text-sm">{m.chest_circumference || '-'}</td><td className="px-4 py-3 text-sm">{m.waist_circumference || '-'}</td></tr>
@@ -186,7 +186,7 @@ export default function ClientHome() {
           <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
               <h3 className="font-semibold text-gray-900 flex items-center gap-2"><MessageSquare className="w-5 h-5 text-purple-600" />Recent Messages</h3>
-              <span className="text-sm text-gray-500">共 {messages.length} 条</span>
+              <span className="text-sm text-gray-500">Total: {messages.length}</span>
             </div>
             <div className="divide-y divide-gray-100">
               {messages.slice(0, 10).map((msg: any) => {
@@ -194,7 +194,7 @@ export default function ClientHome() {
                 return (
                   <div key={msg.id} className={'px-6 py-4 ' + (isFromCoach ? 'bg-purple-50/50' : '')}>
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-xs font-medium text-purple-600">{isFromCoach ? 'Coach' : '我'}</span>
+                      <span className="text-xs font-medium text-purple-600">{isFromCoach ? 'Coach' : 'Me'}</span>
                       <span className="text-xs text-gray-400">{new Date(msg.created_at).toLocaleString('zh-CN')}</span>
                     </div>
                     <p className="text-sm text-gray-700">{msg.content}</p>
@@ -215,20 +215,20 @@ export default function ClientHome() {
               <div className="text-center py-6">
                 <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-3" />
                 <p className="text-lg font-medium text-gray-900">Message sent!</p>
-                <p className="text-sm text-gray-500 mt-1">教练会尽快回复你</p>
+                <p className="text-sm text-gray-500 mt-1">The coach will reply as soon as possible</p>
               </div>
             ) : (
               <>
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold">教</div>
-                  <div><p className="font-medium text-gray-900">联系教练</p><p className="text-xs text-gray-500">Ask any questions you have</p></div>
+                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold">C</div>
+                  <div><p className="font-medium text-gray-900">Contact Coach</p><p className="text-xs text-gray-500">Ask me anything about your training</p></div>
                 </div>
-                <textarea value={msgText} onChange={(e) => setMsgText(e.target.value)} placeholder="告诉我你的问题，例如：今天训练感觉膝盖有点不舒服..." className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm resize-none" rows={4} />
+                <textarea value={msgText} onChange={(e) => setMsgText(e.target.value)} placeholder="Tell me your question, e.g.: My knee feels uncomfortable during training..." className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm resize-none" rows={4} />
                 <div className="flex gap-3 mt-4">
                   <button onClick={handleSendMessage} disabled={sending || !msgText.trim()} className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white font-medium rounded-lg transition flex items-center justify-center gap-2">
-                    {sending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}发送
+                    {sending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}Send
                   </button>
-                  <button onClick={() => setShowMsgModal(false)} disabled={sending} className="px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition">取消</button>
+                  <button onClick={() => setShowMsgModal(false)} disabled={sending} className="px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition">Cancel</button>
                 </div>
               </>
             )}

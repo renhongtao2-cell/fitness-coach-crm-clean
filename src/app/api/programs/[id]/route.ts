@@ -49,7 +49,7 @@ export async function DELETE(request: NextRequest) {
   try {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return NextResponse.json({ error: '未授权' }, { status: 401 });
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const adminSupabase = await createAdminClient();
     const { data: profile } = await adminSupabase
@@ -57,13 +57,13 @@ export async function DELETE(request: NextRequest) {
       .select('id')
       .eq('email', user.email)
       .single();
-    if (!profile) return NextResponse.json({ error: '未找到用户档案' }, { status: 404 });
+    if (!profile) return NextResponse.json({ error: 'User profile not found' }, { status: 404 });
 
     const url = new URL(request.url);
     const programId = url.pathname.split('/').pop();
 
     if (!programId || programId === 'route') {
-      return NextResponse.json({ error: '缺少计划ID' }, { status: 400 });
+      return NextResponse.json({ error: 'Missing plan ID' }, { status: 400 });
     }
 
     const { error } = await adminSupabase

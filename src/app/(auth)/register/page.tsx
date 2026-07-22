@@ -40,11 +40,11 @@ function RegisterForm() {
     setSuccess(false);
 
     if (formData.password !== formData.confirmPassword) {
-      setError('两次输入的Password不一致');
+      setError('Passwords do not match');
       return;
     }
     if (formData.password.length < 6) {
-      setError('Password至少需要6个字符');
+      setError('Password must be at least 6 characters');
       return;
     }
     if (!formData.fullName.trim()) {
@@ -52,7 +52,7 @@ function RegisterForm() {
       return;
     }
     if (!formData.email.trim() || !formData.email.includes('@')) {
-      setError('请输入有效的Email Address');
+      setError('Please enter a valid email address');
       return;
     }
 
@@ -109,7 +109,7 @@ function RegisterForm() {
           <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-3">
             <XCircle className="w-5 h-5 text-red-500 shrink-0" />
             <div>
-              <div className="font-medium text-red-700">注册失败</div>
+              <div className="font-medium text-red-700">Registration Failed</div>
               <div className="text-sm text-red-600">{error}</div>
             </div>
           </div>
@@ -132,14 +132,14 @@ function RegisterForm() {
                 onClick={() => handleChange('role', 'client')}
                 className={'p-3 border rounded-lg text-center transition ' + (formData.role === 'client' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-gray-300 hover:border-gray-400')}
               >
-                <div className="font-medium">健身Client</div>
-                <div className="text-xs text-gray-500 mt-0.5">查看训练</div>
+                <div className="font-medium">Fitness Coach</div>
+                <div className="text-xs text-gray-500 mt-0.5">View Training</div>
               </button>
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">姓名</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Full Name</label>
             <div className="relative">
               <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
@@ -147,7 +147,7 @@ function RegisterForm() {
                 value={formData.fullName}
                 onChange={(e) => handleChange('fullName', e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                placeholder="你的名字"
+                placeholder="Your name"
                 required
                 disabled={isDisabled}
               />
@@ -198,7 +198,7 @@ function RegisterForm() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">确认Password</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Confirm Password</label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
@@ -206,7 +206,7 @@ function RegisterForm() {
                 value={formData.confirmPassword}
                 onChange={(e) => handleChange('confirmPassword', e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                placeholder="再次输入Password"
+                placeholder="Enter password again"
                 required
                 autoComplete="new-password"
                 minLength={6}

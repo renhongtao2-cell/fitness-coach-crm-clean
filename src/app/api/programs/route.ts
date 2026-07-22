@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {
-      return NextResponse.json({ error: '未授权' }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const body = await request.json();
@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (!profile) {
-      return NextResponse.json({ error: '未找到用户档案' }, { status: 404 });
+      return NextResponse.json({ error: 'User profile not found' }, { status: 404 });
     }
 
     const { data, error } = await adminSupabase

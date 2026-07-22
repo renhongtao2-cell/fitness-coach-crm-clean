@@ -42,10 +42,10 @@ export default function BillingPage() {
     try {
       const res = await fetch(`/api/invoices/${invoiceId}/receipt`);
       if (res.ok) {
-        showToast("success", "Receipt已生成");
+        showToast("success", "Receipt generated");
       }
     } catch (e: any) {
-      showToast("error", "下载Failed: " + e.message);
+      showToast("error", "Download failed: " + e.message);
     } finally {
       setDownloading(null);
     }
@@ -107,7 +107,7 @@ export default function BillingPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <p className="text-sm text-gray-500">套餐</p>
+              <p className="text-sm text-gray-500">Plan</p>
               <p className="text-lg font-semibold text-gray-900">{planNameMap[subscription?.plan_type || "free"]}</p>
             </div>
             <div>
@@ -115,13 +115,13 @@ export default function BillingPage() {
               <p className="text-lg font-semibold text-gray-900">
                 {subscription?.stripe_current_period_end
                   ? new Date(subscription.stripe_current_period_end).toLocaleDateString("zh-CN")
-                  : "永久有效"}
+                  : "Permanent"}
               </p>
             </div>
             <div>
               <p className="text-sm text-gray-500">Amount</p>
               <p className="text-lg font-semibold text-gray-900">
-                {subscription?.amount_cents ? `¥${(subscription.amount_cents / 100).toFixed(2)}` : "免费"}
+                {subscription?.amount_cents ? `¥${(subscription.amount_cents / 100).toFixed(2)}` : "Free"}
               </p>
             </div>
           </div>
@@ -146,7 +146,7 @@ export default function BillingPage() {
           {invoices.length === 0 ? (
             <div className="text-center py-12 text-gray-400">
               <Calendar className="w-12 h-12 mx-auto mb-3 opacity-50" />
-              <p className="text-sm">暂无Invoice History</p>
+              <p className="text-sm">No invoice history</p>
               <p className="text-xs mt-1">Will appear after your first payment</p>
             </div>
           ) : (
@@ -168,7 +168,7 @@ export default function BillingPage() {
                         {inv.issued_at ? new Date(inv.issued_at).toLocaleDateString("zh-CN") : "-"}
                       </td>
                       <td className="py-3 px-4 text-gray-700">
-                        {inv.subscription_plan || "月度Subscription费"}
+                        {inv.subscription_plan || "Monthly subscription fee"}
                       </td>
                       <td className="py-3 px-4 font-medium text-gray-900">
                         ¥{(inv.amount_cents / 100).toFixed(2)}
@@ -209,7 +209,7 @@ export default function BillingPage() {
             <div>
               <p className="text-sm font-medium text-blue-900">Payment Methods</p>
               <p className="text-xs text-blue-700 mt-1">
-                我们支持支付宝、微信支付和银行卡。Stripe 保障您的支付信息安全。
+                We support Alipay, WeChat Pay, and bank cards. Stripe secures your payment information.
               </p>
             </div>
           </div>

@@ -16,7 +16,7 @@ export default function ProgressPage() {
     try {
       const res = await fetch('/api/progress');
       const json = await res.json();
-      if (!res.ok) { setError(json.error || '加载失败'); }
+      if (!res.ok) { setError(json.error || 'Failed to load'); }
       else { setData(json); }
     } catch (e: any) { setError(e.message); }
     finally { setLoading(false); }
@@ -38,7 +38,7 @@ export default function ProgressPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <p className="text-red-600 mb-4">{error}</p>
-          <button onClick={() => fetchData()} className="px-4 py-2 bg-blue-600 text-white rounded-lg">重试</button>
+          <button onClick={() => fetchData()} className="px-4 py-2 bg-blue-600 text-white rounded-lg">Retry</button>
         </div>
       </div>
     );
@@ -73,12 +73,12 @@ export default function ProgressPage() {
       <div className="max-w-6xl mx-auto px-4 py-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">训练进度</h1>
-            <p className="text-gray-500 mt-1">查看学员训练成果和Body Metrics变化</p>
+            <h1 className="text-2xl font-bold text-gray-900">Training Progress</h1>
+            <p className="text-gray-500 mt-1">View client training results and Body Metrics changes</p>
           </div>
           <div className="flex items-center gap-3">
             <select value={selectedCoacheeId} onChange={(e) => setSelectedCoacheeId(e.target.value)} className="px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none bg-white pr-8">
-              <option value="">全部学员</option>
+              <option value="">All Clients</option>
               {coachees.map((c: any) => (<option key={c.id} value={c.id}>{c.full_name}</option>))}
             </select>
           </div>
@@ -87,7 +87,7 @@ export default function ProgressPage() {
         <div className="flex gap-1 bg-gray-100 rounded-lg p-1 w-fit mb-6">
           {(['overview', 'measurements', 'logs'] as const).map((tab) => (
             <button key={tab} onClick={() => setSelectedTab(tab)} className={'px-4 py-2 rounded-md text-sm font-medium transition ' + (selectedTab === tab ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700')} >
-              {tab === 'overview' ? '总览' : tab === 'measurements' ? '身体数据' : '训练日志'}
+              {tab === 'overview' ? 'Overview' : tab === 'measurements' ? 'Measurements' : 'Training Logs'}
             </button>
           ))}
         </div>
@@ -95,27 +95,27 @@ export default function ProgressPage() {
         {coachees.length === 0 ? (
           <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
             <Users className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-            <p className="text-gray-500">No clients yet数据</p>
-            <p className="text-sm text-gray-400 mt-1">请先Add Client并记录身体数据</p>
+            <p className="text-gray-500">No client data available</p>
+            <p className="text-sm text-gray-400 mt-1">Please Add Client first and record body measurements</p>
           </div>
         ) : selectedTab === 'overview' ? (
           <>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-              <StatCard label="Weight变化" value={displayStats?.weightDelta != null ? (displayStats.weightDelta > 0 ? '+' : '') + displayStats.weightDelta.toFixed(1) + 'kg' : '-'} subtitle={displayStats?.weightDelta != null ? (displayStats.weightDelta > 0 ? '上升' : '下降') : '暂无数据'} trend={displayStats?.weightDelta} icon={<Weight className="w-5 h-5" />} color="blue" />
-              <StatCard label="Body Fat %变化" value={displayStats?.bfDelta != null ? (displayStats.bfDelta > 0 ? '+' : '') + displayStats.bfDelta.toFixed(1) + '%' : '-'} subtitle={displayStats?.bfDelta != null ? (displayStats.bfDelta < 0 ? '理想下降' : '需关注') : '暂无数据'} trend={displayStats?.bfDelta} goodDirection="down" icon={<BarChart3 className="w-5 h-5" />} color="green" />
-              <StatCard label="胸围变化" value={displayStats?.chestDelta != null ? (displayStats.chestDelta > 0 ? '+' : '') + displayStats.chestDelta.toFixed(1) + 'cm' : '-'} subtitle={displayStats?.chestDelta != null ? (displayStats.chestDelta > 0 ? '增长' : '减少') : '暂无数据'} trend={displayStats?.chestDelta} icon={<TrendingUp className="w-5 h-5" />} color="purple" />
-              <StatCard label="训练完成率" value={completionRate > 0 ? completionRate + '%' : '-'} subtitle={totalLogs > 0 ? completedLogs + '/' + totalLogs + ' 训练' : '暂无数据'} icon={<CheckCircle className="w-5 h-5" />} color="orange" />
+              <StatCard label="Weight" value={displayStats?.weightDelta != null ? (displayStats.weightDelta > 0 ? '+' : '') + displayStats.weightDelta.toFixed(1) + 'kg' : '-'} subtitle={displayStats?.weightDelta != null ? (displayStats.weightDelta > 0 ? '' : '') : 'No data'} trend={displayStats?.weightDelta} icon={<Weight className="w-5 h-5" />} color="blue" />
+              <StatCard label="Body Fat %" value={displayStats?.bfDelta != null ? (displayStats.bfDelta > 0 ? '+' : '') + displayStats.bfDelta.toFixed(1) + '%' : '-'} subtitle={displayStats?.bfDelta != null ? (displayStats.bfDelta < 0 ? '' : '') : ''} trend={displayStats?.bfDelta} goodDirection="down" icon={<BarChart3 className="w-5 h-5" />} color="green" />
+              <StatCard label="Chest Change" value={displayStats?.chestDelta != null ? (displayStats.chestDelta > 0 ? '+' : '') + displayStats.chestDelta.toFixed(1) + 'cm' : '-'} subtitle={displayStats?.chestDelta != null ? (displayStats.chestDelta > 0 ? '' : '') : ''} trend={displayStats?.chestDelta} icon={<TrendingUp className="w-5 h-5" />} color="purple" />
+              <StatCard label="Completion Rate" value={completionRate > 0 ? completionRate + '%' : '-'} subtitle={totalLogs > 0 ? completedLogs + '/' + totalLogs + ' ' : ''} icon={<CheckCircle className="w-5 h-5" />} color="orange" />
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-              <ChartCard title="体重趋势" icon={<Weight className="w-5 h-5" />} color="blue">
-                {filteredMeasurements.filter((m: any) => m.weight).length > 0 ? <LineChart data={filteredMeasurements.map((m: any) => ({ label: formatDate(m.date), value: m.weight }))} color="#3b82f6" /> : <EmptyChart message="暂无体重数据" />}
+              <ChartCard title="Weight Trend" icon={<Weight className="w-5 h-5" />} color="blue">
+                {filteredMeasurements.filter((m: any) => m.weight).length > 0 ? <LineChart data={filteredMeasurements.map((m: any) => ({ label: formatDate(m.date), value: m.weight }))} color="#3b82f6" /> : <EmptyChart message="" />}
               </ChartCard>
-              <ChartCard title="体脂率趋势" icon={<BarChart3 className="w-5 h-5" />} color="green">
-                {filteredMeasurements.filter((m: any) => m.body_fat_percent).length > 0 ? <LineChart data={filteredMeasurements.map((m: any) => ({ label: formatDate(m.date), value: m.body_fat_percent }))} color="#22c55e" /> : <EmptyChart message="暂无体脂数据" />}
+              <ChartCard title="Body Fat % Trend" icon={<BarChart3 className="w-5 h-5" />} color="green">
+                {filteredMeasurements.filter((m: any) => m.body_fat_percent).length > 0 ? <LineChart data={filteredMeasurements.map((m: any) => ({ label: formatDate(m.date), value: m.body_fat_percent }))} color="#22c55e" /> : <EmptyChart message="" />}
               </ChartCard>
             </div>
             <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-              <div className="px-6 py-4 border-b border-gray-200"><h3 className="font-semibold text-gray-900">学员Programs分配</h3></div>
+              <div className="px-6 py-4 border-b border-gray-200"><h3 className="font-semibold text-gray-900">Client Program Assignments</h3></div>
               {assignments && assignments.length > 0 ? (
                 <div className="divide-y divide-gray-100">
                   {assignments.map((a: any) => (
@@ -128,23 +128,23 @@ export default function ProgressPage() {
                     </div>
                   ))}
                 </div>
-              ) : (<div className="p-8 text-center text-gray-400">暂无Programs分配</div>)}
+              ) : (<div className="p-8 text-center text-gray-400">No programs assigned</div>)}
             </div>
           </>
         ) : selectedTab === 'measurements' ? (
           <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-            <div className="px-6 py-4 border-b border-gray-200"><h3 className="font-semibold text-gray-900">身体测量记录</h3></div>
+            <div className="px-6 py-4 border-b border-gray-200"><h3 className="font-semibold text-gray-900">Body Measurement Records</h3></div>
             {filteredMeasurements.length === 0 ? (
-              <div className="p-12 text-center text-gray-400"><Activity className="w-12 h-12 mx-auto mb-3 opacity-50" /><p>暂无身体数据记录</p></div>
+              <div className="p-12 text-center text-gray-400"><Activity className="w-12 h-12 mx-auto mb-3 opacity-50" /><p>No body measurement records</p></div>
             ) : (
               <div className="overflow-x-auto"><table className="w-full">
                 <thead className="bg-gray-50"><tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">学员</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">体重(kg)</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">体脂率(%)</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">胸围(cm)</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">腰围(cm)</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Client</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">(kg)</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">(%)</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">(cm)</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">(cm)</th>
                 </tr></thead>
                 <tbody className="divide-y divide-gray-100">
                   {filteredMeasurements.map((m: any) => (
@@ -164,11 +164,11 @@ export default function ProgressPage() {
         ) : (
           <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-              <h3 className="font-semibold text-gray-900">训练日志</h3>
-              <span className="text-sm text-gray-500">共 {filteredLogs.length} 条</span>
+              <h3 className="font-semibold text-gray-900"></h3>
+              <span className="text-sm text-gray-500">Total: {filteredLogs.length}</span>
             </div>
             {filteredLogs.length === 0 ? (
-              <div className="p-12 text-center text-gray-400"><Calendar className="w-12 h-12 mx-auto mb-3 opacity-50" /><p>暂无训练日志</p></div>
+              <div className="p-12 text-center text-gray-400"><Calendar className="w-12 h-12 mx-auto mb-3 opacity-50" /><p>No training logs</p></div>
             ) : (
               <div className="divide-y divide-gray-100">
                 {filteredLogs.slice(0, 20).map((log: any) => (
@@ -179,14 +179,14 @@ export default function ProgressPage() {
                           {log.completed ? <CheckCircle className="w-4 h-4 text-green-600" /> : <XCircle className="w-4 h-4 text-gray-400" />}
                         </div>
                         <div>
-                          <p className="text-sm font-medium text-gray-900">第 {log.week_number} weeks · {log.day_of_week}</p>
+                          <p className="text-sm font-medium text-gray-900">Week {log.week_number} · {log.day_of_week}</p>
                           <p className="text-xs text-gray-500">{new Date(log.date).toLocaleDateString('zh-CN')}</p>
                         </div>
                       </div>
                       <div className="text-right text-sm text-gray-500">
-                        {log.total_duration && <span>{log.total_duration}分钟</span>}
+                        {log.total_duration && <span>{log.total_duration}min</span>}
                         {log.total_duration && log.total_volume && <span className="mx-2">·</span>}
-                        {log.total_volume && <span>{log.total_volume}kg总量</span>}
+                        {log.total_volume && <span>{log.total_volume}kg volume</span>}
                       </div>
                     </div>
                     {log.notes && <p className="text-sm text-gray-600 ml-11 mt-1">{log.notes}</p>}
@@ -242,7 +242,7 @@ function ChartCard({ title, icon, color, children }: any) {
 
 function LineChart({ data, color }: { data: { label: string; value: number | null }[]; color: string }) {
   const valid = data.filter(d => d.value != null && d.value > 0);
-  if (valid.length < 2) return <div className="h-48 flex items-center justify-center text-gray-400 text-sm">数据不足，需要至少2条记录</div>;
+  if (valid.length < 2) return <div className="h-48 flex items-center justify-center text-gray-400 text-sm">Insufficient data, need at least 2 records</div>;
   const values = valid.map(d => d.value as number);
   const min = Math.min(...values);
   const max = Math.max(...values);
