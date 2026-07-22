@@ -1,0 +1,263 @@
+import Link from 'next/link';
+import { Dumbbell, Users, Brain, TrendingUp, MessageSquare, CreditCard, Star, ChevronDown, ArrowRight, Zap, Shield, Award, CheckCircle } from 'lucide-react';
+import { useState } from 'react';
+
+export default function Home() {
+  return (
+    <div className="min-h-screen bg-white">
+      {/* Navigation */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
+        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2">
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
+              <Dumbbell className="w-5 h-5 text-white" />
+            </div>
+            <span className="text-xl font-bold text-gray-900">FitCoach</span>
+          </Link>
+          <div className="hidden md:flex items-center gap-8">
+            <a href="#features" className="text-gray-600 hover:text-blue-600 transition">Features</a>
+            <a href="#pricing" className="text-gray-600 hover:text-blue-600 transition">Pricing</a>
+            <a href="#testimonials" className="text-gray-600 hover:text-blue-600 transition">Testimonials</a>
+            <a href="#faq" className="text-gray-600 hover:text-blue-600 transition">FAQ</a>
+          </div>
+          <div className="flex gap-3">
+            <Link href="/login" className="px-5 py-2 text-gray-700 hover:text-blue-600 font-medium transition">Sign In</Link>
+            <Link href="/register" className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition shadow-lg shadow-blue-200">Start Free</Link>
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero */}
+      <section className="pt-32 pb-20 px-4 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+        <div className="max-w-6xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-medium mb-6">
+            <Zap className="w-4 h-4" /> AI-Powered Fitness CRM
+          </div>
+          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+            The All-in-One CRM for{' '}
+            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Fitness Coaches</span>
+          </h1>
+          <p className="text-xl text-gray-600 mb-10 max-w-3xl mx-auto">
+            Manage clients, generate AI training plans, track progress, and grow your coaching business.
+            No paper notes. No spreadsheets. Just results.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <Link href="/register" className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition shadow-xl shadow-blue-300 text-lg flex items-center justify-center gap-2">
+              Get Started Free <ArrowRight className="w-5 h-5" />
+            </Link>
+            <a href="#features" className="px-8 py-4 bg-white hover:bg-gray-50 text-gray-700 font-semibold rounded-xl transition border-2 border-gray-200 text-lg">
+              See How It Works
+            </a>
+          </div>
+          <p className="text-sm text-gray-500">Free plan available {'•'} No credit card required</p>
+        </div>
+      </section>
+
+      {/* Stats */}
+      <section className="py-12 bg-white border-y border-gray-100">
+        <div className="max-w-6xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <Stat number="10K+" label="Plans Generated" />
+          <Stat number="500+" label="Active Coaches" />
+          <Stat number="50K+" label="Clients Managed" />
+          <Stat number="4.9/5" label="Coach Rating" />
+        </div>
+      </section>
+
+      {/* Features */}
+      <section id="features" className="py-24 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Everything You Need to Scale Your Coaching</h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">From client onboarding to progress tracking, FitCoach handles it all.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <Feature icon={<Brain className="w-7 h-7" />} color="bg-purple-100 text-purple-600" title="AI Plan Generator" desc="Generate science-backed training programs in seconds. Customize by goal, level, equipment, and preferences." />
+            <Feature icon={<Users className="w-7 h-7" />} color="bg-blue-100 text-blue-600" title="Client Management" desc="Organize unlimited clients with profiles, fitness levels, goals, and contact info." />
+            <Feature icon={<TrendingUp className="w-7 h-7" />} color="bg-green-100 text-green-600" title="Progress Tracking" desc="Visual charts for weight, body fat %, measurements, and workout logs." />
+            <Feature icon={<MessageSquare className="w-7 h-7" />} color="bg-orange-100 text-orange-600" title="Real-Time Messaging" desc="Built-in chat for coach-client communication. Share tips and stay connected." />
+            <Feature icon={<CreditCard className="w-7 h-7" />} color="bg-pink-100 text-pink-600" title="Payments &amp; Subscriptions" desc="Accept payments via Stripe. Monthly and yearly plans with automatic billing." />
+            <Feature icon={<Award className="w-7 h-7" />} color="bg-teal-100 text-teal-600" title="Referral Rewards" desc="Earn commissions when friends join. Built-in referral system with codes and stats." />
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works */}
+      <section className="py-24 px-4 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Get Started in 3 Minutes</h2>
+            <p className="text-xl text-gray-600">No setup. No learning curve. Just sign up and start coaching.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <Step number="1" title="Register" desc="Choose coach or client account. Sign up with your email in seconds." />
+            <Step number="2" title="Add Clients" desc="Import or manually add your clients. Set their goals and fitness levels." />
+            <Step number="3" title="Generate &amp; Assign" desc="Use AI to create training plans. Assign to clients with one click." />
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing */}
+      <section id="pricing" className="py-24 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Simple, Transparent Pricing</h2>
+            <p className="text-xl text-gray-600">Start free. Upgrade when you need more power.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <PricingCard name="Free" price="" period="/forever" features={['Up to 5 clients', 'Basic training plans', 'Progress tracking', 'Email support']} cta="Start Free" />
+            <PricingCard name="Pro" price="" period="/month" features={['Unlimited clients', 'AI plan generator', 'Priority support', 'Custom branding', 'Analytics dashboard']} cta="Upgrade to Pro" highlighted />
+            <PricingCard name="Enterprise" price="" period="/month" features={['Everything in Pro', 'Team collaboration', 'API access', 'White-label solution', 'Dedicated manager']} cta="Contact Sales" />
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section id="testimonials" className="py-24 px-4 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Loved by Coaches Worldwide</h2>
+            <p className="text-xl text-gray-600">Join thousands of fitness professionals who trust FitCoach.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <Testimonial name="Sarah Johnson" role="Personal Trainer, NYC" avatar="SJ" text="FitCoach completely transformed how I manage my 40+ clients. The AI plan generator saves me hours every week." />
+            <Testimonial name="Mike Chen" role="CrossFit Coach, LA" avatar="MC" text="The progress tracking is incredible. My clients love seeing their improvements visually. Best investment I made." />
+            <Testimonial name="Emma Wilson" role="Online Coach, London" avatar="EW" text="I went from 10 to 100 clients in 6 months. FitCoach scales with my business. The messaging feature is a game-changer." />
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section id="faq" className="py-24 px-4">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
+          </div>
+          <div className="space-y-4">
+            <FAQ question="Is there a free plan?" answer="Yes! Our free plan supports up to 5 clients with basic features. No credit card required to start." />
+            <FAQ question="How does the AI plan generator work?" answer="Select your goals, fitness level, and equipment. The AI generates a complete multi-phase training plan with exercises, sets, reps, and rest times." />
+            <FAQ question="What payment methods do you accept?" answer="We accept all major credit cards through Stripe." />
+            <FAQ question="Can I cancel anytime?" answer="Yes, cancel anytime from your billing settings. Access continues until the end of your billing period." />
+            <FAQ question="Is my data secure?" answer="We use industry-standard encryption with row-level security on Supabase. Your client data is private and protected." />
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-24 px-4 bg-gradient-to-r from-blue-600 to-purple-600">
+        <div className="max-w-4xl mx-auto text-center text-white">
+          <h2 className="text-4xl font-bold mb-4">Ready to Grow Your Coaching Business?</h2>
+          <p className="text-xl text-blue-100 mb-8">Join thousands of fitness coaches who are already using FitCoach.</p>
+          <Link href="/register" className="inline-flex items-center gap-2 px-10 py-4 bg-white text-blue-600 font-semibold rounded-xl hover:bg-gray-100 transition shadow-xl text-lg">
+            Start Your Free Trial <ArrowRight className="w-5 h-5" />
+          </Link>
+          <p className="text-blue-200 mt-4">Free plan {'•'} No credit card required</p>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-12 px-4 bg-gray-900 text-gray-400">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+                <Dumbbell className="w-4 h-4 text-white" />
+              </div>
+              <span className="text-white font-bold">FitCoach</span>
+            </div>
+            <p className="text-sm">The modern CRM for fitness coaches. AI-powered, beautiful, and built to scale.</p>
+          </div>
+          <div>
+            <h4 className="text-white font-medium mb-4">Product</h4>
+            <ul className="space-y-2 text-sm">
+              <li><a href="#features" className="hover:text-white transition">Features</a></li>
+              <li><a href="#pricing" className="hover:text-white transition">Pricing</a></li>
+              <li><Link href="/register" className="hover:text-white transition">Sign Up</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="text-white font-medium mb-4">Support</h4>
+            <ul className="space-y-2 text-sm">
+              <li><a href="#faq" className="hover:text-white transition">FAQ</a></li>
+              <li><Link href="/login" className="hover:text-white transition">Login</Link></li>
+              <li><a href="mailto:support@fitcoach.app" className="hover:text-white transition">Contact Us</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="text-white font-medium mb-4">Legal</h4>
+            <ul className="space-y-2 text-sm">
+              <li><a href="#" className="hover:text-white transition">Privacy Policy</a></li>
+              <li><a href="#" className="hover:text-white transition">Terms of Service</a></li>
+            </ul>
+          </div>
+        </div>
+        <div className="max-w-6xl mx-auto mt-12 pt-8 border-t border-gray-800 text-center text-sm">
+          {'\u00a9'} 2025 FitCoach. All rights reserved.
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+function Stat({ number, label }: { number: string; label: string }) {
+  return (<div><div className="text-3xl font-bold text-gray-900">{number}</div><div className="text-sm text-gray-500 mt-1">{label}</div></div>);
+}
+
+function Feature({ icon, color, title, desc }: { icon: React.ReactNode; color: string; title: string; desc: string }) {
+  return (
+    <div className="bg-white rounded-2xl p-8 border border-gray-100 hover:shadow-lg transition group">
+      <div className={`w-14 h-14 ${color} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>{icon}</div>
+      <h3 className="text-lg font-bold text-gray-900 mb-2">{title}</h3>
+      <p className="text-gray-500">{desc}</p>
+    </div>
+  );
+}
+
+function Step({ number, title, desc }: { number: string; title: string; desc: string }) {
+  return (
+    <div className="bg-white rounded-2xl p-8 text-center border border-gray-100">
+      <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">{number}</div>
+      <h3 className="text-xl font-bold text-gray-900 mb-2">{title}</h3>
+      <p className="text-gray-500">{desc}</p>
+    </div>
+  );
+}
+
+function PricingCard({ name, price, period, features, cta, highlighted }: { name: string; price: string; period: string; features: string[]; cta: string; highlighted?: boolean }) {
+  return (
+    <div className={
+ounded-2xl p-8 }>
+      <h3 className="text-xl font-bold mb-2">{name}</h3>
+      <div className="mb-6"><span className="text-4xl font-bold">{price}</span><span className={	ext-sm }>{period}</span></div>
+      <ul className="space-y-3 mb-8">
+        {features.map((f, i) => (<li key={i} className="flex items-center gap-2 text-sm"><CheckCircle className={w-4 h-4 } /> {f}</li>))}
+      </ul>
+      <Link href="/register" className={lock text-center py-3 rounded-lg font-medium transition }>{cta}</Link>
+    </div>
+  );
+}
+
+function Testimonial({ name, role, avatar, text }: { name: string; role: string; avatar: string; text: string }) {
+  return (
+    <div className="bg-white rounded-2xl p-8 border border-gray-100">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold">{avatar}</div>
+        <div><div className="font-bold text-gray-900">{name}</div><div className="text-sm text-gray-500">{role}</div></div>
+      </div>
+      <div className="flex gap-1 mb-3">{[1,2,3,4,5].map(i => <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />)}</div>
+      <p className="text-gray-600">{text}</p>
+    </div>
+  );
+}
+
+function FAQ({ question, answer }: { question: string; answer: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="border border-gray-200 rounded-xl overflow-hidden">
+      <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 transition">
+        <span className="font-medium text-gray-900">{question}</span>
+        <ChevronDown className={w-5 h-5 text-gray-400 transition-transform } />
+      </button>
+      {open && <div className="px-5 pb-5 text-gray-600">{answer}</div>}
+    </div>
+  );
+}

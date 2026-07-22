@@ -1,0 +1,25 @@
+﻿请将以下 SQL 复制到 Supabase SQL Editor 中执行：
+
+-- 允许教练查看所有 profiles
+DROP POLICY IF EXISTS "Coaches can view all profiles" ON profiles;
+CREATE POLICY "Coaches can view all profiles" ON profiles FOR SELECT
+  USING (
+    EXISTS (
+      SELECT 1 FROM profiles p
+      WHERE p.id = auth.uid() AND p.role = 'coach'
+    )
+  );
+
+-- 允许插入 profiles
+DROP POLICY IF EXISTS "Anyone can insert profiles" ON profiles;
+CREATE POLICY "Anyone can insert profiles" ON profiles FOR INSERT
+  WITH CHECK (true);
+
+-- 允许更新自己的 profile
+DROP POLICY IF EXISTS "Users can update own profile" ON profiles;
+CREATE POLICY "Users can update own profile" ON profiles FOR UPDATE
+  USING (auth.uid() = id);
+
+-- 将已有的 program_id 为 NULL 的记录更新为一个占位值（如果需要）
+-- 或者修改表结构允许 NULL：
+ALTER TABLE coachee_programs ALTER COLUMN program_id DROP NOT NULL;
