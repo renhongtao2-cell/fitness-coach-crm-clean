@@ -80,7 +80,7 @@ export default function ProgramsPage() {
 
   const handleAssign = async () => {
     if (selectedCoacheeIds.length === 0) {
-      showToast("error", "请选择至少一学员");
+      showToast("error", "Please select at least one client");
       return;
     }
     setAssigning(true);
@@ -101,7 +101,7 @@ export default function ProgramsPage() {
         } catch (e: any) { failCount++; }
       }
       if (successCount > 0) {
-        const msg = `成功分配 ${successCount} 学员` + (failCount > 0 ? `，${failCount} 失败` : "") + "！";
+        const msg = `成功分配 ${successCount} clients` + (failCount > 0 ? `，${failCount} failed` : "") + "！";
         showToast("success", msg);
       } else {
         showToast("error", `Assignment failed (${failCount} )`);
@@ -116,13 +116,13 @@ export default function ProgramsPage() {
     try {
       const res = await fetch("/api/programs/" + deleteProgramId, { method: "DELETE" });
       if (res.ok) {
-        showToast("success", "已Delete");
+        showToast("success", "Deleted");
         setShowDeleteConfirm(false);
         setDeleteProgramId("");
         fetchPrograms();
       } else {
         const data = await res.json();
-        showToast("error", "Delete失败: " + (data.error || "未知错误"));
+        showToast("error", "Delete failed: " + (data.error || "未知错误"));
       }
     } catch (e: any) { showToast("error", "Network error: " + e.message); }
     finally { setDeleting(false); }
@@ -226,7 +226,7 @@ export default function ProgramsPage() {
                       <p className="text-sm text-gray-500 mt-0.5 line-clamp-2">{program.description || "No description"}</p>
                     </div>
                     <div className="flex gap-1 ml-2 shrink-0">
-                      <button onClick={() => showToast('info', 'Edit功能开发中')} className="p-1.5 text-gray-400 hover:text-blue-600 rounded-lg transition" title="Edit">
+                      <button onClick={() => showToast('info', 'Edit feature under development')} className="p-1.5 text-gray-400 hover:text-blue-600 rounded-lg transition" title="Edit">
                         <Edit2 className="w-4 h-4" />
                       </button>
                       <button onClick={() => showToast('info', 'Copy feature coming soon')} className="p-1.5 text-gray-400 hover:text-blue-600 rounded-lg transition" title="Copy">
@@ -275,7 +275,7 @@ export default function ProgramsPage() {
           {filteredPrograms.length === 0 && (
             <div className="text-center py-16 bg-white rounded-xl border border-gray-200">
               <Calendar className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-              <p className="text-gray-500 font-medium">暂无匹配的Programs</p>
+              <p className="text-gray-500 font-medium">No matching plans found</p>
               <p className="text-sm text-gray-400 mt-1">Try another search or create a new program</p>
             </div>
           )}
@@ -319,7 +319,7 @@ export default function ProgramsPage() {
                   </div>
                   {selectedProgram.equipment && selectedProgram.equipment.length > 0 && (
                     <div>
-                      <h4 className="text-sm font-semibold text-gray-700 mb-2">所需器材</h4>
+                      <h4 className="text-sm font-semibold text-gray-700 mb-2">Required Equipment</h4>
                       <div className="flex gap-2 flex-wrap">
                         {selectedProgram.equipment.map((eq: string, i: number) => (
                           <span key={i} className="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs">{eq}</span>
@@ -351,7 +351,7 @@ export default function ProgramsPage() {
                                     <span className="text-gray-900 font-medium">{ex.name}</span>
                                     <div className="flex items-center gap-3 text-gray-500">
                                       <span>{ex.sets}组 x {ex.reps}</span>
-                                      {ex.restSeconds && ex.restSeconds > 0 && <span>休息{ex.restSeconds}s</span>}
+                                      {ex.restSeconds && ex.restSeconds > 0 && <span>rest{ex.restSeconds}s</span>}
                                     </div>
                                   </div>
                                 ))}
@@ -396,7 +396,7 @@ export default function ProgramsPage() {
               )}
             </div>
             <div className="flex-shrink-0 px-6 py-3 border-t border-gray-200 flex gap-2 justify-end">
-              <button onClick={() => setShowDetailModal(false)} className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium transition">关闭</button>
+              <button onClick={() => setShowDetailModal(false)} className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium transition">Close</button>
             </div>
           </div>
         </div>
@@ -407,7 +407,7 @@ export default function ProgramsPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/50" onClick={() => setShowCreateModal(false)} />
           <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 animate-fade-in">
-            <h2 className="text-lg font-bold text-gray-900 mb-4">新建Programs</h2>
+            <h2 className="text-lg font-bold text-gray-900 mb-4">New Plan</h2>
             {msg.text && (
               <div className={"mb-4 p-3 rounded-lg text-sm " + (msg.type === "success" ? "bg-green-50 border border-green-200 text-green-700" : "bg-red-50 border border-red-200 text-red-700")}>
                 {msg.text}
@@ -415,20 +415,20 @@ export default function ProgramsPage() {
             )}
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">计划名称</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Plan Name</label>
                 <input type="text" value={createForm.name} onChange={(e) => setCreateForm({...createForm, name: e.target.value})} className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="例如：增肌基础计划" required disabled={creating} />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">描述</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
                 <textarea value={createForm.description} onChange={(e) => setCreateForm({...createForm, description: e.target.value})} className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" rows={3} placeholder="计划简介..." disabled={creating} />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">weeks期（weeks）</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Duration (weeks)</label>
                   <input type="number" value={createForm.weeks} onChange={(e) => setCreateForm({...createForm, weeks: parseInt(e.target.value)||8})} className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" min="1" max="52" disabled={creating} />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">难度</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Difficulty</label>
                   <select value={createForm.level} onChange={(e) => setCreateForm({...createForm, level: e.target.value as "beginner"|"intermediate"|"advanced"})} className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" disabled={creating}>
                     <option value="beginner">Beginner</option>
                     <option value="intermediate">Intermediate</option>
@@ -440,7 +440,7 @@ export default function ProgramsPage() {
             <div className="flex gap-3 mt-6">
               <button onClick={async () => {
                 if (!createForm.name.trim()) {
-                  setMsg({type:'error',text:'请输入计划名称'});
+                  setMsg({type:'error',text:'Please enter plan name'});
                   return;
                 }
                 setCreating(true);
@@ -453,14 +453,14 @@ export default function ProgramsPage() {
                   });
                   const data = await res.json();
                   if (res.ok) {
-                    setMsg({type:'success',text:'创建成功！'});
+                    setMsg({type:'success',text:'Created successfully!'});
                     setCreateForm({ name: '', description: '', weeks: 8, level: 'intermediate' });
                     setTimeout(() => {
                       setShowCreateModal(false);
                       fetchPrograms();
                     }, 1000);
                   } else {
-                    setMsg({type:'error',text:'创建失败: '+(data.error||'未知错误')});
+                    setMsg({type:'error',text:'Create failed: '+(data.error||'未知错误')});
                   }
                 } catch (err: any) {
                   console.error('Create error:', err);
@@ -468,7 +468,7 @@ export default function ProgramsPage() {
                 } finally {
                   setCreating(false);
                 }
-              }} disabled={creating} className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-medium rounded-lg transition">{creating ? '创建中..' : '创建计划'}</button>
+              }} disabled={creating} className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-medium rounded-lg transition">{creating ? 'Creating...' : 'Create Plan'}</button>
               <button onClick={() => setShowCreateModal(false)} className="flex-1 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition" disabled={creating}>Cancel</button>
             </div>
           </div>
@@ -482,8 +482,8 @@ export default function ProgramsPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/50" onClick={() => setShowDeleteConfirm(false)} />
           <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md p-6">
-            <h2 className="text-lg font-bold text-gray-900 mb-2">确认Delete</h2>
-            <p className="text-sm text-gray-500 mb-6">Delete后将无法恢复，确定要继续吗？</p>
+            <h2 className="text-lg font-bold text-gray-900 mb-2">Confirm Delete</h2>
+            <p className="text-sm text-gray-500 mb-6">This cannot be undone after deletion. Continue?</p>
             <div className="flex gap-3">
               <button onClick={handleDelete} disabled={deleting} className="flex-1 py-2.5 bg-red-600 hover:bg-red-700 disabled:bg-red-300 text-white font-medium rounded-lg transition">{deleting ? "Delete中..." : "确认Delete"}</button>
               <button onClick={() => setShowDeleteConfirm(false)} disabled={deleting} className="flex-1 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition">Cancel</button>
@@ -503,12 +503,12 @@ export default function ProgramsPage() {
               {loadingCoachees ? (
                 <div className="text-center py-8 text-gray-400">Loading...</div>
               ) : coacheeList.length === 0 ? (
-                <div className="text-center py-8 text-gray-400">No clients yet，请先Add Client</div>
+                <div className="text-center py-8 text-gray-400">No clients yet, please Add Client first</div>
               ) : (
                 <>
                   <div className="flex items-center gap-3 px-3 py-2 bg-gray-50 rounded-lg">
                     <input type="checkbox" checked={selectedCoacheeIds.length === coacheeList.length && coacheeList.length > 0} onChange={selectAllCoachees} className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" />
-                    <span className="text-sm font-medium text-gray-700">全选</span>
+                    <span className="text-sm font-medium text-gray-700">Select All</span>
                   </div>
                   {coacheeList.map((c: any) => (
                     <button key={c.id} onClick={() => toggleCoacheeSelection(c.id)} className={"w-full px-3 py-3 text-left rounded-lg border transition flex items-center gap-3 " + (selectedCoacheeIds.includes(c.id) ? "border-blue-500 bg-blue-50" : "border-gray-200 hover:bg-gray-50")}>

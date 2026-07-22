@@ -66,7 +66,7 @@ export default function ClientHome() {
       if (res.ok) {
         setMsgSent(true);
         setMsgText('');
-        showToast('success', '✅ 消息已发送');
+        showToast('success', '✅ 消息已Send');
         setTimeout(() => { setShowMsgModal(false); setMsgSent(false); }, 1500);
         fetchData();
       } else {
@@ -118,14 +118,14 @@ export default function ClientHome() {
         <div className="mb-6">
           <button onClick={() => setShowMsgModal(true)} className="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-medium flex items-center justify-center gap-2 transition shadow-lg shadow-blue-200">
             <MessageSquare className="w-5 h-5" />
-            联系教练
+            Contact Coach
           </button>
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <SummaryCard icon={<Dumbbell className="w-6 h-6" />} label="训练计划" value={programs.length} color="blue" />
           <SummaryCard icon={<CheckCircle className="w-6 h-6" />} label="今日完成" value={todayCompleted > 0 ? '是' : '否'} color={todayCompleted > 0 ? 'green' : 'orange'} />
-          <SummaryCard icon={<TrendingUp className="w-6 h-6" />} label="最新体重" value={latestMeasurement?.weight ? latestMeasurement.weight + 'kg' : '-'} color="purple" />
+          <SummaryCard icon={<TrendingUp className="w-6 h-6" />} label="最新Weight" value={latestMeasurement?.weight ? latestMeasurement.weight + 'kg' : '-'} color="purple" />
           <SummaryCard icon={<MessageSquare className="w-6 h-6" />} label="新消息" value={messages.length} color="pink" />
         </div>
 
@@ -145,7 +145,7 @@ export default function ClientHome() {
         {programs.length > 0 && (
           <div className="bg-white rounded-xl border border-gray-200 overflow-hidden mb-6">
             <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-              <h3 className="font-semibold text-gray-900 flex items-center gap-2"><Calendar className="w-5 h-5 text-blue-600" />我的训练计划</h3>
+              <h3 className="font-semibold text-gray-900 flex items-center gap-2"><Calendar className="w-5 h-5 text-blue-600" />Me的训练计划</h3>
               <span className="text-sm text-gray-500">共 {programs.length} 个</span>
             </div>
             <div className="divide-y divide-gray-100">
@@ -166,11 +166,11 @@ export default function ClientHome() {
         {measurements.length > 0 && (
           <div className="bg-white rounded-xl border border-gray-200 overflow-hidden mb-6">
             <div className="px-6 py-4 border-b border-gray-200">
-              <h3 className="font-semibold text-gray-900 flex items-center gap-2"><TrendingUp className="w-5 h-5 text-green-600" />身体数据</h3>
+              <h3 className="font-semibold text-gray-900 flex items-center gap-2"><TrendingUp className="w-5 h-5 text-green-600" />Body Metrics</h3>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="bg-gray-50"><tr><th className="px-4 py-2 text-left">日期</th><th className="px-4 py-2 text-left">体重</th><th className="px-4 py-2 text-left">体脂率</th><th className="px-4 py-2 text-left">胸围</th><th className="px-4 py-2 text-left">腰围</th></tr></thead>
+                <thead className="bg-gray-50"><tr><th className="px-4 py-2 text-left">Date</th><th className="px-4 py-2 text-left">体重</th><th className="px-4 py-2 text-left">Body Fat %</th><th className="px-4 py-2 text-left">胸围</th><th className="px-4 py-2 text-left">腰围</th></tr></thead>
                 <tbody className="divide-y divide-gray-100">
                   {measurements.slice(0, 5).map((m: any) => (
                     <tr key={m.id}><td className="px-4 py-3 text-sm">{new Date(m.date).toLocaleDateString('zh-CN')}</td><td className="px-4 py-3 text-sm font-medium">{m.weight || '-'}</td><td className="px-4 py-3 text-sm">{m.body_fat_percent ? m.body_fat_percent + '%' : '-'}</td><td className="px-4 py-3 text-sm">{m.chest_circumference || '-'}</td><td className="px-4 py-3 text-sm">{m.waist_circumference || '-'}</td></tr>
@@ -185,7 +185,7 @@ export default function ClientHome() {
         {messages.length > 0 && (
           <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-              <h3 className="font-semibold text-gray-900 flex items-center gap-2"><MessageSquare className="w-5 h-5 text-purple-600" />最近消息</h3>
+              <h3 className="font-semibold text-gray-900 flex items-center gap-2"><MessageSquare className="w-5 h-5 text-purple-600" />Recent Messages</h3>
               <span className="text-sm text-gray-500">共 {messages.length} 条</span>
             </div>
             <div className="divide-y divide-gray-100">
@@ -194,7 +194,7 @@ export default function ClientHome() {
                 return (
                   <div key={msg.id} className={'px-6 py-4 ' + (isFromCoach ? 'bg-purple-50/50' : '')}>
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-xs font-medium text-purple-600">{isFromCoach ? '教练' : '我'}</span>
+                      <span className="text-xs font-medium text-purple-600">{isFromCoach ? 'Coach' : '我'}</span>
                       <span className="text-xs text-gray-400">{new Date(msg.created_at).toLocaleString('zh-CN')}</span>
                     </div>
                     <p className="text-sm text-gray-700">{msg.content}</p>
@@ -214,14 +214,14 @@ export default function ClientHome() {
             {msgSent ? (
               <div className="text-center py-6">
                 <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-3" />
-                <p className="text-lg font-medium text-gray-900">消息已发送！</p>
+                <p className="text-lg font-medium text-gray-900">Message sent!</p>
                 <p className="text-sm text-gray-500 mt-1">教练会尽快回复你</p>
               </div>
             ) : (
               <>
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold">教</div>
-                  <div><p className="font-medium text-gray-900">联系教练</p><p className="text-xs text-gray-500">有什么疑问都可以问</p></div>
+                  <div><p className="font-medium text-gray-900">联系教练</p><p className="text-xs text-gray-500">Ask any questions you have</p></div>
                 </div>
                 <textarea value={msgText} onChange={(e) => setMsgText(e.target.value)} placeholder="告诉我你的问题，例如：今天训练感觉膝盖有点不舒服..." className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm resize-none" rows={4} />
                 <div className="flex gap-3 mt-4">
@@ -240,7 +240,7 @@ export default function ClientHome() {
 }
 
 function getStatusColor(s: string) { const c: Record<string,string> = { active: 'bg-green-100 text-green-700', completed: 'bg-blue-100 text-blue-700', paused: 'bg-yellow-100 text-yellow-700', cancelled: 'bg-red-100 text-red-700' }; return c[s] || 'bg-gray-100 text-gray-700'; }
-function getStatusLabel(s: string) { const l: Record<string,string> = { active: '进行中', completed: '已完成', paused: '已暂停', cancelled: '已取消' }; return l[s] || s; }
+function getStatusLabel(s: string) { const l: Record<string,string> = { active: 'In Progress', completed: 'Completed', paused: 'Paused', cancelled: 'Cancelled' }; return l[s] || s; }
 function SummaryCard({ icon, label, value, color }: any) {
   const bg: Record<string, string> = { blue: 'bg-blue-50 text-blue-600', green: 'bg-green-50 text-green-600', purple: 'bg-purple-50 text-purple-600', orange: 'bg-orange-50 text-orange-600', pink: 'bg-pink-50 text-pink-600' };
   return (<div className="bg-white rounded-xl border border-gray-200 p-4"><div className={'w-10 h-10 rounded-lg flex items-center justify-center mb-3 ' + (bg[color] || bg.blue)}>{icon}</div><p className="text-xl font-bold text-gray-900">{value}</p><p className="text-xs text-gray-500">{label}</p></div>);

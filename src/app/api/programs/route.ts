@@ -7,7 +7,7 @@ export async function GET() {
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {
-      return NextResponse.json({ error: '未授权' }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const adminSupabase = await createAdminClient();
@@ -18,7 +18,7 @@ export async function GET() {
       .single();
 
     if (!profile) {
-      return NextResponse.json({ error: '未找到用户档案' }, { status: 404 });
+      return NextResponse.json({ error: 'User profile not found' }, { status: 404 });
     }
 
     const { data: programs, error } = await adminSupabase
@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
     console.log("[PROGRAMS POST] phases received:", phases ? phases.length : 0, phases?.[0]?.phase);
 
     if (!name) {
-      return NextResponse.json({ error: '计划名称不能为空' }, { status: 400 });
+      return NextResponse.json({ error: 'Plan name cannot be empty' }, { status: 400 });
     }
 
     const adminSupabase = await createAdminClient();

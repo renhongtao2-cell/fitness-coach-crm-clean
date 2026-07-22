@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
   const { coacheeId, weight, bodyFatPercent, chestCircumference, waistCircumference, hipCircumference, date } = body;
 
     if (!coacheeId) {
-      return NextResponse.json({ error: '缺少学员ID' }, { status: 400 });
+      return NextResponse.json({ error: 'Missing client ID' }, { status: 400 });
     }
 
     const { data, error } = await adminSupabase

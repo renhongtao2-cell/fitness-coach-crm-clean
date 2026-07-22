@@ -18,12 +18,12 @@ interface Coachee {
 
 export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGeneratorModalProps) {
   const [formData, setFormData] = useState({
-    goals: '增肌',
+    goals: 'Muscle gain',
     level: 'intermediate',
-    equipment: ['哑铃', '杠铃'] as string[],
+    equipment: ['Dumbbell', 'Barbell'] as string[],
     durationWeeks: 8,
-    experience: '有1年训练经验',
-    preferences: '喜欢复合动作，不喜欢太多孤立训练',
+    experience: '有1年Training Experience',
+    preferences: 'Prefers compound exercises, dislikes too many isolation exercises',
   });
   const [generating, setGenerating] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -34,7 +34,7 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
   const [selectedCoachee, setSelectedCoachee] = useState('');
   const [savedProgramId, setSavedProgramId] = useState<string | null>(null);
 
-  const equipmentOptions = ['哑铃', '杠铃', '绳索', '器械', '瑜伽垫', '跳绳', '弹力带', '自重'];
+  const equipmentOptions = ['哑铃', '杠铃', 'Cable', 'Machine', 'Yoga mat', 'Jump rope', 'Resistance band', 'Bodyweight'];
 
   const toggleEquipment = (item: string) => {
     setFormData((prev) => ({
@@ -82,13 +82,13 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || '生成失败');
+        setError(data.error || 'Generation failed');
       } else {
         const plan = data.plan;
         setResult(plan);
       }
     } catch {
-      setError('网络错误，请检查连接');
+      setError('Network error, please check connection');
     }
 
     setGenerating(false);
@@ -103,7 +103,7 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
   const handleSave = async () => {
     const program = getProgram();
     if (!program) {
-      showToast('error', '无法保存：未找到计划数据');
+      showToast('error', 'Cannot save: plan data not found');
       return;
     }
 
@@ -113,7 +113,7 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
     console.log("[SAVE] program keys:", Object.keys(program || {}));
     console.log("[SAVE] program.phases:", program?.phases?.length);
     const payload = {
-      name: program.name || 'AI生成训练计划',
+      name: program.name || 'AI-generated Training Plan',
       description: program.description || '',
       weeks: program.weeks || formData.durationWeeks,
       level: formData.level,
@@ -133,15 +133,15 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
       const data = await res.json();
 
       if (!res.ok) {
-        showToast('error', '保存失败: ' + (data.error || '未知错误'));
+        showToast('error', 'Save failed: ' + (data.error || '未知错误'));
       } else {
         const pid = data.program?.id || '';
         setSavedProgramId(pid);
-        showToast('success', '✅ 已成功保存到计划库！');
+        showToast('success', '✅ Saved to plan library!');
         onSaved?.(pid);
       }
     } catch (e: any) {
-      showToast('error', '保存失败: ' + (e.message || '未知错误'));
+      showToast('error', '保存Failed: ' + (e.message || '未知错误'));
     }
 
     setSaving(false);
@@ -149,11 +149,11 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
 
   const handleAssign = async () => {
     if (!savedProgramId) {
-      showToast('error', '⚠️ 请先保存到计划库');
+      showToast('error', '⚠️ 请先Save to Library');
       return;
     }
     if (!selectedCoachee) {
-      showToast('error', '⚠️ 请选择一个学员');
+      showToast('error', '⚠️ Please select a client');
       return;
     }
 
@@ -170,9 +170,9 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
       const data = await res.json();
 
       if (!res.ok) {
-        showToast('error', '分配失败: ' + (data.error || '未知错误'));
+        showToast('error', 'Assignment failed: ' + (data.error || '未知错误'));
       } else {
-        showToast('success', '✅ 已成功分配给学员！');
+        showToast('success', '✅ Assigned to client successfully!');
         setSelectedCoachee('');
       }
     } catch (e: any) {
@@ -193,7 +193,7 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
         <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between z-10">
           <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-purple-600" />
-            AI 训练计划生成器
+            AI Training Plan Generator
           </h2>
           <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg transition">
             <X className="w-5 h-5 text-gray-500" />
@@ -205,7 +205,7 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
           {!result && !generating && (
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">训练目标</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Training Goal</label>
                 <input
                   type="text"
                   value={formData.goals}
@@ -217,19 +217,19 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">训练水平</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Training Level</label>
                   <select
                     value={formData.level}
                     onChange={(e) => setFormData({ ...formData, level: e.target.value })}
                     className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                   >
-                    <option value="beginner">初级</option>
-                    <option value="intermediate">中级</option>
-                    <option value="advanced">高级</option>
+                    <option value="beginner">Beginner</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="advanced">Advanced</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">训练周期（周）</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Training Duration (weeks)</label>
                   <input
                     type="number"
                     value={formData.durationWeeks}
@@ -242,7 +242,7 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">可用器材</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Available Equipment</label>
                 <div className="flex flex-wrap gap-2">
                   {equipmentOptions.map((item) => (
                     <button
@@ -267,12 +267,12 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
                   value={formData.experience}
                   onChange={(e) => setFormData({ ...formData, experience: e.target.value })}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                  placeholder="例如：有1年训练经验"
+                  placeholder="例如：Has 1 year training experience"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">特殊偏好</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Special Preferences</label>
                 <textarea
                   value={formData.preferences}
                   onChange={(e) => setFormData({ ...formData, preferences: e.target.value })}
@@ -288,8 +288,8 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
           {generating && (
             <div className="text-center py-12">
               <Loader2 className="w-12 h-12 text-purple-600 animate-spin mx-auto mb-4" />
-              <p className="text-gray-600">AI 正在为你生成训练计划...</p>
-              <p className="text-sm text-gray-400 mt-2">大约需要 10-30 秒</p>
+              <p className="text-gray-600">AI is generating your training plan...</p>
+              <p className="text-sm text-gray-400 mt-2">Takes approximately 10-30 seconds</p>
             </div>
           )}
 
@@ -312,15 +312,15 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
               <div className="grid grid-cols-3 gap-3">
                 <div className="bg-gray-50 rounded-lg p-3 text-center">
                   <p className="text-2xl font-bold text-gray-900">{program.weeks || formData.durationWeeks}</p>
-                  <p className="text-xs text-gray-500">周数</p>
+                  <p className="text-xs text-gray-500">Weeks</p>
                 </div>
                 <div className="bg-gray-50 rounded-lg p-3 text-center">
                   <p className="text-2xl font-bold text-gray-900">{program.phases?.length || 0}</p>
-                  <p className="text-xs text-gray-500">阶段</p>
+                  <p className="text-xs text-gray-500">Phase</p>
                 </div>
                 <div className="bg-gray-50 rounded-lg p-3 text-center">
                   <p className="text-2xl font-bold text-gray-900 capitalize">{program.level || formData.level}</p>
-                  <p className="text-xs text-gray-500">难度</p>
+                  <p className="text-xs text-gray-500">Difficulty</p>
                 </div>
               </div>
 
@@ -341,7 +341,7 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
                           {day.exercises?.map((ex: any, k: number) => (
                             <div key={k} className="text-sm flex items-start gap-2">
                               <span className="text-blue-600 font-medium shrink-0">{ex.name}</span>
-                              <span className="text-gray-500">{ex.sets}组 x {ex.reps}次，休息{ex.restSeconds}s</span>
+                              <span className="text-gray-500">{ex.sets}{ex.sets} sets x {ex.reps} reps, rest {ex.restSeconds}s</span>
                             </div>
                           ))}
                         </div>
@@ -353,7 +353,7 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
 
               {program.tips && (
                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                  <p className="font-medium text-yellow-800 mb-2">教练建议</p>
+                  <p className="font-medium text-yellow-800 mb-2">Coach Suggestions</p>
                   <ul className="space-y-1">
                     {program.tips.map((tip: string, ti: number) => (
                       <li key={ti} className="text-sm text-yellow-700">- {tip}</li>
@@ -371,7 +371,7 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
                   {saving ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      保存中...
+                      Saving...
                     </>
                   ) : (
                     <>
@@ -385,14 +385,14 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
                   <div className="mt-4 space-y-3">
                     <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
                       <Users className="w-4 h-4 text-gray-400" />
-                      分配给学员
+                      Assign to Client
                     </label>
                     <select
                       value={selectedCoachee}
                       onChange={(e) => setSelectedCoachee(e.target.value)}
                       className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
                     >
-                      <option value="">选择学员</option>
+                      <option value="">Select Client</option>
                       {coachees.map((c) => (
                         <option key={c.id} value={c.email}>{c.full_name} ({c.email})</option>
                       ))}
@@ -405,7 +405,7 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
                       {assigning ? (
                         <>
                           <Loader2 className="w-4 h-4 animate-spin" />
-                          分配中...
+                          Assigning...
                         </>
                       ) : (
                         <>
@@ -428,14 +428,14 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
               className="px-6 py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition flex items-center gap-2"
             >
               <Sparkles className="w-4 h-4" />
-              开始生成
+              Start Generation
             </button>
           )}
           <button
             onClick={onClose}
             className="px-6 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition"
           >
-            {result ? '关闭' : '取消'}
+            {result ? 'Close' : 'Cancel'}
           </button>
         </div>
       </div>

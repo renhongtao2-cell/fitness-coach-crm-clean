@@ -5,7 +5,7 @@ export async function GET() {
   try {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return NextResponse.json({ error: '未授权' }, { status: 401 });
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const adminSupabase = await createAdminClient();
 
@@ -15,9 +15,9 @@ export async function GET() {
       .eq('email', user.email)
       .single();
 
-    if (!profile) return NextResponse.json({ error: '未找到档案' }, { status: 404 });
+    if (!profile) return NextResponse.json({ error: 'Profile not found' }, { status: 404 });
     if (profile.role !== 'client') {
-      return NextResponse.json({ error: '无权访问' }, { status: 403 });
+      return NextResponse.json({ error: 'Access denied' }, { status: 403 });
     }
 
     const coacheeId = profile.id;

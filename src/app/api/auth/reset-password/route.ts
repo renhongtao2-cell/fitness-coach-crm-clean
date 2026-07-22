@@ -5,7 +5,7 @@ export async function POST(request: NextRequest) {
   try {
     const { email } = await request.json();
     if (!email) {
-      return NextResponse.json({ error: "请输入邮箱" }, { status: 400 });
+      return NextResponse.json({ error: "Please enter email" }, { status: 400 });
     }
 
     const supabase = await createClient();
@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    return NextResponse.json({ message: "重置邮件已发送" });
+    return NextResponse.json({ message: "Reset email has been sent" });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

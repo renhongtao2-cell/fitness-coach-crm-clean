@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {
-      return NextResponse.json({ error: '未授权' }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const adminSupabase = await createAdminClient();
@@ -19,13 +19,13 @@ export async function GET(request: NextRequest) {
       .single();
 
     if (!coachProfile) {
-      return NextResponse.json({ error: '未找到教练档案' }, { status: 404 });
+      return NextResponse.json({ error: 'Coach profile not found' }, { status: 404 });
     }
 
     const { searchParams } = new URL(request.url);
     const search = searchParams.get('search') || '';
 
-    // 方法1: 通过 coachee_programs 关联查询
+    // Method 1: 通过 coachee_programs 关联查询
     const { data: assignments, error: assignError } = await adminSupabase
       .from('coachee_programs')
       .select('coachee_id')
@@ -59,7 +59,7 @@ export async function GET(request: NextRequest) {
         goals: p.goals || [],
       }));
     } else {
-      // 方法2: 如果还没关联过，直接查所有 role=client 的 profile
+      // Method 2: If not linked yet, query all profiles with role=client directly
       const { data: allClients, error: clientError } = await adminSupabase
         .from('profiles')
         .select('id, full_name, email, fitness_level, goals')
@@ -106,7 +106,7 @@ export async function POST(request: NextRequest) {
     const { fullName, email, fitnessLevel, goals } = await request.json();
     
     if (!email || !fullName) {
-      return NextResponse.json({ error: '邮箱和姓名为必填项' }, { status: 400 });
+      return NextResponse.json({ error: 'Email and full name are required' }, { status: 400 });
     }
 
     const { data: coachProfile } = await adminSupabase
@@ -174,7 +174,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    return NextResponse.json({ message: '学员添加成功', coacheeId });
+    return NextResponse.json({ message: 'Client added successfully', coacheeId });
   } catch (error: any) {
     console.error('Add coachee error:', error.message);
     return NextResponse.json({ error: error.message }, { status: 500 });

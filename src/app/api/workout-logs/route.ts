@@ -7,10 +7,10 @@ export async function POST(request: NextRequest) {
     const { coacheeId, weekNumber, dayOfWeek, totalDuration, totalVolume, caloriesBurned } = await request.json();
 
     if (!coacheeId) {
-      return NextResponse.json({ error: '缺少学员ID' }, { status: 400 });
+      return NextResponse.json({ error: 'Missing client ID' }, { status: 400 });
     }
 
-    // 先找到该学员的第一个 active 的 coachee_program 关联
+    // First find the first active coachee_program association for this client
     const { data: cp, error: cpErr } = await adminSupabase
       .from('coachee_programs')
       .select('id')

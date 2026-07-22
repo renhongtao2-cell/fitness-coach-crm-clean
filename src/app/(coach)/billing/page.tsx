@@ -111,7 +111,7 @@ export default function BillingPage() {
               <p className="text-lg font-semibold text-gray-900">{planNameMap[subscription?.plan_type || "free"]}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500">到期时间</p>
+              <p className="text-sm text-gray-500">Expiry Date</p>
               <p className="text-lg font-semibold text-gray-900">
                 {subscription?.stripe_current_period_end
                   ? new Date(subscription.stripe_current_period_end).toLocaleDateString("zh-CN")

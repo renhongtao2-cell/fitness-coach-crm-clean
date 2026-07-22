@@ -7,14 +7,14 @@ export async function POST(request: NextRequest) {
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {
-      return NextResponse.json({ error: "未授权" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const adminSupabase = await createAdminClient();
     const { coacheeEmail, programId } = await request.json();
     
     if (!coacheeEmail || !programId) {
-      return NextResponse.json({ error: '请提供学员邮箱和计划ID' }, { status: 400 });
+      return NextResponse.json({ error: 'Please provide client email and plan ID' }, { status: 400 });
     }
 
     const { data: coachProfile } = await adminSupabase
@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (!coachProfile) {
-      return NextResponse.json({ error: "未找到教练档案" }, { status: 404 });
+      return NextResponse.json({ error: "Coach profile not found" }, { status: 404 });
     }
 
     const { data: coacheeProfile } = await adminSupabase
@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (!coacheeProfile) {
-      return NextResponse.json({ error: "未找到该学员" }, { status: 404 });
+      return NextResponse.json({ error: "Client not found" }, { status: 404 });
     }
 
     // Check if already assigned
@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (existing) {
-      return NextResponse.json({ message: '该计划已分配给此学员', programId });
+      return NextResponse.json({ message: 'This plan is already assigned to this client', programId });
     }
 
     // Find existing relationship
@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
       if (insertError) throw insertError;
     }
 
-    return NextResponse.json({ message: '计划分配成功', programId, coacheeId: coacheeProfile.id });
+    return NextResponse.json({ message: 'Plan assigned successfully', programId, coacheeId: coacheeProfile.id });
   } catch (error: any) {
     console.error('Assign program error:', error.message);
     return NextResponse.json({ error: error.message }, { status: 500 });

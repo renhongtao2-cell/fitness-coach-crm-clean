@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {
-      return NextResponse.json({ error: '未授权' }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const adminSupabase = await createAdminClient();
@@ -18,14 +18,14 @@ export async function GET(request: NextRequest) {
       .single();
 
     if (!profile) {
-      return NextResponse.json({ error: '未找到用户档案' }, { status: 404 });
+      return NextResponse.json({ error: 'User profile not found' }, { status: 404 });
     }
 
     const url = new URL(request.url);
     const programId = url.pathname.split('/').pop() || '';
 
     if (!programId || programId === 'route') {
-      return NextResponse.json({ error: '缺少计划ID' }, { status: 400 });
+      return NextResponse.json({ error: 'Missing plan ID' }, { status: 400 });
     }
 
     const { data: program, error } = await adminSupabase

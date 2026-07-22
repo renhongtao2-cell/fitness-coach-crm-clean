@@ -40,19 +40,19 @@ function RegisterForm() {
     setSuccess(false);
 
     if (formData.password !== formData.confirmPassword) {
-      setError('两次输入的密码不一致');
+      setError('两次输入的Password不一致');
       return;
     }
     if (formData.password.length < 6) {
-      setError('密码至少需要6个字符');
+      setError('Password至少需要6个字符');
       return;
     }
     if (!formData.fullName.trim()) {
-      setError('请输入姓名');
+      setError('Please enter your name');
       return;
     }
     if (!formData.email.trim() || !formData.email.includes('@')) {
-      setError('请输入有效的邮箱地址');
+      setError('请输入有效的Email Address');
       return;
     }
 
@@ -70,7 +70,7 @@ function RegisterForm() {
         }, 1000);
       }
     } catch (err: any) {
-      setError(err.message || '注册失败，请稍后重试');
+      setError(err.message || 'Registration failed, please try again later');
     } finally {
       setSubmitting(false);
     }
@@ -90,8 +90,8 @@ function RegisterForm() {
         <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-600 mb-4">
           <Dumbbell className="w-8 h-8 text-white" />
         </div>
-        <h1 className="text-2xl font-bold text-gray-900">创建账户</h1>
-        <p className="text-gray-500 mt-1">开始管理你的Client</p>
+        <h1 className="text-2xl font-bold text-gray-900">Create Account</h1>
+        <p className="text-gray-500 mt-1">Start managing your clients</p>
       </div>
 
       <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
@@ -99,8 +99,8 @@ function RegisterForm() {
           <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center gap-3">
             <CheckCircle className="w-5 h-5 text-green-500 shrink-0" />
             <div>
-              <div className="font-medium text-green-700">注册成功！</div>
-              <div className="text-sm text-green-600">正在跳转...</div>
+              <div className="font-medium text-green-700">Registration successful!</div>
+              <div className="text-sm text-green-600">Redirecting...</div>
             </div>
           </div>
         )}
@@ -117,15 +117,15 @@ function RegisterForm() {
 
         <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">我是...</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">I am a...</label>
             <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
                 onClick={() => handleChange('role', 'coach')}
                 className={'p-3 border rounded-lg text-center transition ' + (formData.role === 'coach' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-gray-300 hover:border-gray-400')}
               >
-                <div className="font-medium">健身Coach</div>
-                <div className="text-xs text-gray-500 mt-0.5">管理Client</div>
+                <div className="font-medium">Fitness Coach</div>
+                <div className="text-xs text-gray-500 mt-0.5">Manage clients</div>
               </button>
               <button
                 type="button"
@@ -155,7 +155,7 @@ function RegisterForm() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">邮箱地址</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Email Address</label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
@@ -172,7 +172,7 @@ function RegisterForm() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">密码</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
@@ -180,7 +180,7 @@ function RegisterForm() {
                 value={formData.password}
                 onChange={(e) => handleChange('password', e.target.value)}
                 className="w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                placeholder="至少6个字符"
+                placeholder="At least 6 characters"
                 required
                 autoComplete="new-password"
                 minLength={6}
@@ -198,7 +198,7 @@ function RegisterForm() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">确认密码</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">确认Password</label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
@@ -206,7 +206,7 @@ function RegisterForm() {
                 value={formData.confirmPassword}
                 onChange={(e) => handleChange('confirmPassword', e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                placeholder="再次输入密码"
+                placeholder="再次输入Password"
                 required
                 autoComplete="new-password"
                 minLength={6}
@@ -233,7 +233,7 @@ function RegisterForm() {
                 disabled={isDisabled}
               />
             </div>
-            <p className="text-xs text-gray-400 mt-1">如果有推荐码，填入后可获得额外奖励</p>
+            <p className="text-xs text-gray-400 mt-1">Enter referral code if you have one to get extra benefits</p>
           </div>
 
           <button
@@ -241,13 +241,13 @@ function RegisterForm() {
             disabled={isDisabled}
             className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed text-white font-medium rounded-lg transition flex items-center justify-center gap-2"
           >
-            {submitting ? '创建中...' : success ? '✓ 成功' : '创建账户'}
+            {submitting ? 'Creating...' : success ? 'Success' : 'Create Account'}
           </button>
         </form>
 
         <div className="mt-6 text-center text-sm">
-          <span className="text-gray-500">已有账户？</span>{' '}
-          <Link href="/login" className="text-blue-600 hover:text-blue-700">登录</Link>
+          <span className="text-gray-500">Already have an account?</span>{' '}
+          <Link href="/login" className="text-blue-600 hover:text-blue-700">Sign In</Link>
         </div>
       </div>
 
@@ -258,7 +258,7 @@ function RegisterForm() {
 
 export default function RegisterPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-gray-50 flex items-center justify-center"><div className="text-center"><div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" /><p className="text-gray-600">加载中...</p></div></div>}>
+    <Suspense fallback={<div className="min-h-screen bg-gray-50 flex items-center justify-center"><div className="text-center"><div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" /><p className="text-gray-600">Loading...</p></div></div>}>
       <RegisterForm />
     </Suspense>
   );

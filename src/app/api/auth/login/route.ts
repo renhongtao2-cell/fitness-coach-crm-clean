@@ -6,7 +6,7 @@ export async function POST(request: NextRequest) {
     const { email, password } = await request.json();
 
     if (!email || !password) {
-      return NextResponse.json({ error: "邮箱和密码不能为空" }, { status: 400 });
+      return NextResponse.json({ error: "Email and password cannot be empty" }, { status: 400 });
     }
 
     const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
 
     if (!signInRes.ok) {
       const errData = await signInRes.json().catch(() => ({}));
-      return NextResponse.json({ error: errData?.msg || errData?.message || "邮箱或密码错误" }, { status: 401 });
+      return NextResponse.json({ error: errData?.msg || errData?.message || "Incorrect email or password" }, { status: 401 });
     }
 
     const signInData = await signInRes.json();
@@ -44,6 +44,6 @@ export async function POST(request: NextRequest) {
     });
   } catch (error: any) {
     console.error("Login API error:", error);
-    return NextResponse.json({ error: error.message || "登录失败" }, { status: 500 });
+    return NextResponse.json({ error: error.message || "Sign in failed" }, { status: 500 });
   }
 }

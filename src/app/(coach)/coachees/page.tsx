@@ -88,7 +88,7 @@ export default function CoacheesPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        showToast('error', 'Failed to add: ' + (data.error || '未知错误'));
+        showToast('error', 'Failed to add: ' + (data.error || 'Unknown error'));
         return;
       }
       showToast('success', '✅ Added successfully！');
@@ -104,7 +104,7 @@ export default function CoacheesPage() {
 
   const handleAssign = async () => {
     if (!assignForm.programId) {
-      showToast('error', '请选择一个Programs');
+      showToast('error', 'Please select at least one program');
       return;
     }
     setAssigning(true);
@@ -126,7 +126,7 @@ export default function CoacheesPage() {
           setAssignForm({ programId: '' });
         }, 1000);
       } else {
-        showToast('error', 'Assignment failed: ' + (data.error || '未知错误'));
+        showToast('error', 'Assignment failed: ' + (data.error || 'Unknown error'));
       }
     } catch (err: any) {
       showToast('error', 'Network error: ' + err.message);
@@ -162,8 +162,8 @@ export default function CoacheesPage() {
       <div className="max-w-6xl mx-auto px-4 py-6">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">学员管理</h1>
-            <p className="text-gray-500 mt-1">管理你的所有学员信息</p>
+            <h1 className="text-2xl font-bold text-gray-900">Client Management</h1>
+            <p className="text-gray-500 mt-1">Manage all your client information</p>
           </div>
           <button
             onClick={() => setShowAddModal(true)}
@@ -189,7 +189,7 @@ export default function CoacheesPage() {
             onChange={(e) => setFilterLevel(e.target.value)}
             className="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
           >
-            <option value="all">全部水平</option>
+            <option value="all">All Levels</option>
             <option value="beginner">Beginner</option>
             <option value="intermediate">Intermediate</option>
             <option value="advanced">Advanced</option>
@@ -199,7 +199,7 @@ export default function CoacheesPage() {
         {filtered.length === 0 ? (
           <div className="text-center py-16 bg-white rounded-xl border border-gray-200">
             <Users className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500">No clients yet，点击"Add Client"开始</p>
+            <p className="text-gray-500">No clients yet, click "Add Client" to start</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -228,13 +228,13 @@ export default function CoacheesPage() {
                     onClick={() => router.push(`/coachees/${coachee.id}`)}
                     className="flex-1 py-2 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg text-sm font-medium transition flex items-center justify-center gap-1"
                   >
-                    <Eye className="w-3 h-3" />详情
+                    <Eye className="w-3 h-3" />Details
                   </button>
                   <button
                     onClick={() => openAssignModal(coachee)}
                     className="flex-1 py-2 bg-green-50 hover:bg-green-100 text-green-600 rounded-lg text-sm font-medium transition flex items-center justify-center gap-1"
                   >
-                    <ClipboardList className="w-3 h-3" />分配计划
+                    <ClipboardList className="w-3 h-3" />Assign Plan
                   </button>
                 </div>
               </div>
@@ -248,7 +248,7 @@ export default function CoacheesPage() {
             <div className="absolute inset-0 bg-black/50" onClick={() => setShowAddModal(false)} />
             <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 animate-fade-in">
               <h2 className="text-lg font-bold text-gray-900 mb-1">Add Client</h2>
-              <p className="text-sm text-gray-500 mb-4">输入学员基本信息</p>
+              <p className="text-sm text-gray-500 mb-4">Enter basic client information</p>
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
@@ -257,7 +257,7 @@ export default function CoacheesPage() {
                     value={addForm.fullName}
                     onChange={(e) => setAddForm({ ...addForm, fullName: e.target.value })}
                     className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                    placeholder="学员Name"
+                    placeholder="Client Name"
                     required
                     disabled={adding}
                   />
@@ -269,13 +269,13 @@ export default function CoacheesPage() {
                     value={addForm.email}
                     onChange={(e) => setAddForm({ ...addForm, email: e.target.value })}
                     className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                    placeholder="学员Email"
+                    placeholder="Client Email"
                     required
                     disabled={adding}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">训练水平</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Training Level</label>
                   <select
                     value={addForm.fitnessLevel}
                     onChange={(e) => setAddForm({ ...addForm, fitnessLevel: e.target.value })}
@@ -288,13 +288,13 @@ export default function CoacheesPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">目标</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Goal</label>
                   <input
                     type="text"
                     value={addForm.goals}
                     onChange={(e) => setAddForm({ ...addForm, goals: e.target.value })}
                     className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                    placeholder="增肌,减脂"
+                    placeholder="Muscle gain, Fat loss"
                     disabled={adding}
                   />
                 </div>
@@ -305,7 +305,7 @@ export default function CoacheesPage() {
                   disabled={adding}
                   className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-medium rounded-lg transition"
                 >
-                  {adding ? '添加中...' : '添加'}
+                  {adding ? 'Adding...' : 'Add'}
                 </button>
                 <button
                   onClick={() => setShowAddModal(false)}
@@ -324,20 +324,20 @@ export default function CoacheesPage() {
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div className="absolute inset-0 bg-black/50" onClick={() => setShowAssignModal(false)} />
             <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 animate-fade-in">
-              <h2 className="text-lg font-bold text-gray-900 mb-1">分配Programs</h2>
+              <h2 className="text-lg font-bold text-gray-900 mb-1">Assign Programs</h2>
               <p className="text-sm text-gray-500 mb-4">
-                分配给 <span className="font-medium text-gray-700">{selectedCoachee?.full_name || selectedCoachee?.email}</span>
+                Assign to <span className="font-medium text-gray-700">{selectedCoachee?.full_name || selectedCoachee?.email}</span>
               </p>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">选择计划</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Select Plan</label>
                   <select
                     value={assignForm.programId}
                     onChange={(e) => setAssignForm({ ...assignForm, programId: e.target.value })}
                     className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                     disabled={assigning}
                   >
-                    <option value="">-- 请选择 --</option>
+                    <option value="">-- Please Select --</option>
                     {programs.map((p: any) => (
                       <option key={p.id} value={p.id}>{p.name} ({levelLabel(p.level)})</option>
                     ))}
@@ -350,7 +350,7 @@ export default function CoacheesPage() {
                   disabled={assigning}
                   className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-medium rounded-lg transition"
                 >
-                  {assigning ? '分配中...' : '确认分配'}
+                  {assigning ? 'Assigning...' : 'Confirm Assignment'}
                 </button>
                 <button
                   onClick={() => setShowAssignModal(false)}

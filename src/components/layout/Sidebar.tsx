@@ -59,7 +59,7 @@ export default function Sidebar() {
               {(user && user.fullName ? user.fullName[0] : user && user.email ? user.email[0] : "U").toUpperCase()}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm text-white truncate">{(user && user.fullName) || (user && user.email) || "用户"}</p>
+              <p className="text-sm text-white truncate">{(user && user.fullName) || (user && user.email) || "User"}</p>
               <p className="text-xs text-slate-500">{(user && user.role === "coach") ? "Coach" : "Client"}</p>
             </div>
             <button onClick={() => signOut()} className="text-slate-500 hover:text-white transition" title="Sign Out">

@@ -26,7 +26,7 @@ export default function LoginPage() {
         router.push('/dashboard');
       }
     } catch (err: any) {
-      setLocalError(err.message || 'Sign In失败，请检查Email和Password');
+      setLocalError(err.message || 'Sign In Failed, please check email and password');
     } finally {
       setSubmitting(false);
     }
@@ -45,8 +45,8 @@ export default function LoginPage() {
         <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-600 mb-4">
           <Dumbbell className="w-8 h-8 text-white" />
         </div>
-        <h1 className="text-2xl font-bold text-gray-900">欢迎回来</h1>
-        <p className="text-gray-500 mt-1">Sign In你的Coach账户</p>
+        <h1 className="text-2xl font-bold text-gray-900">Welcome Back</h1>
+        <p className="text-gray-500 mt-1">Sign in to your coach account</p>
       </div>
 
       <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
@@ -54,7 +54,7 @@ export default function LoginPage() {
           <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-3">
             <XCircle className="w-5 h-5 text-red-500 shrink-0" />
             <div>
-              <div className="font-medium text-red-700">Sign In失败</div>
+              <div className="font-medium text-red-700">Sign In Failed</div>
               <div className="text-sm text-red-600">{localError || authError}</div>
             </div>
           </div>
@@ -62,7 +62,7 @@ export default function LoginPage() {
 
         <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Email地址</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">Email Address</label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input type="email" value={formData.email} onChange={(e) => handleChange('email', e.target.value)} className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="you@example.com" required autoComplete="email" disabled={isDisabled} />
@@ -73,7 +73,7 @@ export default function LoginPage() {
             <label className="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input type={showPassword ? 'text' : 'password'} value={formData.password} onChange={(e) => handleChange('password', e.target.value)} className="w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="你的Password" required autoComplete="current-password" disabled={isDisabled} />
+              <input type={showPassword ? 'text' : 'password'} value={formData.password} onChange={(e) => handleChange('password', e.target.value)} className="w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Your password" required autoComplete="current-password" disabled={isDisabled} />
               <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600" disabled={isDisabled}>
                 {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
               </button>
@@ -81,17 +81,17 @@ export default function LoginPage() {
           </div>
 
           <div className="text-right">
-            <Link href="/forgot-password" className="text-sm text-blue-600 hover:text-blue-700">Forgot Password？</Link>
+            <Link href="/forgot-password" className="text-sm text-blue-600 hover:text-blue-700">Forgot Password?</Link>
           </div>
 
           <button type="submit" disabled={isDisabled} className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed text-white font-medium rounded-lg transition flex items-center justify-center gap-2">
-            {submitting ? 'Sign In中..' : 'Sign In'}
+            {submitting ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
 
         <div className="mt-6 text-center text-sm">
-          <span className="text-gray-500">还没有账户？</span>{' '}
-          <Link href="/register" className="text-blue-600 hover:text-blue-700">免费Sign Up</Link>
+          <span className="text-gray-500">Don't have an account?</span>{' '}
+          <Link href="/register" className="text-blue-600 hover:text-blue-700">Sign Up for Free</Link>
         </div>
       </div>
 

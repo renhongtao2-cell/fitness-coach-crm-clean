@@ -5,11 +5,11 @@ export async function POST(request: NextRequest) {
   try {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return NextResponse.json({ error: '未授权' }, { status: 401 });
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const body = await request.json();
     const { content } = body;
-    if (!content) return NextResponse.json({ error: '消息内容不能为空' }, { status: 400 });
+    if (!content) return NextResponse.json({ error: 'Message content cannot be empty' }, { status: 400 });
 
     const adminSupabase = await createAdminClient();
 
@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
       .select('id, full_name, email')
       .eq('email', user.email)
       .single();
-    if (!profile) return NextResponse.json({ error: '未找到档案' }, { status: 404 });
+    if (!profile) return NextResponse.json({ error: 'Profile not found' }, { status: 404 });
 
     // Find the coach through coachee_programs
     const { data: cp } = await adminSupabase
@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (!cp) {
-      return NextResponse.json({ error: '您还没有被任何教练添加，请联系您的教练' }, { status: 404 });
+      return NextResponse.json({ error: 'You have not been added by any coach yet, please contact your coach' }, { status: 404 });
     }
 
     const { data: coachProfile } = await adminSupabase
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (!coachProfile) {
-      return NextResponse.json({ error: '教练档案不存在' }, { status: 404 });
+      return NextResponse.json({ error: 'Coach profile not found' }, { status: 404 });
     }
 
     const { data: msg, error } = await adminSupabase

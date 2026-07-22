@@ -100,8 +100,8 @@ export default function DashboardPage() {
         <div className="relative z-10 max-w-7xl mx-auto">
           <div className="flex items-center justify-between mb-2">
             <div>
-              <p className="text-sm text-blue-300 mb-1 font-medium">欢迎回来 👋</p>
-              <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">教练仪表盘</h1>
+              <p className="text-sm text-blue-300 mb-1 font-medium">Welcome Back 👋</p>
+              <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">Coach Dashboard</h1>
             </div>
             <div className="hidden sm:flex items-center gap-3">
               <button className="px-4 py-2 bg-white/10 hover:bg-white/15 backdrop-blur-sm border border-white/10 rounded-xl text-sm text-white transition-all duration-200 flex items-center gap-2">
@@ -110,7 +110,7 @@ export default function DashboardPage() {
               </button>
             </div>
           </div>
-          <p className="mt-2 text-blue-200/70 max-w-md">以下是你的训练管理概览，快速掌握学员动态。</p>
+          <p className="mt-2 text-blue-200/70 max-w-md">以下是你的训练管理概览，Quickly track student progress。</p>
         </div>
       </div>
 
@@ -119,16 +119,16 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard 
             icon={<Users className="w-5 h-5" />} 
-            label="活跃学员" 
+            label="Active Students" 
             value={stats.activeCoachees} 
-            change="+2 本月" 
+            change="+2 This Month" 
             color="blue"
             gradient="from-blue-500 to-cyan-500"
             shadowColor="shadow-blue-500/25"
           />
           <StatCard 
             icon={<Activity className="w-5 h-5" />} 
-            label="本周训练" 
+            label="This Week训练" 
             value={stats.weeklyWorkouts || 24} 
             change="较上周 +15%" 
             color="green"
@@ -146,9 +146,9 @@ export default function DashboardPage() {
           />
           <StatCard 
             icon={<MessageSquare className="w-5 h-5" />} 
-            label="未读消息" 
+            label="Unread Messages" 
             value={stats.unreadMessages || 3} 
-            change="需要回复" 
+            change="Needs Reply" 
             color="orange"
             gradient="from-orange-500 to-red-500"
             shadowColor="shadow-orange-500/25"
@@ -170,8 +170,8 @@ export default function DashboardPage() {
                     <Gift className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h2 className="text-lg font-bold text-white mb-0.5">🎁 邀请好友，各享免费一个月！</h2>
-                    <p className="text-sm text-white/70">分享推荐码，双方均可获得任意套餐延长1个月有效期。</p>
+                    <h2 className="text-lg font-bold text-white mb-0.5">🎁 Invite Friends，各享免费一个月！</h2>
+                    <p className="text-sm text-white/70">Share Referral Code，Both parties receive任意套餐延长1个月Validity Period。</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
@@ -186,13 +186,13 @@ export default function DashboardPage() {
               {referralStats && (referralStats.converted > 0 || referralStats.rewardMonths > 0) && (
                 <div className="relative mt-4 flex flex-wrap gap-3 text-sm">
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-white/90">
-                    <Sparkles className="w-3.5 h-3.5 text-yellow-300" />{referralStats.total} 总邀请
+                    <Sparkles className="w-3.5 h-3.5 text-yellow-300" />{referralStats.total} Total Invites
                   </span>
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-white/90">
-                    <Award className="w-3.5 h-3.5 text-green-300" />{referralStats.converted} 已转化
+                    <Award className="w-3.5 h-3.5 text-green-300" />{referralStats.converted} Converted
                   </span>
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-white/90">
-                    <Zap className="w-3.5 h-3.5 text-blue-300" />{referralStats.rewardMonths} 个月奖励
+                    <Zap className="w-3.5 h-3.5 text-blue-300" />{referralStats.rewardMonths} -month Rewards
                   </span>
                 </div>
               )}
@@ -208,10 +208,10 @@ export default function DashboardPage() {
                 <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
                   <Dumbbell className="w-4 h-4 text-white" />
                 </div>
-                <h2 className="text-base font-semibold text-gray-900">最近训练记录</h2>
+                <h2 className="text-base font-semibold text-gray-900">Recent Training Records</h2>
               </div>
               <a href="/progress" className="inline-flex items-center gap-1.5 text-sm font-medium text-blue-600 hover:text-blue-700 transition group-link">
-                查看全部
+                View All
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </a>
             </div>
@@ -243,30 +243,30 @@ export default function DashboardPage() {
                   <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
                     <Zap className="w-4 h-4 text-white" />
                   </div>
-                  <h2 className="text-base font-semibold text-gray-900">快捷操作</h2>
+                  <h2 className="text-base font-semibold text-gray-900">Quick Actions</h2>
                 </div>
               </div>
               <div className="p-4 space-y-2">
                 <QuickAction 
-                  label="添加新学员" 
+                  label="Add New Student" 
                   icon={<Plus className="w-4 h-4" />} 
                   color="from-blue-500 to-cyan-500"
                   href="/coachees"
                 />
                 <QuickAction 
-                  label="创建训练计划" 
+                  label="Create Training Plan" 
                   icon={<Calendar className="w-4 h-4" />} 
                   color="from-emerald-500 to-green-500"
                   href="/programs"
                 />
                 <QuickAction 
-                  label="AI 生成计划" 
+                  label="AI Generate Plan" 
                   icon={<Target className="w-4 h-4" />} 
                   color="from-purple-500 to-pink-500"
                   href="/programs"
                 />
                 <QuickAction 
-                  label="查看学员进度" 
+                  label="View Student Progress" 
                   icon={<BarChart3 className="w-4 h-4" />} 
                   color="from-orange-500 to-red-500"
                   href="/progress"
@@ -283,10 +283,10 @@ export default function DashboardPage() {
               <div className="relative">
                 <div className="flex items-center gap-2 mb-5">
                   <BarChart3 className="w-5 h-5 text-blue-400" />
-                  <h3 className="text-base font-semibold">本周训练总结</h3>
+                  <h3 className="text-base font-semibold">This Week训练总结</h3>
                 </div>
                 <div className="space-y-4">
-                  <SummaryMetric label="训练完成率" value="87%" barWidth="87%" barColor="from-blue-400 to-cyan-400" />
+                  <SummaryMetric label="Training Completion Rate" value="87%" barWidth="87%" barColor="from-blue-400 to-cyan-400" />
                   <SummaryMetric label="平均RPE" value="7.2 / 10" barWidth="72%" barColor="from-purple-400 to-pink-400" showBar={false} />
                   <SummaryMetric label="学员满意度" value="4.8 / 5" barWidth="96%" barColor="from-emerald-400 to-green-400" />
                 </div>

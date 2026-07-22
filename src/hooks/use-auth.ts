@@ -72,7 +72,7 @@ export function useAuth() {
       await fetchUser();
       return { data, error: null };
     } catch (err: any) {
-      const msg = err.message || "登录失败";
+      const msg = err.message || "Sign in failed";
       setError(msg);
       return { data: null, error: msg };
     }
@@ -101,7 +101,7 @@ export function useAuth() {
       const result = await res.json();
 
       if (!res.ok) {
-        throw new Error(result.error || "注册失败");
+        throw new Error(result.error || "Registration failed");
       }
 
       if (result.session?.access_token) {
@@ -122,7 +122,7 @@ export function useAuth() {
 
       return { data: result.user, error: null };
     } catch (err: any) {
-      const msg = err.message || "注册失败";
+      const msg = err.message || "Registration failed";
       setError(msg);
       return { data: null, error: msg };
     }

@@ -21,9 +21,9 @@ export default function ForgotPasswordPage() {
     setSubmitting(true);
     const result = await resetPassword(email);
     if (!result.error) {
-      setMessage("重置邮件已发送，请检查您的Email");
+      setMessage("Reset email has been sent, please check your inbox");
     } else {
-      setErrorMessage(result.error || "发送失败，请稍后重试");
+      setErrorMessage(result.error || "Failed to send, please try again later");
     }
     setSubmitting(false);
   };
@@ -34,8 +34,8 @@ export default function ForgotPasswordPage() {
         <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-600 mb-4">
           <Mail className="w-8 h-8 text-white" />
         </div>
-        <h1 className="text-2xl font-bold text-gray-900">重置Password</h1>
-        <p className="text-gray-500 mt-1">我们会发送重置链接到你的Email</p>
+        <h1 className="text-2xl font-bold text-gray-900">Reset Password</h1>
+        <p className="text-gray-500 mt-1">We will send a reset link to your email</p>
       </div>
 
       <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
@@ -56,13 +56,13 @@ export default function ForgotPasswordPage() {
           </div>
 
           <button type="submit" disabled={submitting} className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-medium rounded-lg transition flex items-center justify-center gap-2">
-            {submitting ? <><span className="spinner" />发送中...</> : "发送重置邮件"}
+            {submitting ? <><span className="spinner" />Sending...</> : "Send Reset Email"}
           </button>
         </form>
 
         <div className="mt-6 text-center">
           <Link href="/login" className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700">
-            <ArrowLeft className="w-4 h-4" /> 返回Sign In
+            <ArrowLeft className="w-4 h-4" /> Back to Sign In
           </Link>
         </div>
       </div>

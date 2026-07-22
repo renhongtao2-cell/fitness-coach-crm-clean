@@ -74,7 +74,7 @@ export default function ProgressPage() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">训练进度</h1>
-            <p className="text-gray-500 mt-1">查看学员训练成果和身体数据变化</p>
+            <p className="text-gray-500 mt-1">查看学员训练成果和Body Metrics变化</p>
           </div>
           <div className="flex items-center gap-3">
             <select value={selectedCoacheeId} onChange={(e) => setSelectedCoacheeId(e.target.value)} className="px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none bg-white pr-8">
@@ -101,8 +101,8 @@ export default function ProgressPage() {
         ) : selectedTab === 'overview' ? (
           <>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-              <StatCard label="体重变化" value={displayStats?.weightDelta != null ? (displayStats.weightDelta > 0 ? '+' : '') + displayStats.weightDelta.toFixed(1) + 'kg' : '-'} subtitle={displayStats?.weightDelta != null ? (displayStats.weightDelta > 0 ? '上升' : '下降') : '暂无数据'} trend={displayStats?.weightDelta} icon={<Weight className="w-5 h-5" />} color="blue" />
-              <StatCard label="体脂率变化" value={displayStats?.bfDelta != null ? (displayStats.bfDelta > 0 ? '+' : '') + displayStats.bfDelta.toFixed(1) + '%' : '-'} subtitle={displayStats?.bfDelta != null ? (displayStats.bfDelta < 0 ? '理想下降' : '需关注') : '暂无数据'} trend={displayStats?.bfDelta} goodDirection="down" icon={<BarChart3 className="w-5 h-5" />} color="green" />
+              <StatCard label="Weight变化" value={displayStats?.weightDelta != null ? (displayStats.weightDelta > 0 ? '+' : '') + displayStats.weightDelta.toFixed(1) + 'kg' : '-'} subtitle={displayStats?.weightDelta != null ? (displayStats.weightDelta > 0 ? '上升' : '下降') : '暂无数据'} trend={displayStats?.weightDelta} icon={<Weight className="w-5 h-5" />} color="blue" />
+              <StatCard label="Body Fat %变化" value={displayStats?.bfDelta != null ? (displayStats.bfDelta > 0 ? '+' : '') + displayStats.bfDelta.toFixed(1) + '%' : '-'} subtitle={displayStats?.bfDelta != null ? (displayStats.bfDelta < 0 ? '理想下降' : '需关注') : '暂无数据'} trend={displayStats?.bfDelta} goodDirection="down" icon={<BarChart3 className="w-5 h-5" />} color="green" />
               <StatCard label="胸围变化" value={displayStats?.chestDelta != null ? (displayStats.chestDelta > 0 ? '+' : '') + displayStats.chestDelta.toFixed(1) + 'cm' : '-'} subtitle={displayStats?.chestDelta != null ? (displayStats.chestDelta > 0 ? '增长' : '减少') : '暂无数据'} trend={displayStats?.chestDelta} icon={<TrendingUp className="w-5 h-5" />} color="purple" />
               <StatCard label="训练完成率" value={completionRate > 0 ? completionRate + '%' : '-'} subtitle={totalLogs > 0 ? completedLogs + '/' + totalLogs + ' 训练' : '暂无数据'} icon={<CheckCircle className="w-5 h-5" />} color="orange" />
             </div>
@@ -139,7 +139,7 @@ export default function ProgressPage() {
             ) : (
               <div className="overflow-x-auto"><table className="w-full">
                 <thead className="bg-gray-50"><tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">日期</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">学员</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">体重(kg)</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">体脂率(%)</th>
@@ -216,7 +216,7 @@ function computeStats(ms: any[]) {
 function formatDate(ds: string) { const d = new Date(ds); return d.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' }); }
 
 function getStatusColor(s: string) { const c: Record<string,string> = { active: 'bg-green-100 text-green-700', completed: 'bg-blue-100 text-blue-700', paused: 'bg-yellow-100 text-yellow-700' }; return c[s] || 'bg-gray-100 text-gray-700'; }
-function getStatusLabel(s: string) { const l: Record<string,string> = { active: '进行中', completed: '已完成', paused: '已暂停' }; return l[s] || s; }
+function getStatusLabel(s: string) { const l: Record<string,string> = { active: 'In Progress', completed: 'Completed', paused: 'Paused' }; return l[s] || s; }
 
 function StatCard({ label, value, subtitle, trend, goodDirection, icon, color }: any) {
   const colors: Record<string, string> = { blue: 'bg-blue-50 text-blue-600', green: 'bg-green-50 text-green-600', purple: 'bg-purple-50 text-purple-600', orange: 'bg-orange-50 text-orange-600' };

@@ -5,7 +5,7 @@ export async function GET(request: NextRequest) {
   try {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return NextResponse.json({ error: '未授权' }, { status: 401 });
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const adminSupabase = await createAdminClient();
 
@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
       .select('id')
       .eq('email', user.email)
       .single();
-    if (!coachProfile) return NextResponse.json({ error: '未找到教练档案' }, { status: 404 });
+    if (!coachProfile) return NextResponse.json({ error: 'Coach profile not found' }, { status: 404 });
 
     // Get coachee IDs linked to this coach
     const { data: assignments } = await adminSupabase

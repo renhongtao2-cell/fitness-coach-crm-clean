@@ -5,7 +5,7 @@ export async function GET(request: NextRequest) {
   try {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return NextResponse.json({ error: '未授权' }, { status: 401 });
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const adminSupabase = await createAdminClient();
 
@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
       .select('id')
       .eq('email', user.email)
       .single();
-    if (!coachProfile) return NextResponse.json({ error: '未找到教练档案' }, { status: 404 });
+    if (!coachProfile) return NextResponse.json({ error: 'Coach profile not found' }, { status: 404 });
 
     // Get all coachee IDs linked to this coach
     const { data: assignments } = await adminSupabase
@@ -74,7 +74,7 @@ export async function GET(request: NextRequest) {
       const profile = profileMap.get(conv.partnerId);
       return {
         partnerId: conv.partnerId,
-        name: profile?.full_name || profile?.email || '未知',
+        name: profile?.full_name || profile?.email || 'Unknown',
         email: profile?.email || '',
         avatar: (profile?.full_name || '?')[0],
         lastMsg: conv.lastMessage?.content || '',
@@ -100,7 +100,7 @@ export async function POST(request: NextRequest) {
     const { coacheeId, content } = body;
 
     if (!coacheeId || !content) {
-      return NextResponse.json({ error: '缺少参数' }, { status: 400 });
+      return NextResponse.json({ error: 'Missing parameters' }, { status: 400 });
     }
 
     const adminSupabase = await createAdminClient();

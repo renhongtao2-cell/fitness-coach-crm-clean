@@ -92,7 +92,7 @@ export default function SettingsPage() {
 
   const handleSaveProfile = async () => {
     if (!profileForm.full_name.trim()) {
-      showToast('error', '请输入姓名');
+      showToast('error', '请输入Full Name');
       return;
     }
     setSaving(true);
@@ -105,9 +105,9 @@ export default function SettingsPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        showToast('error', '保存失败: ' + (data.error || '未知错误'));
+        showToast('error', 'Save失败: ' + (data.error || '未知错误'));
       } else {
-        showToast('success', '个人资料已更新');
+        showToast('success', 'Profile已更新');
       }
     } catch (e: any) {
       showToast('error', '保存失败: ' + e.message);
@@ -126,7 +126,7 @@ export default function SettingsPage() {
       return;
     }
     if (!passwordForm.currentPassword) {
-      showToast('error', '请输入当前密码');
+      showToast('error', '请输入Current Password');
       return;
     }
     setPasswordSaving(true);
@@ -156,7 +156,7 @@ export default function SettingsPage() {
     setNotifSaving(true);
     try {
       localStorage.setItem('fitness-notifications', JSON.stringify(notifications));
-      showToast('success', '通知设置已保存');
+      showToast('success', '通知Settings已保存');
     } catch (e: any) {
       showToast('error', '保存失败: ' + e.message);
     } finally {
@@ -285,7 +285,7 @@ export default function SettingsPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">邮箱</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
                   <input
                     type="email"
                     value={profile?.email || ''}
@@ -333,7 +333,7 @@ export default function SettingsPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">新密码</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">New Password</label>
                     <input
                       type={showPassword ? 'text' : 'password'}
                       value={passwordForm.newPassword}
@@ -346,7 +346,7 @@ export default function SettingsPage() {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">确认新密码</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
                     <input
                       type="password"
                       value={passwordForm.confirmPassword}
@@ -393,7 +393,7 @@ export default function SettingsPage() {
               </h3>
               {[
                 { key: 'workoutComplete', label: '学员训练完成通知', desc: '当学员完成训练时收到通知' },
-                { key: 'messages', label: '学员消息提醒', desc: '收到学员消息时通知' },
+                { key: 'messages', label: '学员Message Notifications', desc: '收到学员消息时通知' },
                 { key: 'planExpiry', label: 'Plans到期提醒', desc: 'Plans即将到期前提醒' },
                 { key: 'weeklyReport', label: '学员进度报告', desc: '每周发送学员进度汇总' },
                 { key: 'marketing', label: '营销邮件', desc: '接收产品更新和优惠信息' },

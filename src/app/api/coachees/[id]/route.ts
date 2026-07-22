@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
     const coacheeId = pathSegments[pathSegments.length - 1] || searchParams.get("coacheeId");
 
     if (!coacheeId) {
-      return NextResponse.json({ error: "缺少学员ID" }, { status: 400 });
+      return NextResponse.json({ error: "Missing client ID" }, { status: 400 });
     }
 
     const adminSupabase = await createAdminClient();
@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
 
     if (coacheeErr) throw coacheeErr;
     if (!coachee) {
-      return NextResponse.json({ error: "学员不存在" }, { status: 404 });
+      return NextResponse.json({ error: "Client not found" }, { status: 404 });
     }
 
     const { data: assignments, error: assignErr } = await adminSupabase
@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
     const programs = (assignments || []).map((a: any) => {
       return {
         ...a,
-        coach_name: a.programs?.coach_id ? "(教练ID: " + a.programs.coach_id.substring(0, 8) + ")" : "未知教练",
+        coach_name: a.programs?.coach_id ? "(Coach ID: " + a.programs.coach_id.substring(0, 8) + ")" : "Unknown coach",
       };
     });
 

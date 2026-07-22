@@ -9,7 +9,7 @@ const supabase = createClient(
 export async function GET() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
-    return NextResponse.json({ error: "未登录" }, { status: 401 });
+    return NextResponse.json({ error: "Not logged in" }, { status: 401 });
   }
 
   const { data, error } = await supabase
@@ -31,9 +31,9 @@ export async function GET() {
         .select("plan_type")
         .eq("id", inv.subscription_id)
         .single();
-      return { ...inv, subscription_plan: sub?.plan_type ? `订阅 - ${sub.plan_type}` : "订阅费" };
+      return { ...inv, subscription_plan: sub?.plan_type ? `Subscription - ${sub.plan_type}` : "Subscription fee" };
     }
-    return { ...inv, subscription_plan: "订阅费" };
+    return { ...inv, subscription_plan: "Subscription fee" };
   }));
 
   return NextResponse.json({ invoices: enriched || [] });

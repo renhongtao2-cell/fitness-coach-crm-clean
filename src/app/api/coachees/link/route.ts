@@ -7,14 +7,14 @@ export async function POST(request: NextRequest) {
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {
-      return NextResponse.json({ error: "未授权" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const adminSupabase = await createAdminClient();
     const { coacheeEmail } = await request.json();
     
     if (!coacheeEmail) {
-      return NextResponse.json({ error: '请提供学员邮箱' }, { status: 400 });
+      return NextResponse.json({ error: 'Please provide client email' }, { status: 400 });
     }
 
     const { data: coachProfile } = await adminSupabase
@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (!coachProfile) {
-      return NextResponse.json({ error: "未找到教练档案" }, { status: 404 });
+      return NextResponse.json({ error: "Coach profile not found" }, { status: 404 });
     }
 
     const { data: coacheeProfile } = await adminSupabase
@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (!coacheeProfile) {
-      return NextResponse.json({ error: "未找到该学员" }, { status: 404 });
+      return NextResponse.json({ error: "Client not found" }, { status: 404 });
     }
 
     // Get first program id
@@ -60,10 +60,10 @@ export async function POST(request: NextRequest) {
 
     if (relError) {
       console.error('Create relationship error:', relError);
-      return NextResponse.json({ error: '创建关联失败: ' + relError.message }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to create relationship: ' + relError.message }, { status: 500 });
     }
 
-    return NextResponse.json({ message: '关联成功', coacheeId: coacheeProfile.id, relationship: rel });
+    return NextResponse.json({ message: 'Relationship created successfully', coacheeId: coacheeProfile.id, relationship: rel });
   } catch (error: any) {
     console.error('Link coachee error:', error.message);
     return NextResponse.json({ error: error.message }, { status: 500 });

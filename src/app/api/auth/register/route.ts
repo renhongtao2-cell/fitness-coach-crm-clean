@@ -38,10 +38,10 @@ export async function POST(request: NextRequest) {
       const errData = await createRes.json().catch(() => ({}));
       const errMsg = errData?.msg || errData?.message || "";
       if (createRes.status === 400 || createRes.status === 409 || errMsg.toLowerCase().includes("already") || errMsg.toLowerCase().includes("user with this email")) {
-        return NextResponse.json({ error: "该邮箱已注册，请登录" }, { status: 409 });
+        return NextResponse.json({ error: "This email is already registered, please sign in" }, { status: 409 });
       }
       console.error("GoTrue admin create user error:", errData, "status:", createRes.status);
-      return NextResponse.json({ error: "创建用户失败: " + errMsg }, { status: 500 });
+      return NextResponse.json({ error: "Failed to create user: " + errMsg }, { status: 500 });
     }
 
     const newUser = await createRes.json();
@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
         .eq("email", email);
       if (updateError) {
         console.error("Profile update error:", updateError);
-        return NextResponse.json({ error: "创建用户资料失败" }, { status: 500 });
+        return NextResponse.json({ error: "Failed to create user profile" }, { status: 500 });
       }
     }
 
@@ -112,7 +112,7 @@ export async function POST(request: NextRequest) {
     if (!signInRes.ok) {
       const errData = await signInRes.json().catch(() => ({}));
       console.error("Sign in error:", errData);
-      return NextResponse.json({ error: "登录失败，请稍后重试" }, { status: 500 });
+      return NextResponse.json({ error: "Sign in failed, please try again later" }, { status: 500 });
     }
 
     const signInData = await signInRes.json();
@@ -121,10 +121,10 @@ export async function POST(request: NextRequest) {
       user: signInData.user,
       session: signInData,
       role: role,
-      message: "注册成功",
+      message: "Registration successful",
     });
   } catch (error: any) {
     console.error("Register error:", error);
-    return NextResponse.json({ error: error.message || "注册失败" }, { status: 500 });
+    return NextResponse.json({ error: error.message || "Registration failed" }, { status: 500 });
   }
 }

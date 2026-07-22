@@ -5,12 +5,12 @@ export async function POST(request: NextRequest) {
   try {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return NextResponse.json({ error: '未授权' }, { status: 401 });
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
     const body = await request.json();
     const { exercise, note } = body;
 
-    if (!exercise) return NextResponse.json({ error: '请填写训练内容' }, { status: 400 });
+    if (!exercise) return NextResponse.json({ error: 'Please enter training content' }, { status: 400 });
 
     const adminSupabase = await createAdminClient();
 
@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
       .select('id')
       .eq('email', user.email)
       .single();
-    if (!profile) return NextResponse.json({ error: '未找到档案' }, { status: 404 });
+    if (!profile) return NextResponse.json({ error: 'Profile not found' }, { status: 404 });
 
     // Try to find an active coachee_program
     let { data: cp } = await adminSupabase
@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (!cp) {
-      return NextResponse.json({ error: '暂无训练计划，请联系教练分配计划' }, { status: 400 });
+      return NextResponse.json({ error: 'No training plan available, please contact your coach' }, { status: 400 });
     }
 
     const { data, error } = await adminSupabase
