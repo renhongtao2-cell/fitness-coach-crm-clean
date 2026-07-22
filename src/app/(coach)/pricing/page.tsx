@@ -109,7 +109,7 @@ function PricingContent() {
       type: "free", name: "Free", icon: Zap, monthlyPrice: 0, yearlyPrice: 0,
       description: "Essential tools for individual trainers", color: "gray",
       features: [
-        { feature_key: "coachees", feature_name: "Clients", feature_desc: "Max managed clients", limit_value: 3 },
+        { feature_key: "coachees", feature_name: "Clients", feature_desc: "Max managed clients", limit_value: 5 },
         { feature_key: "programs", feature_name: "Training Plans", feature_desc: "Active plans", limit_value: 5 },
         { feature_key: "ai_generations", feature_name: "AI Generation", feature_desc: "Monthly AI generations", limit_value: 5 },
         { feature_key: "storage", feature_name: "Training Logs", feature_desc: "Stored records", limit_value: 50 },

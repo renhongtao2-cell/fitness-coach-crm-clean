@@ -323,7 +323,7 @@ export default function Home() {
   ];
 
   const pricingTiers = [
-    { name: 'Free', icon: Zap, price: '$0', desc: 'Perfect for getting started', features: ['Up to 3 clients', '5 training plans', '5 AI generations/month', '50 training logs stored', '50 messages'], cta: 'Get Started Free' },
+    { name: 'Free', icon: Zap, price: '$0', desc: 'Perfect for getting started', features: ['Up to 5 clients', '5 training plans', '5 AI generations/month', '50 training logs stored', '50 messages'], cta: 'Get Started Free' },
     { name: 'Basic', icon: Star, price: billing==='yearly' ? '$290' : '$29', desc: 'For growing coaches', features: ['Up to 20 clients', '20 training plans', '20 AI generations/month', '200 training logs', 'Unlimited messages', 'Remove branding'], cta: 'Start Free Trial', popular: true, badge: 'MOST POPULAR' },
     { name: 'Pro', icon: Rocket, price: billing==='yearly' ? '$990' : '$99', desc: 'For professional coaches', features: ['Up to 50 clients', 'Unlimited plans', '50 AI generations/month', '1000 training logs', 'Priority support', 'Custom branding', 'API access'], cta: 'Start Free Trial' },
     { name: 'Enterprise', icon: Building2, price: billing==='yearly' ? '$2990' : '$299', desc: 'For agencies and teams', features: ['Unlimited everything', 'White-label solution', 'Dedicated support', 'Custom integrations', 'SLA guarantee', 'Team management'], cta: 'Contact Sales' },
@@ -337,7 +337,7 @@ export default function Home() {
   ];
 
   const faqs = [
-    { q: 'Is there really a free plan?', a: 'Yes! Our free plan supports up to 3 clients with core features. No credit card required.' },
+    { q: 'Is there really a free plan?', a: 'Yes! Our free plan supports up to 5 clients with core features. No credit card required.' },
     { q: 'How does the AI plan generator work?', a: 'Describe your client goals, fitness level, equipment, and preferences. Our AI generates a complete multi-phase training program with exercises, sets, reps, and rest times.' },
     { q: 'Can I import clients from other tools?', a: 'Currently you can add clients manually or via email referral links. CSV import is coming soon.' },
     { q: 'What payment methods do you accept?', a: 'We accept all major credit cards (Visa, Mastercard, Amex) through Stripe.' },
