@@ -1,11 +1,7 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
-import { 
-  Users, Calendar, Dumbbell, MessageSquare, Plus, Target, BarChart3, Gift, 
-  Copy, CheckCircle, TrendingUp, Activity, ArrowRight, Zap, Award,
-  ChevronRight, Sparkles, Eye
-} from "lucide-react";
+import { Users, Calendar, Dumbbell, MessageSquare, Plus, Target, BarChart3, Gift, Copy, CheckCircle, UserPlus, Trophy } from "lucide-react";
 
 interface StatCardProps {
   icon: React.ReactNode;
@@ -13,8 +9,13 @@ interface StatCardProps {
   value: string | number;
   change: string;
   color: "blue" | "green" | "purple" | "orange";
-  gradient: string;
-  shadowColor: string;
+}
+
+interface RecentActivity {
+  name: string;
+  exercise: string;
+  time: string;
+  color: string;
 }
 
 export default function DashboardPage() {
@@ -24,10 +25,41 @@ export default function DashboardPage() {
   const [referralStats, setReferralStats] = useState<{ total: number; converted: number; rewardMonths: number } | null>(null);
   const [copied, setCopied] = useState(false);
 
+  const [systemStats, setSystemStats] = useState({
+    totalUsers: 0,
+    totalCoaches: 0,
+    totalClients: 0,
+    todayRegistrations: 0,
+    todayRegistrationBreakdown: { coaches: 0, clients: 0 },
+  });
+
+  // Admin-only access to system stats
+  const [currentUserEmail, setCurrentUserEmail] = useState('');
+  useEffect(() => {
+    fetchCurrentUser();
+  }, []);
+
+  const fetchCurrentUser = async () => {
+    try {
+      const res = await fetch('/api/auth/me');
+      if (res.ok) {
+        const data = await res.json();
+        setCurrentUserEmail(data.email || '');
+      }
+    } catch (e) {
+      console.error('Failed to load current user:', e);
+    }
+  };
+
+  const isAdmin = 
+    currentUserEmail === 'renhongtao2@gmail.com' ||
+    currentUserEmail === '344681953@qq.com';
+
   useEffect(() => {
     fetchDashboardStats();
-    fetchReferralData();
+    fetchSystemStats();
   }, []);
+
 
   const fetchReferralData = async () => {
     try {
@@ -48,6 +80,19 @@ export default function DashboardPage() {
     }
   };
 
+
+  const fetchSystemStats = async () => {
+    try {
+      const res = await fetch("/api/stats");
+      if (res.ok) {
+        const data = await res.json();
+        setSystemStats(data);
+      }
+    } catch (e) {
+      console.error("Failed to load system stats:", e);
+    }
+  };
+
   const handleCopyReferral = async () => {
     if (!referralCode) return;
     try {
@@ -58,7 +103,6 @@ export default function DashboardPage() {
       console.error("Failed to copy:", e);
     }
   };
-
   const fetchDashboardStats = async () => {
     try {
       const [coacheesRes, programsRes] = await Promise.all([
@@ -79,278 +123,180 @@ export default function DashboardPage() {
     }
   };
 
-  const mockActivities = [
-    { name: "Zhang Wei", exercise: "Squat 4x12 @ 80kg", time: "2h ago", color: "from-blue-500 to-cyan-500" },
-    { name: "Li Na", exercise: "Bench Press 3x10 @ 50kg", time: "3h ago", color: "from-purple-500 to-pink-500" },
-    { name: "Wang Qiang", exercise: "Deadlift 5x5 @ 100kg", time: "5h ago", color: "from-orange-500 to-red-500" },
-    { name: "Liu Yang", exercise: "Pull-ups 4xMax", time: "Yesterday", color: "from-green-500 to-emerald-500" },
-    { name: "Chen Jing", exercise: "Shoulder Press 3x12 @ 30kg", time: "Yesterday", color: "from-indigo-500 to-blue-500" },
-  ];
-
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Modern Header Background */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 px-6 pt-10 pb-16 sm:px-6 lg:px-8">
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 blur-3xl"></div>
-          <div className="absolute top-20 -left-20 w-60 h-60 rounded-full bg-gradient-to-br from-cyan-500/15 to-blue-500/15 blur-3xl"></div>
-          <div className="absolute bottom-10 right-40 w-40 h-40 rounded-full bg-gradient-to-br from-purple-500/10 to-pink-500/10 blur-2xl"></div>
-        </div>
-        
-        <div className="relative z-10 max-w-7xl mx-auto">
-          <div className="flex items-center justify-between mb-2">
+    <div className="space-y-6 animate-fade-in">
+      {/* Referral Banner */}
+      {referralCode && (
+        <div className="bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-500 rounded-2xl p-6 text-white shadow-lg">
+          <div className="flex items-center justify-between flex-wrap gap-4">
             <div>
-              <p className="text-sm text-blue-300 mb-1 font-medium">Welcome Back 👋</p>
-              <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">Coach Dashboard</h1>
+              <h2 className="text-2xl font-bold mb-2">🎁 Invite Friends, Get 1 Month Free!</h2>
+              <p className="text-blue-100">Share your referral code and both of you get 1 free month on any plan.</p>
             </div>
-            <div className="hidden sm:flex items-center gap-3">
-              <button className="px-4 py-2 bg-white/10 hover:bg-white/15 backdrop-blur-sm border border-white/10 rounded-xl text-sm text-white transition-all duration-200 flex items-center gap-2">
-                <Calendar className="w-4 h-4" />
-                Today
+            <div className="flex items-center gap-3 bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2">
+              <span className="font-mono text-xl font-bold tracking-wider">{referralCode}</span>
+              <button onClick={handleCopyReferral} className="p-2 hover:bg-white/30 rounded-lg transition" title="Copy">
+                {copied ? <CheckCircle className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
               </button>
             </div>
           </div>
-          <p className="mt-2 text-blue-200/70 max-w-md">Here is your training management overview. Quickly track student progress.</p>
-        </div>
-      </div>
-
-      {/* Stats Cards */}
-      <div className="max-w-7xl mx-auto px-6 sm:px-6 lg:px-8 -mt-8 relative z-20">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <StatCard 
-            icon={<Users className="w-5 h-5" />} 
-            label="Active Students" 
-            value={stats.activeCoachees} 
-            change="+2 This Month" 
-            color="blue"
-            gradient="from-blue-500 to-cyan-500"
-            shadowColor="shadow-blue-500/25"
-          />
-          <StatCard 
-            icon={<Activity className="w-5 h-5" />} 
-            label="This Week Training" 
-            value={stats.weeklyWorkouts || 24} 
-            change="+15% vs Last Week" 
-            color="green"
-            gradient="from-emerald-500 to-green-500"
-            shadowColor="shadow-emerald-500/25"
-          />
-          <StatCard 
-            icon={<Dumbbell className="w-5 h-5" />} 
-            label="Training Plans" 
-            value={stats.programs} 
-            change="3 Active" 
-            color="purple"
-            gradient="from-purple-500 to-pink-500"
-            shadowColor="shadow-purple-500/25"
-          />
-          <StatCard 
-            icon={<MessageSquare className="w-5 h-5" />} 
-            label="Unread Messages" 
-            value={stats.unreadMessages || 3} 
-            change="Needs Reply" 
-            color="orange"
-            gradient="from-orange-500 to-red-500"
-            shadowColor="shadow-orange-500/25"
-          />
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-6 sm:px-6 lg:px-8 py-8 space-y-6">
-        {/* Referral Banner */}
-        {referralCode && (
-          <div className="group relative overflow-hidden rounded-2xl ring-1 ring-white/10 shadow-xl shadow-purple-500/10">
-            <div className="relative rounded-2xl bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-700 p-6">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-white/10 to-transparent rounded-full -translate-y-32 translate-x-32"></div>
-              
-              <div className="relative flex items-center justify-between flex-wrap gap-4">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                    <Gift className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h2 className="text-lg font-bold text-white mb-0.5">🎁 Invite Friends, both get 1 free month!</h2>
-                    <p className="text-sm text-white/70">Share your Referral Code. Both parties receive an extra month on any plan.</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg px-4 py-2.5">
-                    <span className="font-mono text-lg font-bold tracking-wider text-white">{referralCode}</span>
-                    <button onClick={handleCopyReferral} className="p-1.5 hover:bg-white/20 rounded-md transition" title="Copy">
-                      {copied ? <CheckCircle className="w-4 h-4 text-green-300" /> : <Copy className="w-4 h-4 text-white/80" />}
-                    </button>
-                  </div>
-                </div>
-              </div>
-              {referralStats && (referralStats.converted > 0 || referralStats.rewardMonths > 0) && (
-                <div className="relative mt-4 flex flex-wrap gap-3 text-sm">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-white/90">
-                    <Sparkles className="w-3.5 h-3.5 text-yellow-300" />{referralStats.total} Total Invites
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-white/90">
-                    <Award className="w-3.5 h-3.5 text-green-300" />{referralStats.converted} Converted
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-white/90">
-                    <Zap className="w-3.5 h-3.5 text-blue-300" />{referralStats.rewardMonths} -month Rewards
-                  </span>
-                </div>
-              )}
+          {referralStats && (referralStats.converted > 0 || referralStats.rewardMonths > 0) && (
+            <div className="mt-4 flex gap-4 text-sm">
+              <span className="bg-white/20 px-3 py-1 rounded-full">{referralStats.total} Invites</span>
+              <span className="bg-white/20 px-3 py-1 rounded-full">{referralStats.converted} Converted</span>
+              <span className="bg-white/20 px-3 py-1 rounded-full">{referralStats.rewardMonths} Months Earned</span>
             </div>
-          </div>
-        )}
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Recent Training Activity */}
-          <div className="lg:col-span-2 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300">
-            <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
-                  <Dumbbell className="w-4 h-4 text-white" />
-                </div>
-                <h2 className="text-base font-semibold text-gray-900">Recent Training Records</h2>
-              </div>
-              <a href="/progress" className="inline-flex items-center gap-1.5 text-sm font-medium text-blue-600 hover:text-blue-700 transition group-link">
-                View All
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-              </a>
-            </div>
-            <div className="divide-y divide-gray-50">
-              {(recentActivities.length > 0 ? recentActivities : mockActivities).map((item, i) => (
-                <div key={i} className="flex items-center gap-4 px-6 py-4 hover:bg-gray-50/50 transition-colors cursor-pointer group/item">
-                  <div className={"w-10 h-10 rounded-xl bg-gradient-to-br " + item.color + " flex items-center justify-center text-white text-sm font-bold shrink-0 shadow-sm group-hover/item:scale-105 transition-transform duration-200"}>
-                    {item.name[0]}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-gray-900">{item.name}</p>
-                    <p className="text-xs text-gray-500 truncate">{item.exercise}</p>
-                  </div>
-                  <div className="flex items-center gap-2 shrink-0">
-                    <span className="text-xs text-gray-400">{item.time}</span>
-                    <ChevronRight className="w-4 h-4 text-gray-300 group-hover/item:text-gray-400 transition-colors" />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Right Column */}
-          <div className="space-y-6">
-            {/* Quick Actions */}
-            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300">
-              <div className="px-6 py-5 border-b border-gray-100">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
-                    <Zap className="w-4 h-4 text-white" />
-                  </div>
-                  <h2 className="text-base font-semibold text-gray-900">Quick Actions</h2>
-                </div>
-              </div>
-              <div className="p-4 space-y-2">
-                <QuickAction 
-                  label="Add New Student" 
-                  icon={<Plus className="w-4 h-4" />} 
-                  color="from-blue-500 to-cyan-500"
-                  href="/coachees"
-                />
-                <QuickAction 
-                  label="Create Training Plan" 
-                  icon={<Calendar className="w-4 h-4" />} 
-                  color="from-emerald-500 to-green-500"
-                  href="/programs"
-                />
-                <QuickAction 
-                  label="AI Generate Plan" 
-                  icon={<Target className="w-4 h-4" />} 
-                  color="from-purple-500 to-pink-500"
-                  href="/programs"
-                />
-                <QuickAction 
-                  label="View Student Progress" 
-                  icon={<BarChart3 className="w-4 h-4" />} 
-                  color="from-orange-500 to-red-500"
-                  href="/progress"
-                />
-              </div>
-            </div>
-
-            {/* Weekly Summary */}
-            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 p-6 text-white shadow-xl">
-              <div className="absolute inset-0 opacity-20">
-                <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-blue-500/30 to-purple-500/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-                <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-indigo-500/20 to-transparent rounded-full blur-2xl translate-y-1/2 -translate-x-1/2"></div>
-              </div>
-              <div className="relative">
-                <div className="flex items-center gap-2 mb-5">
-                  <BarChart3 className="w-5 h-5 text-blue-400" />
-                  <h3 className="text-base font-semibold">This Week Training Summary</h3>
-                </div>
-                <div className="space-y-4">
-                  <SummaryMetric label="Training Completion Rate" value="87%" barWidth="87%" barColor="from-blue-400 to-cyan-400" />
-                  <SummaryMetric label="Average RPE" value="7.2 / 10" barWidth="72%" barColor="from-purple-400 to-pink-400" showBar={false} />
-                  <SummaryMetric label="Student Satisfaction" value="4.8 / 5" barWidth="96%" barColor="from-emerald-400 to-green-400" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function StatCard({ icon, label, value, change, gradient, shadowColor }: StatCardProps) {
-  return (
-    <div className={"group relative bg-white rounded-2xl border border-gray-100 p-5 hover:border-transparent hover:shadow-lg " + shadowColor + " transition-all duration-300 cursor-default"}>
-      <div className="flex items-start justify-between mb-3">
-        <div className={"w-10 h-10 rounded-xl bg-gradient-to-br " + gradient + " flex items-center justify-center text-white shadow-sm group-hover:scale-110 transition-transform duration-300"}>
-          {icon}
-        </div>
-        <div className="px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
-          {change}
-        </div>
-      </div>
-      <p className="text-2xl font-bold text-gray-900 tracking-tight">{value}</p>
-      <p className="text-sm text-gray-500 mt-0.5">{label}</p>
-      <div className={"absolute inset-0 rounded-2xl bg-gradient-to-br " + gradient + " opacity-0 group-hover:opacity-[0.03] transition-opacity duration-300"}></div>
-    </div>
-  );
-}
-
-function QuickAction({ label, icon, color, href }: { label: string; icon: React.ReactNode; color: string; href?: string }) {
-  if (href) {
-    return (
-      <a href={href} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition group/action">
-        <div className={"w-9 h-9 rounded-lg bg-gradient-to-br " + color + " flex items-center justify-center text-white shadow-sm group-hover/action:scale-110 transition-transform duration-200"}>
-          {icon}
-        </div>
-        {label}
-        <ArrowRight className="w-4 h-4 ml-auto text-gray-300 group-hover/action:text-gray-500 group-hover/action:translate-x-0.5 transition-all" />
-      </a>
-    );
-  }
-  return (
-    <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition group/action">
-      <div className={"w-9 h-9 rounded-lg bg-gradient-to-br " + color + " flex items-center justify-center text-white shadow-sm group-hover/action:scale-110 transition-transform duration-200"}>
-        {icon}
-      </div>
-      {label}
-    </button>
-  );
-}
-
-function SummaryMetric({ label, value, barWidth, barColor, showBar = true }) {
-  return (
-    <div>
-      <div className="flex justify-between items-center mb-1.5">
-        <span className="text-sm text-gray-300">{label}</span>
-        <span className="text-sm font-bold">{value}</span>
-      </div>
-      {showBar && (
-        <div className="w-full bg-white/10 rounded-full h-1.5">
-          <div className={"bg-gradient-to-r " + barColor + " rounded-full h-1.5 transition-all duration-1000"} style={{ width: barWidth }}></div>
+          )}
         </div>
       )}
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <StatCard icon={<Users className="w-5 h-5" />} label="活跃学员" value={stats.activeCoachees} change="+2 本月" color="blue" />
+        <StatCard icon={<Calendar className="w-5 h-5" />} label="本周训练" value={stats.weeklyWorkouts} change="较上周 +15%" color="green" />
+        <StatCard icon={<Dumbbell className="w-5 h-5" />} label="训练计划" value={stats.programs} change="3 进行中" color="purple" />
+        <StatCard icon={<MessageSquare className="w-5 h-5" />} label="未读消息" value={stats.unreadMessages} change="需要回复" color="orange" />
+      </div>
+
+      {isAdmin && (
+        <div className="max-w-7xl mx-auto px-6 sm:px-6 lg:px-8 mb-6">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl border border-blue-100 p-4 hover:shadow-md transition-all">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-sm">
+                  <UserPlus className="w-5 h-5 text-white" />
+                </div>
+                <span className="text-sm font-medium text-gray-600">今日新注册</span>
+              </div>
+              <p className="text-2xl font-bold text-gray-900">{systemStats.todayRegistrations}</p>
+              <div className="flex gap-2 mt-1 text-xs text-gray-500">
+                <span>教练 {systemStats.todayRegistrationBreakdown.coaches}</span>
+                <span>·</span>
+                <span>学员 {systemStats.todayRegistrationBreakdown.clients}</span>
+              </div>
+            </div>
+            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl border border-purple-100 p-4 hover:shadow-md transition-all">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-sm">
+                  <Users className="w-5 h-5 text-white" />
+                </div>
+                <span className="text-sm font-medium text-gray-600">全部教练</span>
+              </div>
+              <p className="text-2xl font-bold text-gray-900">{systemStats.totalCoaches}</p>
+            </div>
+            <div className="bg-gradient-to-br from-emerald-50 to-green-50 rounded-xl border border-emerald-100 p-4 hover:shadow-md transition-all">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-green-500 flex items-center justify-center shadow-sm">
+                  <Trophy className="w-5 h-5 text-white" />
+                </div>
+                <span className="text-sm font-medium text-gray-600">全部学员</span>
+              </div>
+              <p className="text-2xl font-bold text-gray-900">{systemStats.totalClients}</p>
+            </div>
+            <div className="bg-gradient-to-br from-indigo-50 to-violet-50 rounded-xl border border-indigo-100 p-4 hover:shadow-md transition-all">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center shadow-sm">
+                  <Users className="w-5 h-5 text-white" />
+                </div>
+                <span className="text-sm font-medium text-gray-600">全部用户</span>
+              </div>
+              <p className="text-2xl font-bold text-gray-900">{systemStats.totalUsers}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-gray-900">最近训练记录</h2>
+            <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">查看全部</button>
+          </div>
+          <div className="space-y-3">
+            {recentActivities.map((item, i) => (
+              <div key={i} className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition">
+                <div className={"w-10 h-10 rounded-full " + item.color + " flex items-center justify-center text-white text-sm font-medium shrink-0"}>
+                  {item.name[0]}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-gray-900">{item.name}</p>
+                  <p className="text-xs text-gray-500">{item.exercise}</p>
+                </div>
+                <span className="text-xs text-gray-400 shrink-0">{item.time}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">快速操作</h2>
+            <div className="space-y-2">
+              <QuickAction label="添加新学员" icon={<Plus className="w-4 h-4" />} color="blue" href="/coachees" />
+              <QuickAction label="创建训练计划" icon={<Calendar className="w-4 h-4" />} color="green" href="/programs" />
+              <QuickAction label="AI 生成计划" icon={<Target className="w-4 h-4" />} color="purple" href="/programs" />
+              <QuickAction label="查看学员进度" icon={<BarChart3 className="w-4 h-4" />} color="orange" href="/progress" />
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl p-6 text-white">
+            <h3 className="font-semibold mb-2">本周总结</h3>
+            <div className="space-y-2 text-sm text-blue-100">
+              <div className="flex justify-between">
+                <span>训练完成率</span>
+                <span className="font-semibold">87%</span>
+              </div>
+              <div className="w-full bg-blue-800 rounded-full h-2">
+                <div className="bg-white rounded-full h-2" style={{ width: "87%" }}></div>
+              </div>
+              <div className="flex justify-between">
+                <span>平均RPE</span>
+                <span className="font-semibold">7.2/10</span>
+              </div>
+              <div className="flex justify-between">
+                <span>学员满意度</span>
+                <span className="font-semibold">4.8/5</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  );
+}
+
+function StatCard({ icon, label, value, change, color }: StatCardProps) {
+  const bg: Record<string, string> = {
+    blue: "bg-blue-50 text-blue-600",
+    green: "bg-green-50 text-green-600",
+    purple: "bg-purple-50 text-purple-600",
+    orange: "bg-orange-50 text-orange-600",
+  };
+  return (
+    <div className="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition">
+      <div className={"inline-flex items-center justify-center w-10 h-10 rounded-lg mb-3 " + (bg[color] || bg.blue)}>
+        {icon}
+      </div>
+      <p className="text-2xl font-bold text-gray-900">{value}</p>
+      <p className="text-sm text-gray-500">{label}</p>
+      <p className="text-xs text-gray-400 mt-1">{change}</p>
+    </div>
+  );
+}
+
+function QuickAction({ label, icon, color, href }: { label: string; icon: React.ReactNode; color: "blue" | "green" | "purple" | "orange"; href?: string }) {
+  const bg: Record<string, string> = {
+    blue: "bg-blue-50 text-blue-600 hover:bg-blue-100",
+    green: "bg-green-50 text-green-600 hover:bg-green-100",
+    purple: "bg-purple-50 text-purple-600 hover:bg-purple-100",
+    orange: "bg-orange-50 text-orange-600 hover:bg-orange-100",
+  };
+  if (href) {
+    return <a href={href} className={"w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition " + (bg[color] || bg.blue)}>{icon}{label}</a>;
+  }
+  return (
+    <button className={"w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition " + (bg[color] || bg.blue)}>
+      {icon}
+      {label}
+    </button>
   );
 }

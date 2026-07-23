@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import "./globals.css";
 import ToastContainer from "@/components/Toast";
+import { TranslationProvider } from "@/hooks/use-translation";
 
 export const metadata: Metadata = {
   title: "FitCoach CRM - Modern CRM for Fitness Coaches",
@@ -15,8 +16,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{__html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-KWRJ77SQPV');`}}/>
       </head>
       <body className="antialiased">
-        {children}
-        <ToastContainer />
+        <TranslationProvider>
+          {children}
+          <ToastContainer />
+        </TranslationProvider>
       </body>
     </html>
   );
