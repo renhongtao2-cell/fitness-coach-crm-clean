@@ -35,12 +35,10 @@ export default function DashboardPage() {
 
   // Admin-only access to system stats
   const [currentUserEmail, setCurrentUserEmail] = useState('');
-  useEffect(() => {
-    fetchCurrentUser();
-  }, []);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    fetchReferralData();
+    fetchCurrentUser();
   }, []);
 
   const fetchCurrentUser = async () => {
@@ -48,16 +46,15 @@ export default function DashboardPage() {
       const res = await fetch('/api/auth/me');
       if (res.ok) {
         const data = await res.json();
-        setCurrentUserEmail(data.email || '');
+        const email = data.email || '';
+        setCurrentUserEmail(email);
+        setIsAdmin(email === 'renhongtao2@gmail.com' || email === '344681953@qq.com');
       }
     } catch (e) {
       console.error('Failed to load current user:', e);
     }
   };
 
-  const isAdmin = 
-    currentUserEmail === 'renhongtao2@gmail.com' ||
-    currentUserEmail === '344681953@qq.com';
 
   useEffect(() => {
     fetchDashboardStats();
