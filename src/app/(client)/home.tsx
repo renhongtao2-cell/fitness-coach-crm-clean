@@ -1,9 +1,11 @@
 ﻿'use client';
 import { useState, useEffect } from 'react';
 import { Calendar, Dumbbell, TrendingUp, MessageSquare, User, Clock, CheckCircle, AlertCircle, Loader2, ChevronRight, Send } from 'lucide-react';
+import { useTranslation } from '@/hooks/use-translation';
 import { showToast } from '@/components/Toast';
 
 export default function ClientHome() {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<any>(null);
   const [error, setError] = useState<string>('');

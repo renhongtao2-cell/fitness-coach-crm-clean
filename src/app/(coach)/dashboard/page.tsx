@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Users, Calendar, Dumbbell, MessageSquare, Plus, Target, BarChart3, Gift, Copy, CheckCircle, UserPlus, Trophy } from "lucide-react";
+import { useTranslation } from "@/hooks/use-translation";
 
 interface StatCardProps {
   icon: React.ReactNode;
@@ -19,7 +20,8 @@ interface RecentActivity {
 }
 
 export default function DashboardPage() {
-  const [stats, setStats] = useState({ activeCoachees: 0, weeklyWorkouts: 0, programs: 0, unreadMessages: 0 });
+    const { t } = useTranslation();
+const [stats, setStats] = useState({ activeCoachees: 0, weeklyWorkouts: 0, programs: 0, unreadMessages: 0 });
   const [recentActivities, setRecentActivities] = useState<any[]>([]);
   const [referralCode, setReferralCode] = useState<string | null>(null);
   const [referralStats, setReferralStats] = useState<{ total: number; converted: number; rewardMonths: number } | null>(null);
@@ -246,18 +248,18 @@ export default function DashboardPage() {
             <h3 className="font-semibold mb-2">本周总结</h3>
             <div className="space-y-2 text-sm text-blue-100">
               <div className="flex justify-between">
-                <span>训练完成率</span>
+                <span>t('dashboard.trainingCompletionRate')</span>
                 <span className="font-semibold">87%</span>
               </div>
               <div className="w-full bg-blue-800 rounded-full h-2">
                 <div className="bg-white rounded-full h-2" style={{ width: "87%" }}></div>
               </div>
               <div className="flex justify-between">
-                <span>平均RPE</span>
+                <span>t('dashboard.averageRPE')</span>
                 <span className="font-semibold">7.2/10</span>
               </div>
               <div className="flex justify-between">
-                <span>学员满意度</span>
+                <span>t('dashboard.studentSatisfaction')</span>
                 <span className="font-semibold">4.8/5</span>
               </div>
             </div>

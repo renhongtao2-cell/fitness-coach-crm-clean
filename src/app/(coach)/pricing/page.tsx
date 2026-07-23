@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Check, Star, Zap, Building2, ArrowLeft, CreditCard, Sparkles, Shield, Loader2 } from "lucide-react";
+import { useTranslation } from '@/hooks/use-translation';
 import { showToast } from "@/components/Toast";
 
 function PricingContent() {
@@ -303,7 +304,8 @@ function PricingContent() {
 }
 
 export default function PricingPage() {
-  return (
+    const { t } = useTranslation();
+return (
     <Suspense fallback={<div className="min-h-screen bg-gray-50 flex items-center justify-center"><div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"/></div>}>
       <PricingContent />
     </Suspense>

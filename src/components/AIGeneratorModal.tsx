@@ -18,6 +18,7 @@ interface Coachee {
 }
 
 export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGeneratorModalProps) {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     goals: 'Muscle gain',
     level: 'intermediate',

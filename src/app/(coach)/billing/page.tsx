@@ -3,9 +3,11 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Calendar, CreditCard, Download, Receipt, Loader2 } from "lucide-react";
+import { useTranslation } from '@/hooks/use-translation';
 import { showToast } from "@/components/Toast";
 
 export default function BillingPage() {
+  const { t } = useTranslation();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [subscription, setSubscription] = useState<any>(null);

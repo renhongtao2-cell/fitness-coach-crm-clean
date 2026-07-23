@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Calendar, Plus, Search, Dumbbell, Clock, Target, Sparkles, Edit2, Copy, Trash2 } from "lucide-react";
+import { useTranslation } from '@/hooks/use-translation';
 import AIGeneratorModal from "@/components/AIGeneratorModal";
 import { showToast } from "@/components/Toast";
 
@@ -21,6 +22,7 @@ const levelLabels: Record<string, string> = { beginner: "Beginner", intermediate
 const levelColors: Record<string, string> = { beginner: "bg-green-100 text-green-700", intermediate: "bg-blue-100 text-blue-700", advanced: "bg-purple-100 text-purple-700" };
 
 export default function ProgramsPage() {
+  const { t } = useTranslation();
   const [programs, setPrograms] = useState<Program[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");

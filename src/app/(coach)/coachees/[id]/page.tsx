@@ -2,10 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { ArrowLeft, CheckCircle, XCircle, Clock, Weight, Activity, Calendar, Dumbbell, Target, Users } from "lucide-react";
+import { ArrowLeft, CheckCircle, XCircle, Clock, Weight, Activity, Calendar, Dumbbell, Target, Users } from 'lucide-react'
+import { useTranslation } from '@/hooks/use-translation';;
 import { showToast } from "@/components/Toast";
 
 export default function CoacheeDetailPage() {
+  const { t } = useTranslation();
+  
   const router = useRouter();
   const params = useParams();
   const coacheeId = params?.id as string;
@@ -93,17 +96,17 @@ export default function CoacheeDetailPage() {
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <QuickStat icon={<Users className="w-5 h-5" />} label="Programs" value={programs.length} color="blue" />
-          <QuickStat icon={<CheckCircle className="w-5 h-5" />} label="Training Logs" value={sortedLogs.length} color="green" />
-          <QuickStat icon={<Weight className="w-5 h-5" />} label="Latest Weight" value={sortedMeasurements[0]?.weight || "-"} color="purple" />
-          <QuickStat icon={<Target className="w-5 h-5" />} label="Fitness Level" value={coachee?.fitness_level ? ({ beginner: "Beginner", intermediate: "Intermediate", advanced: "Advanced" } as Record<string, string>)[coachee.fitness_level] || "-" : "-"} color="orange" />
+          <QuickStat icon={<CheckCircle className="w-5 h-5" />} label="t('progress.title')" value={sortedLogs.length} color="green" />
+          <QuickStat icon={<Weight className="w-5 h-5" />} label="t('progress.bodyWeight')" value={sortedMeasurements[0]?.weight || "-"} color="purple" />
+          <QuickStat icon={<Target className="w-5 h-5" />} label="t('coachees.fitnessLevel')" value={coachee?.fitness_level ? ({ beginner: "Beginner", intermediate: "Intermediate", advanced: "Advanced" } as Record<string, string>)[coachee.fitness_level] || "-" : "-"} color="orange" />
         </div>
 
         <div className="flex gap-1 bg-gray-100 rounded-lg p-1 w-fit mb-6">
           {[
-            { key: "info", label: "Basic Info" },
+            { key: "info", label: "t('programs.basicInfo')" },
             { key: "programs", label: "Programs" },
-            { key: "measurements", label: "Body Measurements" },
-            { key: "logs", label: "Training Logs" },
+            { key: "measurements", label: "t('coachees.bodyMeasurement')" },
+            { key: "logs", label: "t('progress.title')" },
           ].map((tab) => (
             <button
               key={tab.key}
@@ -118,15 +121,15 @@ export default function CoacheeDetailPage() {
         {selectedTab === "info" && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
-              <Dumbbell className="w-5 h-5 text-blue-600" />Client Info
+              <Dumbbell className="w-5 h-5 text-blue-600" />t('coachees.profile')
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Field label="Name" value={coachee?.full_name || "-"} />
               <Field label="Email" value={coachee?.email || "-"} />
-              <Field label="Fitness Level" value={coachee?.fitness_level ? ({ beginner: "Beginner", intermediate: "Intermediate", advanced: "Advanced" } as Record<string, string>)[coachee.fitness_level] || "-" : "-"} />
+              <Field label="t('coachees.fitnessLevel')" value={coachee?.fitness_level ? ({ beginner: "Beginner", intermediate: "Intermediate", advanced: "Advanced" } as Record<string, string>)[coachee.fitness_level] || "-" : "-"} />
               <Field label="Goals" value={Array.isArray(coachee?.goals) ? coachee.goals.join(", ") : "-"} />
-              <Field label="Joined Date" value={coachee?.created_at ? new Date(coachee.created_at).toLocaleDateString("zh-CN") : "-"} />
-              <Field label="Assigned Coach" value={programs[0]?.coach_name || "-"} />
+              <Field label="t('coachees.joinDate')" value={coachee?.created_at ? new Date(coachee.created_at).toLocaleDateString("zh-CN") : "-"} />
+              <Field label="t('coachees.assignProgram')" value={programs[0]?.coach_name || "-"} />
             </div>
           </div>
         )}
@@ -215,7 +218,7 @@ export default function CoacheeDetailPage() {
           <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
               <h3 className="font-semibold text-gray-900 flex items-center gap-2">
-                <Clock className="w-5 h-5 text-purple-600" />Training Logs
+                <Clock className="w-5 h-5 text-purple-600" />t('progress.title')
               </h3>
               <span className="text-sm text-gray-500">Total: {sortedLogs.length}</span>
             </div>

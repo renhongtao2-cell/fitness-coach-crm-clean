@@ -2,9 +2,11 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { Send, Search, MessageSquare, User, Loader2, AlertCircle } from 'lucide-react';
+import { useTranslation } from '@/hooks/use-translation';
 import { showToast } from '@/components/Toast';
 
 export default function MessagesPage() {
+  const { t } = useTranslation();
   const [conversations, setConversations] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>('');

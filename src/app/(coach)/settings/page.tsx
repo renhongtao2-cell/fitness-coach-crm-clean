@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Settings as SettingsIcon, User, Bell, Shield, Globe, Save, LogOut, Eye, EyeOff, CheckCircle, AlertCircle, Loader2, Gift, Copy } from 'lucide-react';
+import { useTranslation } from '@/hooks/use-translation';
 import { showToast } from '@/components/Toast';
 
 type NotifState = Record<string, boolean>;
@@ -14,6 +15,7 @@ interface ReferralStats {
 }
 
 export default function SettingsPage() {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('profile');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);

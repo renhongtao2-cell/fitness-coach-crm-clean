@@ -1,9 +1,11 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { TrendingUp, TrendingDown, Weight, Calendar, BarChart3, Users, Download, Dumbbell, Target, Activity, CheckCircle, XCircle } from 'lucide-react';
+import { useTranslation } from '@/hooks/use-translation';
 import { showToast } from '@/components/Toast';
 
 export default function ProgressPage() {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<any>(null);
   const [error, setError] = useState<string>('');
