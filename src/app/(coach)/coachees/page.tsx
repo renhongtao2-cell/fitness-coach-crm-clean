@@ -3,10 +3,11 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Users, Search, Plus, Calendar, Dumbbell, Trash2, ClipboardList, Eye } from 'lucide-react';
+import { useTranslation } from '@/hooks/use-translation';
 import { showToast } from '@/components/Toast';
 
 export default function CoacheesPage() {
-  const router = useRouter();
+  const { t } = useTranslation();  const router = useRouter();
   const [coachees, setCoachees] = useState<any[]>([]);
   const [programs, setPrograms] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -305,7 +306,7 @@ export default function CoacheesPage() {
                   disabled={adding}
                   className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-medium rounded-lg transition"
                 >
-                  {adding ? 'Adding...' : 'Add'}
+                  {adding ? '{t("actions.adding")}' : 'Add'}
                 </button>
                 <button
                   onClick={() => setShowAddModal(false)}
@@ -324,7 +325,7 @@ export default function CoacheesPage() {
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div className="absolute inset-0 bg-black/50" onClick={() => setShowAssignModal(false)} />
             <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 animate-fade-in">
-              <h2 className="text-lg font-bold text-gray-900 mb-1">Assign Programs</h2>
+              <h2 className="text-lg font-bold text-gray-900 mb-1">{t("coachees.assignProgram")}s</h2>
               <p className="text-sm text-gray-500 mb-4">
                 Assign to <span className="font-medium text-gray-700">{selectedCoachee?.full_name || selectedCoachee?.email}</span>
               </p>
@@ -350,7 +351,7 @@ export default function CoacheesPage() {
                   disabled={assigning}
                   className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-medium rounded-lg transition"
                 >
-                  {assigning ? 'Assigning...' : 'Confirm Assignment'}
+                  {assigning ? 'Assigning...' : '{t("coachees.assignProgramConfirm")}'}
                 </button>
                 <button
                   onClick={() => setShowAssignModal(false)}

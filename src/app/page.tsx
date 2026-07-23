@@ -8,6 +8,7 @@ import {
   Play, Calendar, Target, Layers, Globe,
   Menu, X, UserPlus, Building2, Smartphone
 } from 'lucide-react';
+import { useTranslation } from '@/hooks/use-translation';
 import { useState, useEffect, useRef } from 'react';
 
 /* Animated Counter */

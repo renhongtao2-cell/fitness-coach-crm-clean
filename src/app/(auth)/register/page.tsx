@@ -1,14 +1,16 @@
-﻿'use client';
+﻿"use client";
 import { useState, useRef, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/use-auth';
 import { Dumbbell, Mail, Lock, User, Eye, EyeOff, CheckCircle, XCircle, Gift } from 'lucide-react';
+import { useTranslation } from '@/hooks/use-translation';
 
 function RegisterForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { signUp, isLoading: authLoading } = useAuth();
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -40,19 +42,19 @@ function RegisterForm() {
     setSuccess(false);
 
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+      setError(t('auth.passwordsNotMatch'));
       return;
     }
     if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters');
+      setError(t('auth.passwordMinLength'));
       return;
     }
     if (!formData.fullName.trim()) {
-      setError('Please enter your name');
+      setError(t('forms.requiredField'));
       return;
     }
     if (!formData.email.trim() || !formData.email.includes('@')) {
-      setError('Please enter a valid email address');
+      setError(t('forms.invalidEmail'));
       return;
     }
 
@@ -70,7 +72,7 @@ function RegisterForm() {
         }, 1000);
       }
     } catch (err: any) {
-      setError(err.message || 'Registration failed, please try again later');
+      setError(err.message || t('forms.generalError'));
     } finally {
       setSubmitting(false);
     }
@@ -90,8 +92,8 @@ function RegisterForm() {
         <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-600 mb-4">
           <Dumbbell className="w-8 h-8 text-white" />
         </div>
-        <h1 className="text-2xl font-bold text-gray-900">Create Account</h1>
-        <p className="text-gray-500 mt-1">Start managing your clients</p>
+        <h1 className="text-2xl font-bold text-gray-900">{t('register.createAccountTitle')}</h1>
+        <p className="text-gray-500 mt-1">{t('register.startManagingClients')}</p>
       </div>
 
       <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
@@ -99,8 +101,8 @@ function RegisterForm() {
           <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center gap-3">
             <CheckCircle className="w-5 h-5 text-green-500 shrink-0" />
             <div>
-              <div className="font-medium text-green-700">Registration successful!</div>
-              <div className="text-sm text-green-600">Redirecting...</div>
+              <div className="font-medium text-green-700">{t('register.successMessage')}</div>
+              <div className="text-sm text-green-600">{t('actions.redirecting')}</div>
             </div>
           </div>
         )}
@@ -109,7 +111,7 @@ function RegisterForm() {
           <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-3">
             <XCircle className="w-5 h-5 text-red-500 shrink-0" />
             <div>
-              <div className="font-medium text-red-700">Registration Failed</div>
+              <div className="font-medium text-red-700">{t('register.registrationFailed')}</div>
               <div className="text-sm text-red-600">{error}</div>
             </div>
           </div>
@@ -117,29 +119,28 @@ function RegisterForm() {
 
         <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">I am a...</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('register.roleTitle')}</label>
             <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
                 onClick={() => handleChange('role', 'coach')}
                 className={'p-3 border rounded-lg text-center transition ' + (formData.role === 'coach' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-gray-300 hover:border-gray-400')}
               >
-                <div className="font-medium">Fitness Coach</div>
-                <div className="text-xs text-gray-500 mt-0.5">Manage clients</div>
+                <div className="font-medium">{t('register.fitnessCoachLabel')}</div>
+                <div className="text-xs text-gray-500 mt-0.5">{t('register.manageClients')}</div>
               </button>
               <button
                 type="button"
                 onClick={() => handleChange('role', 'client')}
                 className={'p-3 border rounded-lg text-center transition ' + (formData.role === 'client' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-gray-300 hover:border-gray-400')}
               >
-                <div className="font-medium">Fitness Coach</div>
-                <div className="text-xs text-gray-500 mt-0.5">View Training</div>
+                <div className="font-medium">{t('register.viewTrainingLabel')}</div>
               </button>
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Full Name</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('register.fullName')}</label>
             <div className="relative">
               <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
@@ -147,7 +148,7 @@ function RegisterForm() {
                 value={formData.fullName}
                 onChange={(e) => handleChange('fullName', e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                placeholder="Your name"
+                placeholder={t('register.namePlaceholder')}
                 required
                 disabled={isDisabled}
               />
@@ -155,7 +156,7 @@ function RegisterForm() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Email Address</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('auth.email')}</label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
@@ -172,7 +173,7 @@ function RegisterForm() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('auth.password')}</label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
@@ -180,7 +181,7 @@ function RegisterForm() {
                 value={formData.password}
                 onChange={(e) => handleChange('password', e.target.value)}
                 className="w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                placeholder="At least 6 characters"
+                placeholder={t('register.passwordPlaceholderReg')}
                 required
                 autoComplete="new-password"
                 minLength={6}
@@ -198,7 +199,7 @@ function RegisterForm() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Confirm Password</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('register.confirmPasswordInput')}</label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
@@ -206,7 +207,7 @@ function RegisterForm() {
                 value={formData.confirmPassword}
                 onChange={(e) => handleChange('confirmPassword', e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                placeholder="Enter password again"
+                placeholder={t('register.confirmPasswordPlaceholder2')}
                 required
                 autoComplete="new-password"
                 minLength={6}
@@ -219,7 +220,7 @@ function RegisterForm() {
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1.5 flex items-center gap-1.5">
               <Gift className="w-4 h-4 text-blue-500" />
-              Referral Code (optional)
+              {t('register.referralCodeLabel')}
             </label>
             <div className="relative">
               <Gift className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -233,7 +234,7 @@ function RegisterForm() {
                 disabled={isDisabled}
               />
             </div>
-            <p className="text-xs text-gray-400 mt-1">Enter referral code if you have one to get extra benefits</p>
+            <p className="text-xs text-gray-400 mt-1">{t('register.referralCodeHint')}</p>
           </div>
 
           <button
@@ -241,26 +242,25 @@ function RegisterForm() {
             disabled={isDisabled}
             className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed text-white font-medium rounded-lg transition flex items-center justify-center gap-2"
           >
-            {submitting ? 'Creating...' : success ? 'Success' : 'Create Account'}
+            {submitting ? t('register.submittingRegister') : t('register.createAccountSubmit')}
           </button>
         </form>
 
         <div className="mt-6 text-center text-sm">
-          <span className="text-gray-500">Already have an account?</span>{' '}
-          <Link href="/login" className="text-blue-600 hover:text-blue-700">Sign In</Link>
+          <span className="text-gray-500">{t('auth.noAccount')}</span>{' '}
+          <Link href="/register" className="text-blue-600 hover:text-blue-700">{t('auth.createAccount')}</Link>
         </div>
       </div>
 
-      <p className="text-center text-xs text-gray-400 mt-6">© 2024 FitCoach CRM. All rights reserved.</p>
+      <p className="text-center text-xs text-gray-400 mt-6">© 2024 FitCoach CRM. {t('footer.rightsReserved')}</p>
     </div>
   );
 }
 
 export default function RegisterPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-gray-50 flex items-center justify-center"><div className="text-center"><div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" /><p className="text-gray-600">Loading...</p></div></div>}>
+    <Suspense>
       <RegisterForm />
     </Suspense>
   );
 }
-

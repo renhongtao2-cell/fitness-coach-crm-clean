@@ -4,10 +4,12 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/use-auth';
 import { Dumbbell, Mail, Lock, Eye, EyeOff, XCircle } from 'lucide-react';
+import { useTranslation } from '@/hooks/use-translation';
 
 export default function LoginPage() {
   const router = useRouter();
   const { signIn, isLoading: authLoading, error: authError } = useAuth();
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -26,7 +28,7 @@ export default function LoginPage() {
         router.push('/dashboard');
       }
     } catch (err: any) {
-      setLocalError(err.message || 'Sign In Failed, please check email and password');
+      setLocalError(err.message || t('auth.signInFailed'));
     } finally {
       setSubmitting(false);
     }
@@ -45,8 +47,8 @@ export default function LoginPage() {
         <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-600 mb-4">
           <Dumbbell className="w-8 h-8 text-white" />
         </div>
-        <h1 className="text-2xl font-bold text-gray-900">Welcome Back</h1>
-        <p className="text-gray-500 mt-1">Sign in to your coach account</p>
+        <h1 className="text-2xl font-bold text-gray-900">{t('auth.welcomeBack')}</h1>
+        <p className="text-gray-500 mt-1">{t('auth.signInTitle')}</p>
       </div>
 
       <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
@@ -54,7 +56,7 @@ export default function LoginPage() {
           <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-3">
             <XCircle className="w-5 h-5 text-red-500 shrink-0" />
             <div>
-              <div className="font-medium text-red-700">Sign In Failed</div>
+              <div className="font-medium text-red-700">{t('auth.signInFailed')}</div>
               <div className="text-sm text-red-600">{localError || authError}</div>
             </div>
           </div>
@@ -62,7 +64,7 @@ export default function LoginPage() {
 
         <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Email Address</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('auth.email')}</label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input type="email" value={formData.email} onChange={(e) => handleChange('email', e.target.value)} className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="you@example.com" required autoComplete="email" disabled={isDisabled} />
@@ -70,10 +72,10 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('auth.password')}</label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input type={showPassword ? 'text' : 'password'} value={formData.password} onChange={(e) => handleChange('password', e.target.value)} className="w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Your password" required autoComplete="current-password" disabled={isDisabled} />
+              <input type={showPassword ? 'text' : 'password'} value={formData.password} onChange={(e) => handleChange('password', e.target.value)} className="w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder={t('auth.passwordPlaceholder')} required autoComplete="current-password" disabled={isDisabled} />
               <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600" disabled={isDisabled}>
                 {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
               </button>
@@ -81,21 +83,21 @@ export default function LoginPage() {
           </div>
 
           <div className="text-right">
-            <Link href="/forgot-password" className="text-sm text-blue-600 hover:text-blue-700">Forgot Password?</Link>
+            <Link href="/forgot-password" className="text-sm text-blue-600 hover:text-blue-700">{t('auth.forgotPassword')}</Link>
           </div>
 
           <button type="submit" disabled={isDisabled} className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed text-white font-medium rounded-lg transition flex items-center justify-center gap-2">
-            {submitting ? 'Signing in...' : 'Sign In'}
+            {submitting ? t('auth.signingIn') : t('auth.signUp')}
           </button>
         </form>
 
         <div className="mt-6 text-center text-sm">
-          <span className="text-gray-500">Don't have an account?</span>{' '}
-          <Link href="/register" className="text-blue-600 hover:text-blue-700">Sign Up for Free</Link>
+          <span className="text-gray-500">{t('auth.noAccount')}</span>{' '}
+          <Link href="/register" className="text-blue-600 hover:text-blue-700">{t('auth.createAccount')}</Link>
         </div>
       </div>
 
-      <p className="text-center text-xs text-gray-400 mt-6">© 2024 FitCoach CRM. All rights reserved.</p>
+      <p className="text-center text-xs text-gray-400 mt-6">© 2024 FitCoach CRM. {t('footer.rightsReserved')}</p>
     </div>
   );
 }

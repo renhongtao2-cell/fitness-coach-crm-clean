@@ -39,6 +39,10 @@ export default function DashboardPage() {
     fetchCurrentUser();
   }, []);
 
+  useEffect(() => {
+    fetchReferralData();
+  }, []);
+
   const fetchCurrentUser = async () => {
     try {
       const res = await fetch('/api/auth/me');
@@ -60,6 +64,9 @@ export default function DashboardPage() {
     fetchSystemStats();
   }, []);
 
+  useEffect(() => {
+    fetchReferralData();
+  }, []);
 
   const fetchReferralData = async () => {
     try {
