@@ -22,7 +22,31 @@ interface BlogPost {
 }
 
 const blogPosts: BlogPost[] = [
+  
   {
+    id: "ai-workout-plan-guide",
+    title: "The Ultimate Guide to AI Workout Plans in 2026 (Free Template Included)",
+    excerpt: "A complete step-by-step framework for creating personalized AI workout plans that deliver real results. Includes before/after examples.",
+    category: "Training Guide",
+    author: "FitCoach Team",
+    date: "2026-07-25",
+    readTime: "10 min read",
+    image: "",
+    tags: ["AI workout plans", "personalized training", "workout program design"],
+    slug: "ai-workout-plan-guide"
+  },
+  {
+    id: "personal-trainer-business-guide",
+    title: "How to Start a Personal Training Business in 2026 (Complete Blueprint)",
+    excerpt: "The complete blueprint from zero to $10K/month — using AI tools and smart systems that most trainers don't know about yet.",
+    category: "Business Blueprint",
+    author: "FitCoach Team",
+    date: "2026-07-25",
+    readTime: "12 min read",
+    image: "",
+    tags: ["personal training business", "fitness entrepreneur", "start coaching business"],
+    slug: "personal-trainer-business-guide"
+  },{
     id: "ai-training-plans",
     title: "How AI is Revolutionizing Personal Training Programs",
     excerpt: "Discover how artificial intelligence is transforming the way fitness coaches create personalized training programs for their clients.",
@@ -175,6 +199,7 @@ export default function BlogPage() {
     </div>
   );
 }
+
 
 
 
