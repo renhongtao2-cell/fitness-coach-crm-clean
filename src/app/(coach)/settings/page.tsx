@@ -453,13 +453,21 @@ export default function SettingsPage() {
                 </div>
               </div>
               <div>
-                <h3 className="font-medium text-gray-900 mb-3">Language</h3>
+                <h3 className="font-medium text-gray-900 mb-3">{t('appearanceTab.language')}</h3>
                 <select
                   value={language}
                   onChange={(e) => setLanguage(e.target.value)}
                   className="px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none w-full sm:w-64"
                 >
-                  <option value="zh-CN">Simplified Chinese</option>
+                  <option value="zh-CN">简体中文</option>
+                  <option value="ja-JP">日本語</option>
+                  <option value="ko-KR">한국어</option>
+                  <option value="es-ES">Español</option>
+                  <option value="fr-FR">Français</option>
+                  <option value="de-DE">Deutsch</option>
+                  <option value="pt-BR">Português (Brasil)</option>
+                  <option value="ar-SA">العربية</option>
+                  <option value="hi-IN">हिन्दी</option>
                   <option value="en-US">English</option>
                 </select>
               </div>
