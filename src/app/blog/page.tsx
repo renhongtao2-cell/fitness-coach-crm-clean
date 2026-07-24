@@ -9,6 +9,7 @@ export const metadata: Metadata = {
 };
 
 interface BlogPost {
+  slug?: string;
   id: string;
   title: string;
   excerpt: string;
@@ -58,7 +59,7 @@ const blogPosts: BlogPost[] = [
 
 function BlogPostCard({ post }: { post: BlogPost }) {
   return (
-    <Link href={`/blog/${post.id}`} className="group block bg-white rounded-2xl border border-gray-100 hover:border-gray-200 hover:shadow-xl transition-all overflow-hidden">
+    <Link href={post.slug ? `/blog/${post.slug}` : `#${post.id}`} className="group block bg-white rounded-2xl border border-gray-100 hover:border-gray-200 hover:shadow-xl transition-all overflow-hidden">
       <div className="h-48 bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
         <div className="text-center">
           <Brain className="w-12 h-12 text-blue-600 mx-auto mb-2" />
@@ -133,7 +134,7 @@ export default function BlogPage() {
           <h2 className="text-3xl font-bold text-gray-900 mb-8">Latest Articles</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {blogPosts.map((post) => (
-              <BlogPostCard key={post.id} post={post} />
+              <BlogPostCard key={post.slug ? `/blog/${post.slug}` : `#${post.id}`} post={post} />
             ))}
           </div>
         </section>
@@ -174,3 +175,8 @@ export default function BlogPage() {
     </div>
   );
 }
+
+
+
+
+
