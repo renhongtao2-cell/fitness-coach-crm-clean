@@ -2,10 +2,7 @@
 Allow: /
 
 # Sitemap
-Sitemap: https://fitcoach.app/sitemap.xml
-
-# Crawl-delay for polite crawling
-Crawl-delay: 1
+Sitemap: https://fitness-coach-crm-five.vercel.app/sitemap.xml
 
 # Disallow admin/auth routes
 Disallow: /api/
