@@ -306,9 +306,10 @@ export default function Home() {
   const navLinks = [
     { label: 'Features', href: '#features' },
     { label: 'How It Works', href: '#how-it-works' },
-    { label: 'Pricing', href: '#pricing' },
+    { label: 'Pricing', href: '/pricing' },
     { label: 'Testimonials', href: '#testimonials' },
     { label: 'FAQ', href: '#faq' },
+    { label: '🎉 Promo', href: '/promo' },
   ];
 
   const features = [
@@ -705,3 +706,4 @@ export default function Home() {
     </div>
   );
 }
+

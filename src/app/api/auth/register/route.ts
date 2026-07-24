@@ -1,6 +1,11 @@
 ﻿import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/server";
 
+const PROMOTION_LIMIT = parseInt(process.env.PROMOTION_LIMIT || "100");
+const PROMOTION_PLAN = "basic";
+const PROMOTION_MONTHS = 3;
+const PROMOTION_PRICE = 29;
+
 export async function POST(request: NextRequest) {
   try {
     const { email, password, fullName, role, referralCode } = await request.json();
@@ -50,7 +55,6 @@ export async function POST(request: NextRequest) {
     // Step 2: Create profile using admin supabase client
     const adminSupabase = await createAdminClient();
 
-    // Try insert first
     let { error: profileError } = await adminSupabase
       .from("profiles")
       .insert({
@@ -60,7 +64,6 @@ export async function POST(request: NextRequest) {
         role,
       });
 
-    // If insert failed (duplicate), try update
     if (profileError) {
       console.log("Insert failed, trying update:", profileError);
       const { error: updateError } = await adminSupabase
@@ -77,14 +80,11 @@ export async function POST(request: NextRequest) {
     if (referralCode) {
       try {
         const normalizedCode = referralCode.trim().toUpperCase();
-
-        // Look up the referral code and get the owner
         const { data: codeRecord } = await adminSupabase
           .from("referral_codes")
           .select("owner_id, code")
           .eq("code", normalizedCode)
           .single();
-
         if (codeRecord) {
           await adminSupabase.from("referrals").insert({
             referrer_id: codeRecord.owner_id,
@@ -97,6 +97,36 @@ export async function POST(request: NextRequest) {
       } catch (referralErr) {
         console.error("Referral processing error (non-fatal):", referralErr);
       }
+    }
+
+    // Step 2.6: Promotion - First N registrations get free basic plan for 3 months
+    try {
+      const { count, error: countError } = await adminSupabase
+        .from("profiles")
+        .select("*", { count: "exact", head: true });
+
+      if (countError) {
+        console.error("Count error:", countError);
+      } else if (count !== null && count <= PROMOTION_LIMIT) {
+        const periodEnd = new Date();
+        periodEnd.setMonth(periodEnd.getMonth() + PROMOTION_MONTHS);
+
+        await adminSupabase.from("subscriptions").insert({
+          user_id: userId,
+          status: "active",
+          plan_type: PROMOTION_PLAN,
+          stripe_subscription_id: null,
+          stripe_customer_id: null,
+          stripe_current_period_end: periodEnd.toISOString(),
+          amount_cents: PROMOTION_PRICE * 100,
+          currency: "usd",
+          promo_note: `Launch Promo: First ${PROMOTION_LIMIT} users get ${PROMOTION_MONTHS} months of Basic ($${PROMOTION_PRICE}/mo plan)`,
+          updated_at: new Date().toISOString(),
+        });
+        console.log(`[Promo] User ${userId} (${email}) is #${count} - granted ${PROMOTION_MONTHS} months Basic plan`);
+      }
+    } catch (promoErr) {
+      console.error("Promotion processing error (non-fatal):", promoErr);
     }
 
     // Step 3: Sign in to get session
