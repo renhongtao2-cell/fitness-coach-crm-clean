@@ -9,7 +9,7 @@ import {
   Menu, X, UserPlus, Building2, Smartphone
 } from 'lucide-react';
 import { useTranslation } from '@/hooks/use-translation';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from "react";
 
 /* Animated Counter */
 function AnimatedNumber(props) {
@@ -290,6 +290,10 @@ function PricingCard({ tier, billingCycle, onUpgrade }) {
 /* ===== MAIN PAGE ===== */
 export default function Home() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { t, setLanguage, language } = useTranslation();
+  const [showLangPicker, setShowLangPicker] = useState(false);
+  const langMap = { "en-US": "English", "zh-CN": "简体中文", "ja-JP": "日本語", "ko-KR": "한국어", "es-ES": "Español", "fr-FR": "Français", "de-DE": "Deutsch", "pt-BR": "Português (Brasil)", "ar-SA": "العربية", "hi-IN": "हिन्दी" };
+  const selectedLangName = langMap[language] || "English";
   const [billing, setBilling] = useState('monthly');
   const [scrolled, setScrolled] = useState(false);
 
@@ -363,6 +367,20 @@ export default function Home() {
             })}
           </div>
           <div className="hidden lg:flex items-center gap-3">
+            <button onClick={() => setShowLangPicker(!showLangPicker)} className="px-3 py-2.5 text-sm font-medium text-gray-700 hover:text-blue-600 transition flex items-center gap-1 rounded-lg hover:bg-gray-50 relative">
+              <Globe className="w-4 h-4" />
+              {selectedLangName === "English" ? "EN" : selectedLangName.length > 4 ? selectedLangName.substring(0,3) : selectedLangName}
+              {showLangPicker && (
+                <div className="absolute right-0 top-full mt-2 bg-white border border-gray-200 rounded-xl shadow-xl p-2 z-50 w-52">
+                  {Object.entries(langMap).map(([code, name]) => (
+                    <button key={code} onClick={() => { setLanguage(code as any); setShowLangPicker(false); }}
+                      className={"w-full text-left px-3 py-2 text-sm rounded-lg transition " + (language === code ? "bg-blue-50 text-blue-700 font-medium" : "text-gray-700 hover:bg-gray-50")}>
+                      {name}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </button>
             <Link href="/login" className="px-5 py-2.5 text-sm font-medium text-gray-700 hover:text-blue-600 transition">Sign In</Link>
             <Link href="/register" className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-sm font-semibold rounded-xl transition-all shadow-lg shadow-blue-200 hover:shadow-xl hover:scale-105 flex items-center gap-1">
               Start Free <ArrowRight className="w-4 h-4" />
@@ -378,6 +396,7 @@ export default function Home() {
               return <a key={link.label} href={link.href} onClick={() => setMobileOpen(false)} className="block px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-xl">{link.label}</a>;
             })}
             <div className="pt-2 border-t border-gray-100 flex gap-2">
+              <button onClick={() => setMobileOpen(false)} className="block w-full text-left px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-xl cursor-pointer">{selectedLangName}</button>
               <Link href="/login" onClick={() => setMobileOpen(false)} className="flex-1 px-4 py-3 text-center text-sm font-medium text-gray-700 bg-gray-50 rounded-xl">Sign In</Link>
               <Link href="/register" onClick={() => setMobileOpen(false)} className="flex-1 px-4 py-3 text-center text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl">Start Free</Link>
             </div>
