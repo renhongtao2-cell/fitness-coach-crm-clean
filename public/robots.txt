@@ -1,0 +1,26 @@
+﻿User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://fitcoach.app/sitemap.xml
+
+# Crawl-delay for polite crawling
+Crawl-delay: 1
+
+# Disallow admin/auth routes
+Disallow: /api/
+Disallow: /dashboard/
+Disallow: /coachees/
+Disallow: /programs/
+Disallow: /progress/
+Disallow: /messages/
+Disallow: /settings/
+Disallow: /billing/
+Disallow: /client/
+
+# Allow public pages
+Allow: /pricing
+Allow: /faq
+Allow: /blog
+Allow: /login
+Allow: /register
