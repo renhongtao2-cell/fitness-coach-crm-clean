@@ -82,7 +82,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: "your-google-verification-code",
+    google: "757wpQShfL4xbnKRqb4mRHek-7z8O9XErpm2k6XpWHM",
     // Add other verifications as needed:
     // yandex: "your-yandex-code",
     // yahoo: "your-yahoo-code",
