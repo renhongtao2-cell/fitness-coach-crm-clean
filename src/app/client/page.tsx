@@ -2,13 +2,15 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Dumbbell } from "lucide-react";
+import { Dumbbell, TrendingUp, Target, MessageSquare, Calendar, Activity, ChevronRight, Trophy, CheckCircle } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
-import { TranslationProvider, useTranslation } from '@/hooks/use-translation';
 
 export default function ClientPage() {
   const { user, signOut } = useAuth();
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const [dashboardData, setDashboardData] = useState<any>(null);
+  const [activeTab, setActiveTab] = useState<"overview" | "program" | "progress" | "messages">("overview");
 
   useEffect(() => {
     if (user?.role !== "client") {
@@ -16,33 +18,448 @@ export default function ClientPage() {
     }
   }, [user, router]);
 
-  if (!user) return null;
+  useEffect(() => {
+    if (user) fetchDashboard();
+  }, [user]);
+
+  const fetchDashboard = async () => {
+    try {
+      const res = await fetch("/api/client/home");
+      if (res.ok) {
+        const data = await res.json();
+        setDashboardData(data);
+      }
+    } catch (e) {
+      console.error("Failed to load dashboard:", e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (!user || loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <Dumbbell className="w-12 h-12 text-blue-600 mx-auto mb-4 animate-pulse" />
+          <p className="text-gray-500">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <TranslationProvider>
-      <ClientContent user={user} signOut={signOut} />
-    </TranslationProvider>
-  );
-}
-
-function ClientContent({ user, signOut }) {
-  const { t } = useTranslation();
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      {/* Header */}
+      <header className="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Dumbbell className="w-6 h-6 text-blue-600" />
-            <h1 className="text-xl font-bold">{t("common.appName")}</h1>
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center">
+              <Dumbbell className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <h1 className="text-lg font-bold text-gray-900">FitCoach</h1>
+              <p className="text-xs text-gray-500">My Training Dashboard</p>
+            </div>
           </div>
-          <button onClick={() => signOut()} className="text-sm text-gray-600 hover:text-gray-900">
-            {t("sidebar.signOutTitle")}
+          <button onClick={() => signOut()} className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-red-600 transition-colors">
+            Sign Out
           </button>
         </div>
       </header>
-      <main className="max-w-7xl mx-auto px-4 py-8">
-        <p className="text-gray-600">{t("dashboard.welcomeBack")}, {user.fullName || user.email}!</p>
+
+      {/* Welcome Banner */}
+      <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white py-8">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-2xl md:text-3xl font-bold mb-2">
+                Welcome back, {user.fullName || "Athlete"}! 👋
+              </h2>
+              <p className="text-blue-100 max-w-xl">
+                Ready for today&apos;s workout? Your coach &apos;s program is waiting. Keep pushing your limits!
+              </p>
+            </div>
+            <div className="hidden md:block">
+              <Trophy className="w-16 h-16 text-yellow-300 opacity-50 rotate-12" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Quick Stats */}
+      <div className="max-w-7xl mx-auto px-4 -mt-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {[
+            { icon: Activity, label: "Workouts Done", value: dashboardData?.completedWorkouts || "--", color: "text-blue-600" },
+            { icon: TrendingUp, label: "Current Streak", value: dashboardData?.streak || "-- days", color: "text-green-600" },
+            { icon: Target, label: "Program Progress", value: dashboardData?.programProgress || "0%", color: "text-purple-600" },
+            { icon: Calendar, label: "Next Session", value: dashboardData?.nextSession || "TBA", color: "text-orange-600" },
+          ].map((stat, i) => (
+            <div key={i} className="bg-white rounded-2xl p-4 shadow-lg border border-gray-100">
+              <div className="flex items-center gap-2 mb-2">
+                <stat.icon className={`w-5 h-5 ${stat.color}`} />
+                <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">{stat.label}</span>
+              </div>
+              <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Tab Navigation */}
+      <div className="max-w-7xl mx-auto px-4 mt-8">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-2 flex gap-1 overflow-x-auto">
+          {(
+            [
+              { id: "overview", label: "Overview", icon: TrendingUp },
+              { id: "program", label: "Training Program", icon: Dumbbell },
+              { id: "progress", label: "My Progress", icon: Target },
+              { id: "messages", label: "Messages", icon: MessageSquare },
+            ] as const
+          ).map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all whitespace-nowrap ${
+                activeTab === tab.id
+                  ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md"
+                  : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+              }`}
+            >
+              <tab.icon className="w-4 h-4" />
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Tab Content */}
+      <main className="max-w-7xl mx-auto px-4 py-6 space-y-6">
+        {activeTab === "overview" && <OverviewTab data={dashboardData} />}
+        {activeTab === "program" && <ProgramTab data={dashboardData} />}
+        {activeTab === "progress" && <ProgressTab data={dashboardData} />}
+        {activeTab === "messages" && <MessagesTab userId={user.id} />}
       </main>
+    </div>
+  );
+}
+
+/* ===== OVERVIEW TAB ===== */
+function OverviewTab({ data }: { data: any }) {
+  return (
+    <>
+      {/* Current Program Card */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Dumbbell className="w-6 h-6 text-white" />
+            <h3 className="text-lg font-bold text-white">Your Training Program</h3>
+          </div>
+          <span className="text-sm bg-white/20 text-white px-3 py-1 rounded-full">
+            Week 1 / 12
+          </span>
+        </div>
+        <div className="p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h4 className="font-semibold text-gray-900 text-lg">Push/Pull/Legs (PPL)</h4>
+              <p className="text-sm text-gray-500">Hypertrophy • Intermediate Level</p>
+            </div>
+            <ChevronRight className="w-5 h-5 text-gray-400" />
+          </div>
+          <div className="space-y-3">
+            <div>
+              <div className="flex justify-between text-sm mb-1">
+                <span className="text-gray-600">Program Progress</span>
+                <span className="font-semibold text-gray-900">8%</span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2.5">
+                <div className="bg-gradient-to-r from-blue-500 to-purple-500 h-2.5 rounded-full" style={{ width: "8%" }} />
+              </div>
+            </div>
+            <div className="grid grid-cols-3 gap-3 pt-2">
+              <div className="bg-blue-50 rounded-xl p-3 text-center">
+                <p className="text-2xl font-bold text-blue-600">6</p>
+                <p className="text-xs text-gray-600">Workouts/Week</p>
+              </div>
+              <div className="bg-green-50 rounded-xl p-3 text-center">
+                <p className="text-2xl font-bold text-green-600">48</p>
+                <p className="text-xs text-gray-600">Exercise Sets</p>
+              </div>
+              <div className="bg-purple-50 rounded-xl p-3 text-center">
+                <p className="text-2xl font-bold text-purple-600">12</p>
+                <p className="text-xs text-gray-600">Weeks Total</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Today's Task */}
+      <div className="bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-200 rounded-2xl p-6">
+        <div className="flex items-center gap-3 mb-4">
+          <CheckCircle className="w-6 h-6 text-green-600" />
+          <h3 className="text-lg font-bold text-gray-900">Today&apos;s Workout</h3>
+        </div>
+        <div className="bg-white rounded-xl p-4">
+          <div className="flex items-center justify-between mb-3">
+            <h4 className="font-semibold text-gray-900">Day 1 — Chest &amp; Triceps Push</h4>
+            <span className="text-xs font-medium text-green-600 bg-green-100 px-2 py-1 rounded-full">In Progress</span>
+          </div>
+          <ul className="space-y-2">
+            {[
+              { name: "Barbell Bench Press", sets: "4x12", reps: "225 lbs" },
+              { name: "Incline Dumbbell Press", sets: "3x15", reps: "50 lbs each" },
+              { name: "Cable Fly", sets: "3x15", reps: "30 lbs" },
+              { name: "Tricep Rope Pushdown", sets: "3x15", reps: "40 lbs" },
+            ].map((ex, i) => (
+              <li key={i} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
+                <span className="text-sm text-gray-700">{ex.name}</span>
+                <div className="text-right">
+                  <span className="text-sm font-medium text-blue-600">{ex.sets}</span>
+                  <span className="text-xs text-gray-400 ml-2">{ex.reps}</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <button className="w-full mt-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition-all">
+            Log My Workout →
+          </button>
+        </div>
+      </div>
+
+      {/* Coach Messages Preview */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-bold text-gray-900">Recent Messages from Coach</h3>
+          <ChevronRight className="w-5 h-5 text-gray-400" />
+        </div>
+        <div className="space-y-3">
+          {[
+            { from: "Coach Mike", time: "2 hours ago", msg: "Great work on your leg day this week! Let\'s push harder next time.", unread: true },
+            { from: "Coach Mike", time: "1 day ago", msg: "Make sure you get at least 7 hours of sleep before tomorrow\'s workout.", unread: false },
+          ].map((msg, i) => (
+            <div key={i} className={`flex items-start gap-3 p-4 rounded-xl border ${msg.unread ? "bg-blue-50 border-blue-200" : "bg-gray-50 border-gray-100"}`}>
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold ${msg.unread ? "bg-blue-500" : "bg-gray-400"}`}>
+                M
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className="font-medium text-gray-900">{msg.from}</span>
+                  {msg.unread && <span className="w-2 h-2 bg-blue-500 rounded-full" />}
+                </div>
+                <p className="text-sm text-gray-600 mt-1 line-clamp-2">{msg.msg}</p>
+                <p className="text-xs text-gray-400 mt-1">{msg.time}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* ===== PROGRAM TAB ===== */
+function ProgramTab({ data }: { data: any }) {
+  const weeks = Array.from({ length: 12 }, (_, i) => ({
+    num: i + 1,
+    label: `Week ${i + 1}`,
+    done: i === 0 ? false : i <= 8,
+    current: i === 0,
+    locked: i > 1,
+  }));
+
+  return (
+    <div className="space-y-6">
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <h3 className="text-xl font-bold text-gray-900 mb-2">📋 12-Week PPL Program</h3>
+        <p className="text-gray-500 mb-6">Push / Pull / Legs split with progressive overload</p>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+          {weeks.map((week) => (
+            <div
+              key={week.num}
+              className={`rounded-xl p-3 text-center text-sm font-medium border-2 transition-all cursor-pointer ${
+                week.locked
+                  ? "bg-gray-50 border-gray-100 text-gray-300"
+                  : week.current
+                    ? "bg-gradient-to-br from-blue-50 to-purple-50 border-blue-500 text-blue-700 shadow-md"
+                    : "bg-green-50 border-green-300 text-green-700"
+              }`}
+            >
+              <p className="text-lg">{week.num}</p>
+              <p className="text-[10px] uppercase tracking-wide opacity-70">Week</p>
+              {week.done && <CheckCircle className="w-4 h-4 text-green-500 mx-auto mt-1" />}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Today's Exercises Detail */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <h3 className="text-lg font-bold text-gray-900 mb-4">Today&apos;s Exercise List</h3>
+        <div className="space-y-4">
+          {[
+            { name: "Barbell Bench Press", muscle: "Chest", sets: "4", reps: "12", rest: "90s", image: "🏋️" },
+            { name: "Incline DB Press", muscle: "Upper Chest", sets: "3", reps: "15", rest: "75s", image: "💪" },
+            { name: "Cable Fly", muscle: "Chest", sets: "3", reps: "15", rest: "60s", image: "🔥" },
+            { name: "Dips", muscle: "Chest/Triceps", sets: "3", reps: "Bodyweight", rest: "90s", image: "⚡" },
+            { name: "Tricep Pushdown", muscle: "Triceps", sets: "3", reps: "15", rest: "60s", image: "💥" },
+          ].map((ex, i) => (
+            <div key={i} className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl">
+              <span className="text-2xl">{ex.image}</span>
+              <div className="flex-1">
+                <h4 className="font-semibold text-gray-900">{ex.name}</h4>
+                <p className="text-sm text-gray-500">{ex.muscle}</p>
+              </div>
+              <div className="text-right">
+                <div className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                  <span>{ex.sets}×{ex.reps}</span>
+                </div>
+                <p className="text-xs text-gray-400">Rest: {ex.rest}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <button className="w-full mt-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3.5 rounded-xl font-semibold hover:shadow-xl transition-all text-lg">
+          ✅ Mark Workout Complete
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ===== PROGRESS TAB ===== */
+function ProgressTab({ data }: { data: any }) {
+  return (
+    <div className="space-y-6">
+      {/* Body Measurements Snapshot */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <h3 className="text-lg font-bold text-gray-900 mb-4">📊 Body Measurements</h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[
+            { label: "Weight", value: "175 lbs", change: "-3.2 lbs", color: "text-blue-600", bg: "bg-blue-50" },
+            { label: "Body Fat %", value: "14.5%", change: "-1.1%", color: "text-green-600", bg: "bg-green-50" },
+            { label: "Chest", value: "41.2\"", change: "+0.3\"", color: "text-purple-600", bg: "bg-purple-50" },
+            { label: "Waist", value: "33.5\"", change: "-0.8\"", color: "text-orange-600", bg: "bg-orange-50" },
+          ].map((m, i) => (
+            <div key={i} className={`${m.bg} rounded-xl p-4`}>
+              <p className="text-sm text-gray-500 mb-1">{m.label}</p>
+              <p className={`text-2xl font-bold ${m.color}`}>{m.value}</p>
+              <p className="text-xs text-gray-500 mt-1">
+                {m.change.startsWith("+") ? "↑" : "↓"} {m.change}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Weekly Summary */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <h3 className="text-lg font-bold text-gray-900 mb-4">📅 This Week Summary</h3>
+        <div className="grid grid-cols-7 gap-2">
+          {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day, i) => (
+            <div
+              key={i}
+              className={`rounded-xl p-3 text-center text-sm font-medium ${
+                i <= 3
+                  ? "bg-gradient-to-b from-green-100 to-green-50 border border-green-200 text-green-700"
+                  : "bg-gray-50 border border-gray-100 text-gray-300"
+              }`}
+            >
+              <p>{day}</p>
+              <div className="text-xl my-2">{i <= 3 ? "✅" : "⬜"}</div>
+              <p className="text-[10px]">
+                {i <= 3 ? `${[30,45,60,30][i]} min` : "No workout"}
+              </p>
+            </div>
+          ))}
+        </div>
+        <div className="mt-6 flex items-center justify-between p-4 bg-purple-50 rounded-xl border border-purple-200">
+          <div>
+            <p className="text-sm text-gray-600">This Week</p>
+            <p className="text-2xl font-bold text-purple-700">4 / 6 workouts</p>
+          </div>
+          <div className="text-right">
+            <p className="text-sm text-gray-600">Completion Rate</p>
+            <p className="text-2xl font-bold text-purple-700">67%</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Personal Records */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <h3 className="text-lg font-bold text-gray-900 mb-4">🏆 Personal Records</h3>
+        <div className="space-y-3">
+          {[
+            { lift: "Bench Press", pr: "245 lbs", date: "July 15", icon: "🥇" },
+            { lift: "Squat", pr: "315 lbs", date: "June 28", icon: "🥈" },
+            { lift: "Deadlift", pr: "405 lbs", date: "May 12", icon: "🥉" },
+            { lift: "Overhead Press", pr: "135 lbs", date: "July 20", icon: "⭐" },
+          ].map((pr, i) => (
+            <div key={i} className="flex items-center gap-4 p-3 bg-gray-50 rounded-xl">
+              <span className="text-xl">{pr.icon}</span>
+              <div className="flex-1">
+                <p className="font-semibold text-gray-900">{pr.lift}</p>
+                <p className="text-xs text-gray-400">{pr.date}</p>
+              </div>
+              <span className="text-xl font-bold text-purple-600">{pr.pr}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ===== MESSAGES TAB ===== */
+function MessagesTab({ userId }: { userId: string }) {
+  const [messages, setMessages] = useState([
+    { id: 1, from: "Coach Mike", time: "2 hours ago", body: "Hey! Great job on your bench press today. You hit 225 for 12 reps like a champ. Keep it up!", isRead: false },
+    { id: 2, from: "Coach Mike", time: "Yesterday", body: "Don\'t forget to stretch after every workout session. Recovery is just as important as training. 💪", isRead: true },
+    { id: 3, from: "Coach Mike", time: "3 days ago", body: "Your form on deadlifts has improved significantly. I can see the progress you\'ve made over these weeks.", isRead: true },
+  ]);
+
+  return (
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+      <div className="p-6 border-b border-gray-100">
+        <h3 className="text-lg font-bold text-gray-900">💬 Messages with Coach</h3>
+        <p className="text-sm text-gray-500">Chat about your training, diet, and progress</p>
+      </div>
+
+      <div className="divide-y divide-gray-100 max-h-[600px] overflow-y-auto">
+        {messages.map((msg) => (
+          <div key={msg.id} className={`p-6 ${msg.isRead ? "bg-white" : "bg-blue-50"}`}>
+            <div className="flex items-start gap-3">
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold shrink-0 ${msg.isRead ? "bg-gray-400" : "bg-blue-500"}`}>
+                M
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="font-semibold text-gray-900">{msg.from}</span>
+                  {!msg.isRead && <span className="w-2 h-2 bg-blue-500 rounded-full" />}
+                </div>
+                <p className="text-gray-600 leading-relaxed">{msg.body}</p>
+                <p className="text-xs text-gray-400 mt-2">{msg.time}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Compose Box */}
+      <div className="p-4 border-t border-gray-100 bg-gray-50">
+        <div className="flex gap-3">
+          <input
+            type="text"
+            placeholder="Type a message..."
+            className="flex-1 px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+          />
+          <button className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:shadow-lg transition-all">
+            Send
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
