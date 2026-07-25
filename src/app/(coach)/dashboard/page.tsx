@@ -144,6 +144,7 @@ const [stats, setStats] = useState({ activeCoachees: 0, weeklyWorkouts: 0, progr
               <button onClick={handleCopyReferral} className="p-2 hover:bg-white/30 rounded-lg transition" title="Copy">
                 {copied ? <CheckCircle className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
               </button>
+              <a href="/register" className="px-3 py-1 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg text-xs font-semibold transition text-white">Sign Up</a>
             </div>
           </div>
           {referralStats && (referralStats.converted > 0 || referralStats.rewardMonths > 0) && (
