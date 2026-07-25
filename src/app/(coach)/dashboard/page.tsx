@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useState } from "react";
 import { Users, Calendar, Dumbbell, MessageSquare, Plus, Target, BarChart3, Gift, Copy, CheckCircle, UserPlus, Trophy } from "lucide-react";
@@ -156,6 +156,17 @@ const [stats, setStats] = useState({ activeCoachees: 0, weeklyWorkouts: 0, progr
         </div>
       )}
 
+      {/* Quick Sign Up Entry */}
+      <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl p-6 text-white shadow-lg flex items-center justify-between">
+        <div>
+          <h3 className="text-xl font-bold mb-1">🚀 Invite Coaches to Join</h3>
+          <p className="text-green-100 text-sm">Start a free 30-day trial. No credit card required.</p>
+        </div>
+        <a href="/register"
+           className="px-6 py-3 bg-white text-green-600 font-bold rounded-xl hover:bg-green-50 transition shadow-md whitespace-nowrap">
+          Sign Up Now
+        </a>
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard icon={<Users className="w-5 h-5" />} label="活跃学员" value={stats.activeCoachees} change="+2 本月" color="blue" />
         <StatCard icon={<Calendar className="w-5 h-5" />} label="本周训练" value={stats.weeklyWorkouts} change="较上周 +15%" color="green" />
