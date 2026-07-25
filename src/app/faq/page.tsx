@@ -3,8 +3,32 @@ import Link from "next/link";
 import { Brain, MessageSquare } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "FAQ - FitCoach CRM | Fitness Coach Client Management Questions",
-  description: "Find answers to common questions about FitCoach CRM.",
+  title: "FAQ - FitCoach CRM Pricing, Features & Setup Guide for Personal Trainers",
+  description: "Answers to the most common questions about FitCoach CRM: free plan limits, Stripe payments, AI workout plan generation, client onboarding, GDPR compliance, cancellation policy, and enterprise features for fitness coaching businesses.",
+  keywords: [
+    "fitness CRM FAQ",
+    "personal trainer software help",
+    "client management questions",
+    "fitness coach CRM pricing plans",
+    "how to use fitness CRM",
+    "AI workout planner frequently asked questions",
+    "trainer CRM setup guide",
+  ],
+  alternates: {
+    canonical: "/faq",
+  },
+  openGraph: {
+    title: "FitCoach CRM FAQ — Help Center for Fitness Coaches",
+    description: "Learn about FitCoach CRM pricing, features, AI workout planning, client management, Stripe payments, GDPR compliance, and more.",
+    type: "website",
+    url: "/faq",
+    siteName: "FitCoach CRM",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "FitCoach CRM FAQ — Everything You Need to Know",
+    description: "Pricing, features, setup, and support for fitness coaches using FitCoach CRM.",
+  },
 };
 
 const faqs = [
