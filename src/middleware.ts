@@ -7,7 +7,18 @@ const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://arxmmamibj
 const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "sb_publishable_siuJ9sVKtPGnSiSh8A8XlQ_jqRKTuBj";
 
 export async function middleware(request: NextRequest) {
-  let response = NextResponse.next();
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-no-cache", "true");
+
+  let response = NextResponse.next({
+    request: { headers: requestHeaders },
+  });
+
+  // Force no cache on ALL responses
+  response.headers.set("Cache-Control", "no-store, max-age=0");
+  response.headers.set("Pragma", "no-cache");
+  response.headers.set("Expires", "-1");
+
   const cookieStore = await cookies();
 
   try {
@@ -38,14 +49,17 @@ export async function middleware(request: NextRequest) {
     const isAuthPath = authPaths.some(path => request.nextUrl.pathname.startsWith(path));
 
     if (isProtectedPath && !session) {
-      return NextResponse.redirect(new URL('/login', request.url));
+      const redirect = NextResponse.redirect(new URL('/login', request.url));
+      redirect.headers.set("Cache-Control", "no-store, max-age=0");
+      return redirect;
     }
 
     if (isClientPath && !session) {
-      return NextResponse.redirect(new URL('/login', request.url));
+      const redirect = NextResponse.redirect(new URL('/login', request.url));
+      redirect.headers.set("Cache-Control", "no-store, max-age=0");
+      return redirect;
     }
 
-    // Redirect authenticated users to their correct dashboard
     if (isAuthPath && session) {
       try {
         const adminSupabase = await import('@/lib/supabase/server').then(m => m.createAdminClient());
@@ -67,13 +81,9 @@ export async function middleware(request: NextRequest) {
     }
   } catch (err) {
     console.error('Middleware error:', err);
-    // If middleware fails, allow the request through
     return NextResponse.next();
   }
 
-  response.headers.set("Cache-Control", "no-cache, no-store, must-revalidate");
-  response.headers.set("Pragma", "no-cache");
-  response.headers.set("Expires", "0");
   return response;
 }
 
