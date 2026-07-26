@@ -103,11 +103,14 @@ export async function POST(request: NextRequest) {
     try {
       const { count, error: countError } = await adminSupabase
         .from("profiles")
-        .select("*", { count: "exact", head: true });
+        .select("id")
+        .order("created_at")
+        .limit(101)
+        .eq("role", "coach");
 
       if (countError) {
-        console.error("Count error:", countError);
-      } else if (count !== null && count <= PROMOTION_LIMIT) {
+        console.error("Promotion check error:", countError);
+      } else if (coaches && coaches.length < PROMOTION_LIMIT) {
         const periodEnd = new Date();
         periodEnd.setMonth(periodEnd.getMonth() + PROMOTION_MONTHS);
 
@@ -158,3 +161,5 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: error.message || "Registration failed" }, { status: 500 });
   }
 }
+
+
