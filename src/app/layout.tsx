@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import "./globals.css";
 import ToastContainer from "@/components/Toast";
 import { TranslationProvider } from "@/hooks/use-translation";
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://fitcoach.app"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://fitness-coach-crm-five.vercel.app"),
   alternates: {
     canonical: "/",
     languages: {
@@ -98,7 +98,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="canonical" href={process.env.NEXT_PUBLIC_APP_URL || "https://fitcoach.app"} />
+        <link rel="canonical" href={process.env.NEXT_PUBLIC_APP_URL || "https://fitness-coach-crm-five.vercel.app"} />
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -120,7 +120,7 @@ export default function RootLayout({
           "@type": "SoftwareApplication",
           name: "FitCoach CRM",
           description: "AI-Powered Client Management for Fitness Coaches",
-          url: process.env.NEXT_PUBLIC_APP_URL || "https://fitcoach.app",
+          url: process.env.NEXT_PUBLIC_APP_URL || "https://fitness-coach-crm-five.vercel.app",
           image: "/og-image.png",
           applicationCategory: "BusinessApplication",
           operatingSystem: "Web Browser",
@@ -139,7 +139,7 @@ export default function RootLayout({
           author: {
             "@type": "Organization",
             name: "FitCoach CRM",
-            url: process.env.NEXT_PUBLIC_APP_URL || "https://fitcoach.app"
+            url: process.env.NEXT_PUBLIC_APP_URL || "https://fitness-coach-crm-five.vercel.app"
           }
         })}} />
       </head>

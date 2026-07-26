@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import Link from 'next/link';
 import {
@@ -119,7 +119,7 @@ function DashboardPreview() {
             <div className="w-3 h-3 rounded-full bg-yellow-400" />
             <div className="w-3 h-3 rounded-full bg-green-400" />
           </div>
-          <div className="flex-1 bg-slate-700 rounded-md px-3 py-1 text-xs text-slate-400 text-center">fitcoach.app/dashboard</div>
+          <div className="flex-1 bg-slate-700 rounded-md px-3 py-1 text-xs text-slate-400 text-center">fitness-coach-crm-five.vercel.app/dashboard</div>
         </div>
         <div className="p-6 bg-gradient-to-br from-slate-50 to-white">
           <div className="flex items-center justify-between mb-6">
@@ -292,7 +292,7 @@ export default function Home() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { t, setLanguage, language } = useTranslation();
   const [showLangPicker, setShowLangPicker] = useState(false);
-  const langMap = { "en-US": "English", "zh-CN": "简体中文", "ja-JP": "日本語", "ko-KR": "한국어", "es-ES": "Español", "fr-FR": "Français", "de-DE": "Deutsch", "pt-BR": "Português (Brasil)", "ar-SA": "العربية", "hi-IN": "हिन्दी" };
+  const langMap = { "en-US": "English", "zh-CN": "��������", "ja-JP": "�ձ��Z", "ko-KR": "???", "es-ES": "Espa?ol", "fr-FR": "Fran?ais", "de-DE": "Deutsch", "pt-BR": "Portugu��s (Brasil)", "ar-SA": "???????", "hi-IN": "??????" };
   const selectedLangName = langMap[language] || "English";
   const [billing, setBilling] = useState('monthly');
   const [scrolled, setScrolled] = useState(false);
@@ -309,7 +309,7 @@ export default function Home() {
     { label: 'Pricing', href: '/pricing' },
     { label: 'Testimonials', href: '#testimonials' },
     { label: 'FAQ', href: '#faq' },
-    { label: '🎉 Promo', href: '/promo' },
+    { label: '?? Promo', href: '/promo' },
   ];
 
   const features = [
@@ -689,7 +689,7 @@ export default function Home() {
                 <li><a href="#" className="hover:text-white transition">About</a></li>
                 <li><a href="#" className="hover:text-white transition">Careers</a></li>
                 <li><a href="#" className="hover:text-white transition">Contact</a></li>
-                <li><a href="mailto:support@fitcoach.app" className="hover:text-white transition">Email Us</a></li>
+                <li><a href="mailto:support@fitness-coach-crm-five.vercel.app" className="hover:text-white transition">Email Us</a></li>
               </ul>
             </div>
           </div>
