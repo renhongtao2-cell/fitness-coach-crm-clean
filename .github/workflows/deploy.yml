@@ -32,3 +32,5 @@ jobs:
           working_directory: .
           alias_domains: |
             fitness-coach-crm-five.vercel.app
+          pr_comment: false
+          vercel_args: "--prod --edge-functions-disabled"
