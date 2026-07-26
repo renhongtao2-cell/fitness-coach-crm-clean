@@ -99,40 +99,44 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Step 2.6: Promotion - First N registrations get free basic plan for 3 months
+    // Step 2.6: Promotion - First N registrations get free Basic plan for 3 months
     try {
-      const { count, error: countError } = await adminSupabase
+      // Count total profiles (all roles)
+      const { data: allProfiles, error: profileCountError } = await adminSupabase
         .from("profiles")
         .select("id")
-        .order("created_at")
-        .limit(101)
-        .eq("role", "coach");
+        .order("created_at", { ascending: true });
 
-      if (countError) {
-        console.error("Promotion check error:", countError);
-      } else if (coaches && coaches.length < PROMOTION_LIMIT) {
-        const periodEnd = new Date();
-        periodEnd.setMonth(periodEnd.getMonth() + PROMOTION_MONTHS);
-
-        await adminSupabase.from("subscriptions").insert({
-          user_id: userId,
-          status: "active",
-          plan_type: PROMOTION_PLAN,
-          stripe_subscription_id: null,
-          stripe_customer_id: null,
-          stripe_current_period_end: periodEnd.toISOString(),
-          amount_cents: PROMOTION_PRICE * 100,
-          currency: "usd",
-          promo_note: `Launch Promo: First ${PROMOTION_LIMIT} users get ${PROMOTION_MONTHS} months of Basic ($${PROMOTION_PRICE}/mo plan)`,
-          updated_at: new Date().toISOString(),
-        });
-        console.log(`[Promo] User ${userId} (${email}) is #${count} - granted ${PROMOTION_MONTHS} months Basic plan`);
+      if (profileCountError) {
+        console.error("Promotion count error:", profileCountError.message);
+      } else {
+        const currentTotal = (allProfiles || []).length;
+        console.log(`[Promo] Total profiles so far: ${currentTotal}, limit: ${PROMOTION_LIMIT}`);
+        if (currentTotal <= PROMOTION_LIMIT) {
+          const promoPeriodEnd = new Date();
+          promoPeriodEnd.setMonth(promoPeriodEnd.getMonth() + PROMOTION_MONTHS);
+          
+          await adminSupabase.from("subscriptions").insert({
+            user_id: userId,
+            status: "active",
+            plan_type: PROMOTION_PLAN,
+            stripe_subscription_id: null,
+            stripe_customer_id: null,
+            stripe_current_period_end: promoPeriodEnd.toISOString(),
+            amount_cents: PROMOTION_PRICE * 100,
+            currency: "usd",
+            promo_note: `Launch Promo: First ${PROMOTION_LIMIT} users get ${PROMOTION_MONTHS} months of Basic ($${PROMOTION_PRICE}/mo plan)`,
+            updated_at: new Date().toISOString(),
+          });
+          console.log(`[Promo] User ${userId} (${email}) is #${currentTotal} - granted ${PROMOTION_MONTHS} months Basic plan!`);
+        } else {
+          console.log(`[Promo] User ${userId} (${email}) is #${currentTotal}, past limit ${PROMOTION_LIMIT}. No promo applied.`);
+        }
       }
     } catch (promoErr) {
       console.error("Promotion processing error (non-fatal):", promoErr);
     }
-
-    // Step 3: Sign in to get session
+// Step 3: Sign in to get session
     const signInRes = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
       method: "POST",
       headers: {
@@ -161,5 +165,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: error.message || "Registration failed" }, { status: 500 });
   }
 }
+
+
 
 
