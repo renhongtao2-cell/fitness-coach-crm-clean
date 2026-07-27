@@ -182,26 +182,37 @@ export async function POST(request) {
     }
 
     if (action === 'send_message') {
-      const { content } = body;
-      if (!content?.trim()) return NextResponse.json({ error: 'Message cannot be empty' }, { status: 400 });
-
-      const { data: cp } = await adminSupabase
-        .from('coachee_programs')
+      // Delegate to the new /api/client/message for proper binding support
+      const bindingRes = await adminSupabase
+        .from('coach_client_bindings')
         .select('coach_id')
-        .eq('coachee_id', profile.id)
+        .eq('client_id', profile.id)
+        .eq('status', 'active')
         .limit(1)
         .single();
-
-      if (!cp) return NextResponse.json({ error: 'No coach assigned' }, { status: 404 });
-
+      
+      if (!bindingRes.data) {
+        // Fallback to old coachee_programs method for backward compat
+        const programRes = await adminSupabase
+          .from('coachee_programs')
+          .select('coach_id')
+          .eq('coachee_id', profile.id)
+          .limit(1)
+          .single();
+        if (!programRes.data) return NextResponse.json({ error: 'No active coaching relationship found' }, { status: 403 });
+        
+        const { data: msg, error: msgErr } = await adminSupabase
+          .from('messages')
+          .insert({ coach_id: programRes.data.coach_id, coachee_id: profile.id, content: content.trim(), is_read: false })
+          .select()
+          .single();
+        if (msgErr) throw msgErr;
+        return NextResponse.json({ message: msg });
+      }
+      
       const { data: msg, error: msgErr } = await adminSupabase
         .from('messages')
-        .insert({
-          coach_id: cp.coach_id,
-          coachee_id: profile.id,
-          content: content.trim(),
-          is_read: false,
-        })
+        .insert({ coach_id: bindingRes.data.coach_id, coachee_id: profile.id, content: content.trim(), is_read: false })
         .select()
         .single();
       if (msgErr) throw msgErr;
