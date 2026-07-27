@@ -1,7 +1,8 @@
-﻿import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { createClient, createAdminClient } from '@/lib/supabase/server';
 
-export async function POST(request: NextRequest) {
+// Client sends a message to their coach
+export async function POST(request: Request) {
   try {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
@@ -9,53 +10,45 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
     const { content } = body;
-    if (!content) return NextResponse.json({ error: 'Message content cannot be empty' }, { status: 400 });
+
+    if (!content || !content.trim()) {
+      return NextResponse.json({ error: 'Message content required' }, { status: 400 });
+    }
 
     const adminSupabase = await createAdminClient();
 
-    const { data: profile } = await adminSupabase
-      .from('profiles')
-      .select('id, full_name, email')
-      .eq('email', user.email)
-      .single();
-    if (!profile) return NextResponse.json({ error: 'Profile not found' }, { status: 404 });
-
-    // Find the coach through coachee_programs
-    const { data: cp } = await adminSupabase
-      .from('coachee_programs')
-      .select('coach_id')
-      .eq('coachee_id', profile.id)
-      .limit(1)
-      .single();
-
-    if (!cp) {
-      return NextResponse.json({ error: 'You have not been added by any coach yet, please contact your coach' }, { status: 404 });
-    }
-
-    const { data: coachProfile } = await adminSupabase
+    // Get client profile
+    const { data: clientProfile } = await adminSupabase
       .from('profiles')
       .select('id')
-      .eq('id', cp.coach_id)
+      .eq('email', user.email)
+      .single();
+    if (!clientProfile) return NextResponse.json({ error: 'Profile not found' }, { status: 404 });
+
+    // Find the client's coach from bindings
+    const { data: binding } = await adminSupabase
+      .from('coach_client_bindings')
+      .select('coach_id')
+      .eq('client_id', clientProfile.id)
+      .eq('status', 'active')
       .single();
 
-    if (!coachProfile) {
-      return NextResponse.json({ error: 'Coach profile not found' }, { status: 404 });
+    if (!binding) {
+      return NextResponse.json({ error: 'No active coaching relationship found. Please contact your gym or register again.' }, { status: 403 });
     }
 
-    const { data: msg, error } = await adminSupabase
-      .from('messages')
-      .insert({
-        coach_id: coachProfile.id,
-        coachee_id: profile.id,
-        content,
-        is_read: false,
-      })
-      .select()
-      .single();
+    // Insert message (coachee_id = client, coach_id = assigned coach)
+    const { error } = await adminSupabase.from('messages').insert({
+      coachee_id: clientProfile.id,
+      coach_id: binding.coach_id,
+      content: content.trim(),
+      is_read: false,
+    });
 
     if (error) throw error;
-    return NextResponse.json({ message: msg });
+    return NextResponse.json({ success: true, message: 'Message sent' });
   } catch (error: any) {
+    console.error('Client message error:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
