@@ -1,12 +1,14 @@
-Ôªø'use client';
+'use client';
 
 import { useState, useEffect, useRef } from 'react';
 import { Send, Search, MessageSquare, User, Loader2, AlertCircle } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
 import { useTranslation } from '@/hooks/use-translation';
 import { showToast } from '@/components/Toast';
 
 export default function MessagesPage() {
   const { t } = useTranslation();
+  const searchParams = useSearchParams();
   const [conversations, setConversations] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>('');
@@ -15,6 +17,20 @@ export default function MessagesPage() {
   const [sending, setSending] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Auto-select from URL query param
+  useEffect(() => {
+    const clientId = searchParams.get("clientId");
+    if (clientId) {
+      const conv = conversations.find((c: any) => c.partnerId === clientId);
+      if (conv) {
+        handleSelectConversation(conv);
+        const url = new URL(window.location.href);
+        url.searchParams.delete("clientId");
+        window.history.replaceState({}, document.title, url.toString());
+      }
+    }
+  }, [conversations, searchParams, handleSelectConversation]);
 
   useEffect(() => { fetchConversations(); }, []);
 
@@ -118,10 +134,10 @@ export default function MessagesPage() {
                 </div>
               </div>
               <div className="flex-1 overflow-y-auto">
-                {filteredConversations.length === 0 ? (
+                {conversations.length === 0 ? (
                   <div className="p-8 text-center text-gray-400">
-                    <MessageSquare className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                    <p className="text-sm">No conversations yet</p>
+                    <MessageSquare className="w-16 h-16 mx-auto mb-3 opacity-30" />
+                    <p>No conversations yet</p>
                   </div>
                 ) : (
                   filteredConversations.map((conv: any) => (
@@ -151,7 +167,7 @@ export default function MessagesPage() {
               <div className={"flex-1 flex flex-col " + (selectedConv ? "flex" : "hidden sm:flex")}>
                 <div className="px-6 py-4 border-b border-gray-200 flex items-center gap-3">
                   <button onClick={() => setSelectedConv(null)} className="sm:hidden mr-1 text-gray-500 hover:text-gray-700">
-                    ‚Üê
+                    °˚
                   </button>
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-medium">{selectedConv.avatar}</div>
                   <div>
