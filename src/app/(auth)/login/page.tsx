@@ -1,9 +1,11 @@
-ï»¿"use client";
+"use client";
 import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/use-auth';
 import { Dumbbell, Mail, Lock, Eye, EyeOff, XCircle } from 'lucide-react';
+
+export const metadata = { title: 'Sign In ¡ª FitCoach CRM', description: 'Log in to your FitCoach CRM account. Manage clients, track progress, and generate AI training plans.' };
 import { useTranslation } from '@/hooks/use-translation';
 
 export default function LoginPage() {
@@ -97,7 +99,7 @@ export default function LoginPage() {
         </div>
       </div>
 
-      <p className="text-center text-xs text-gray-400 mt-6">Â© 2024 FitCoach CRM. {t('footer.rightsReserved')}</p>
+      <p className="text-center text-xs text-gray-400 mt-6">? 2024 FitCoach CRM. {t('footer.rightsReserved')}</p>
     </div>
   );
 }

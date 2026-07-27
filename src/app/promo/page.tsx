@@ -1,7 +1,9 @@
-ï»¿"use client";
+"use client";
 
 import Link from "next/link";
-import { Check, Zap, Gift, ArrowRight, Timer, Trophy } from "lucide-react";
+import { Check, Zap, Gift, ArrowRight, Timer, Trophy } from "lucide-react"
+
+export const metadata = { title: 'Free 3-Month Basic ¡ª FitCoach CRM Launch Promotion', description: 'First 100 users get 3 months of Basic plan ( value) completely FREE. AI-powered fitness coaching CRM with workout plans, client tracking, messaging and payments.' };;
 
 export default function PromoPage() {
   const spotsLeft = 100; // Will be overridden by server
@@ -14,7 +16,7 @@ export default function PromoPage() {
         <div className="max-w-4xl mx-auto text-center relative">
           <div className="inline-flex items-center gap-2 bg-purple-500/20 border border-purple-500/30 rounded-full px-4 py-1.5 text-sm font-medium text-purple-300 mb-8">
             <Gift className="w-4 h-4" />
-            Launch Promotion â€” Limited Spots
+            Launch Promotion ¡ª Limited Spots
           </div>
 
           <h1 className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
@@ -26,7 +28,7 @@ export default function PromoPage() {
 
           <p className="text-xl md:text-2xl text-gray-300 mb-4 max-w-2xl mx-auto">
             Sign up now and get <span className="text-white font-bold">3 months of Basic Plan FREE</span>
-            â€” normally $29/month, that&apos;s <span className="text-green-400 font-bold">$87 free</span>.
+            ¡ª normally $29/month, that&apos;s <span className="text-green-400 font-bold">$87 free</span>.
           </p>
 
           <p className="text-base text-gray-400 mb-10">
@@ -65,7 +67,7 @@ export default function PromoPage() {
       <section className="py-24 px-6">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">What You Get Free for 3 Months</h2>
-          <p className="text-gray-400 text-center mb-16 text-lg">Basic Plan value: $29/month Ã— 3 = $87</p>
+          <p className="text-gray-400 text-center mb-16 text-lg">Basic Plan value: $29/month ¡Á 3 = $87</p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
@@ -120,7 +122,7 @@ export default function PromoPage() {
             After 100 signups, new users will only get the Free plan. Be one of the founders.
           </p>
           <Link href="/register?role=coach" className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-bold text-lg px-10 py-4 rounded-xl transition-all shadow-lg shadow-purple-500/25">
-            Register Now â€” It&apos;s Free
+            Register Now ¡ª It&apos;s Free
             <ArrowRight className="w-5 h-5" />
           </Link>
         </div>

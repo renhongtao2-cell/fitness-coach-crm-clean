@@ -1,6 +1,8 @@
-ï»¿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
-import { Brain, MessageSquare } from "lucide-react";
+import { Brain, MessageSquare } from "lucide-react"
+
+export const metadata = { title: 'FAQ ¡ª FitCoach CRM', description: 'Frequently asked questions about FitCoach CRM. Pricing, features, AI workout plans, client management, payments, and more.' };;
 
 export const metadata: Metadata = {
   title: "FAQ - FitCoach CRM Pricing, Features & Setup Guide for Personal Trainers",
@@ -18,7 +20,7 @@ export const metadata: Metadata = {
     canonical: "/faq",
   },
   openGraph: {
-    title: "FitCoach CRM FAQ â€” Help Center for Fitness Coaches",
+    title: "FitCoach CRM FAQ ¡ª Help Center for Fitness Coaches",
     description: "Learn about FitCoach CRM pricing, features, AI workout planning, client management, Stripe payments, GDPR compliance, and more.",
     type: "website",
     url: "/faq",
@@ -26,7 +28,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "FitCoach CRM FAQ â€” Everything You Need to Know",
+    title: "FitCoach CRM FAQ ¡ª Everything You Need to Know",
     description: "Pricing, features, setup, and support for fitness coaches using FitCoach CRM.",
   },
 };
@@ -68,7 +70,7 @@ export default function FAQPage() {
             <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center"><Brain className="w-5 h-5 text-white" /></div>
             <span className="text-white font-bold text-xl">FitCoach</span>
           </div>
-          <p className="text-sm">Â© 2025 FitCoach CRM. All rights reserved.</p>
+          <p className="text-sm">? 2025 FitCoach CRM. All rights reserved.</p>
         </div>
       </footer>
     </div>

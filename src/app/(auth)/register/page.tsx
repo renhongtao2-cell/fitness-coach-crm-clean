@@ -1,9 +1,11 @@
-ï»¿"use client";
+"use client";
 import { useState, useRef, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/use-auth';
 import { Dumbbell, Mail, Lock, User, Eye, EyeOff, CheckCircle, XCircle, Gift } from 'lucide-react';
+
+export const metadata = { title: 'Create Account ¡ª FitCoach CRM', description: 'Join FitCoach CRM for free. Manage fitness clients, generate AI workout plans, track progress, and collect payments. No credit card required.' };
 import { useTranslation } from '@/hooks/use-translation';
 
 function RegisterForm() {
@@ -252,7 +254,7 @@ function RegisterForm() {
         </div>
       </div>
 
-      <p className="text-center text-xs text-gray-400 mt-6">Â© 2024 FitCoach CRM. {t('footer.rightsReserved')}</p>
+      <p className="text-center text-xs text-gray-400 mt-6">? 2024 FitCoach CRM. {t('footer.rightsReserved')}</p>
     </div>
   );
 }

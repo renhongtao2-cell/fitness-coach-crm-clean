@@ -689,7 +689,7 @@ export default function Home() {
                 <li><a href="#" className="hover:text-white transition">About</a></li>
                 <li><a href="#" className="hover:text-white transition">Careers</a></li>
                 <li><a href="#" className="hover:text-white transition">Contact</a></li>
-                <li><a href="mailto:support@fitness-coach-crm-five.vercel.app" className="hover:text-white transition">Email Us</a></li>
+                <li><a href="mailto:renhongtao2@gmail.com" className="hover:text-white transition">Email Us</a></li>
               </ul>
             </div>
           </div>

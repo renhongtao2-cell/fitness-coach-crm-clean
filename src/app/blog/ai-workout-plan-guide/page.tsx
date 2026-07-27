@@ -1,11 +1,11 @@
-ï»¿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Calendar, ArrowLeft, BookOpen, Dumbbell, Target, TrendingUp, CheckCircle } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "The Ultimate Guide to AI Workout Plans in 2026 (Free Template Included)",
   description: "Learn how to create personalized AI workout plans that deliver real results. Step-by-step guide for fitness coaches using generative AI.",
-  keywords: ["AI workout plan", "personalized training program", "fitness coaching AI", "workout plan generator"],
+  "AI workout plan", "personalized training program", "fitness coaching AI", "workout plan generator", "AI fitness coach", "automated workout programs", "generative AI fitness", "coach productivity tools",
   openGraph: {
     title: "The Ultimate Guide to AI Workout Plans in 2026",
     description: "Learn how to create personalized AI workout plans that deliver real results.",
@@ -16,15 +16,15 @@ export const metadata: Metadata = {
 const steps = [
   { icon: <Target className="w-5 h-5" />, title: "Start with the Client Assessment", content: "Before generating any workout plan, understand your client's goals, injury history, equipment access, schedule, and fitness level. The more data you have, the better the AI output. Ask: What do they want? What can they do? What limits them?" },
   { icon: <Dumbbell className="w-5 h-5" />, title: "Define Training Parameters", content: "Set the AI's boundaries: frequency (days per week), duration (minutes per session), equipment (gym/home/bodyweight), split style (upper/lower/full body), and progression model (linear/undulating). These parameters turn generic AI output into a professional program." },
-  { icon: <BookOpen className="w-5 h-5" />, title: "Generate the First Draft", content: "Use your AI tool to generate a 4-week base plan. Review it critically â€” is exercise selection balanced? Does volume match their level? Are rest periods appropriate? The AI is your co-pilot, not the autopilot. Your expertise makes the difference." },
-  { icon: <TrendingUp className="w-5 h-5" />, title: "Progressive Overload & Periodization", content: "Build in weekly progression: add reps, sets, weight, or reduce rest time every 1-2 weeks. Every 4th week should be a deload. Structure the plan in blocks â€” hypertrophy (weeks 1-4), strength (weeks 5-8), power (weeks 9-12). This creates results clients can feel and measure." },
+  { icon: <BookOpen className="w-5 h-5" />, title: "Generate the First Draft", content: "Use your AI tool to generate a 4-week base plan. Review it critically ¡ª is exercise selection balanced? Does volume match their level? Are rest periods appropriate? The AI is your co-pilot, not the autopilot. Your expertise makes the difference." },
+  { icon: <TrendingUp className="w-5 h-5" />, title: "Progressive Overload & Periodization", content: "Build in weekly progression: add reps, sets, weight, or reduce rest time every 1-2 weeks. Every 4th week should be a deload. Structure the plan in blocks ¡ª hypertrophy (weeks 1-4), strength (weeks 5-8), power (weeks 9-12). This creates results clients can feel and measure." },
   { icon: <CheckCircle className="w-5 h-5" />, title: "Track, Adjust, Communicate", content: "The best plan fails without tracking. Use built-in logging to monitor each session. Compare performance week over week. If a client stalls on a movement, swap the exercise. Send weekly check-ins through messaging. Communication is what turns a good coach into a great one." },
 ];
 
 const alternatives = [
-  { before: "Do 3 sets of 10 squats", after: "Front Squat: 3Ã—10@RPE7 â†’ Add 5lbs when all reps hit RPE6 next week" },
-  { before: "Cardio 30 minutes", after: "Incline Walk: 30min @ speed 3.5/Incline 10 â†’ Heart Rate Zone 2 â†’ Progress to incline 12" },
-  { before: "Push day workout", after: "Horizontal Push: Bench 4Ã—6 | Vertical Push: OHP 3Ã—8-10 | Lateral Delts: Raises 3Ã—15 | Triceps: Pushdowns 3Ã—12" },
+  { before: "Do 3 sets of 10 squats", after: "Front Squat: 3¡Á10@RPE7 ¡ú Add 5lbs when all reps hit RPE6 next week" },
+  { before: "Cardio 30 minutes", after: "Incline Walk: 30min @ speed 3.5/Incline 10 ¡ú Heart Rate Zone 2 ¡ú Progress to incline 12" },
+  { before: "Push day workout", after: "Horizontal Push: Bench 4¡Á6 | Vertical Push: OHP 3¡Á8-10 | Lateral Delts: Raises 3¡Á15 | Triceps: Pushdowns 3¡Á12" },
 ];
 
 export default function BlogPost() {
@@ -38,9 +38,9 @@ export default function BlogPost() {
           </Link>
           <div className="flex items-center gap-4 text-sm text-emerald-100 mb-4">
             <Calendar className="w-4 h-4" /> Jul 25, 2026
-            <span>â€¢</span>
+            <span>?</span>
             <span>10 min read</span>
-            <span>â€¢</span>
+            <span>?</span>
             <span>Training Guide</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-extrabold leading-tight">
@@ -55,7 +55,7 @@ export default function BlogPost() {
       <article className="max-w-4xl mx-auto px-6 py-16">
         <p className="text-lg text-gray-600 mb-12 leading-relaxed">
           The fitness industry has been waiting for this moment. For years, coaches spent hours creating workout plans 
-          by hand â€” copying templates, adjusting for individuals, updating progressions manually. AI changes everything. 
+          by hand ¡ª copying templates, adjusting for individuals, updating progressions manually. AI changes everything. 
           But here's the truth: <strong className="text-gray-900">AI doesn't replace coaches. It makes elite coaches unstoppable.</strong>
         </p>
 
@@ -109,7 +109,7 @@ export default function BlogPost() {
             Generate your first AI workout plan in under 30 seconds. Try it free with FitCoach CRM.
           </p>
           <Link href="/register" className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold px-8 py-3 rounded-xl transition shadow-lg shadow-blue-200">
-            Try AI Plans Free â†’
+            Try AI Plans Free ¡ú
           </Link>
         </div>
 

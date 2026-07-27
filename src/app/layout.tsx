@@ -5,25 +5,33 @@ import { TranslationProvider } from "@/hooks/use-translation";
 
 export const metadata: Metadata = {
   title: {
-    default: "FitCoach CRM - AI-Powered Client Management for Fitness Coaches",
+    default: "FitCoach CRM ¡ª AI Workout Plans, Client Tracking & Payments for Fitness Coaches",
     template: "%s | FitCoach CRM"
   },
-  description: "The #1 AI-powered CRM built specifically for fitness coaches and personal trainers. Generate workout plans, track client progress, manage payments & messaging all in one platform. Start free today.",
+  description: "The #1 AI-powered CRM built specifically for fitness coaches and personal trainers. Generate custom workout plans in seconds, track client progress visually, send messages, and collect payments all in one platform. Free plan available.",
   keywords: [
     "fitness CRM",
     "personal trainer software",
+    "personal training CRM",
+    "fitness coach CRM",
     "client management for trainers",
     "AI workout planner",
-    "fitness coach tools",
-    "personal trainer CRM",
-    "fitness business software",
     "workout plan generator",
-    "client tracking app",
     "fitness coaching platform",
-    "personal training management",
-    "gym owner software"
+    "trainer business software",
+    "client tracking app",
+    "fitness business tools",
+    "AI personal trainer",
+    "workout program creator",
+    "trainer payment software",
+    "fitness client management",
+    "coach scheduling tool",
+    "trainer progress tracker",
+    "gym owner software",
+    "personal training business",
+    "fitness coaching app"
   ],
-  authors: [{ name: "FitCoach Team" }],
+  authors: [{ name: "FitCoach Team", url: "https://fitness-coach-crm-five.vercel.app" }],
   creator: "FitCoach CRM",
   publisher: "FitCoach CRM",
   formatDetection: {
@@ -32,27 +40,12 @@ export const metadata: Metadata = {
     telephone: false,
   },
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://fitness-coach-crm-five.vercel.app"),
-  alternates: {
-    canonical: "/",
-    languages: {
-      'en-US': '/en',
-      'zh-CN': '/zh',
-      'es-ES': '/es',
-      'fr-FR': '/fr',
-      'de-DE': '/de',
-      'ja-JP': '/ja',
-      'ko-KR': '/ko',
-      'pt-BR': '/pt',
-      'ar-SA': '/ar',
-      'hi-IN': '/hi',
-    },
-  },
   openGraph: {
     type: "website",
     locale: "en_US",
     url: "/",
     siteName: "FitCoach CRM",
-    title: "FitCoach CRM - AI-Powered Client Management for Fitness Coaches",
+    title: "FitCoach CRM ¡ª AI Workout Plans, Client Tracking & Payments for Fitness Coaches",
     description: "Generate AI training plans, track client progress, accept payments & manage all your fitness clients in one place. Free forever plan available.",
     images: [
       {
@@ -65,10 +58,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "FitCoach CRM - AI-Powered Client Management for Fitness Coaches",
-    description: "The only CRM built for coaches, not gyms. AI generates training plans in seconds.",
+    title: "FitCoach CRM ¡ª AI Workout Plans for Fitness Coaches",
+    description: "The only CRM built for coaches, not gyms. AI generates training plans in seconds. Free to start.",
     images: ["/og-image.png"],
-    creator: "@fitcoach_crm",
   },
   robots: {
     index: true,
@@ -83,10 +75,6 @@ export const metadata: Metadata = {
   },
   verification: {
     google: "757wpQShfL4xbnKRqb4mRHek-7z8O9XErpm2k6XpWHM",
-    // Add other verifications as needed:
-    // yandex: "your-yandex-code",
-    // yahoo: "your-yahoo-code",
-    // apple: "your-apple-verification",
   },
 };
 
@@ -114,32 +102,65 @@ export default function RootLayout({
           gtag('config', 'G-KWRJ77SQPV');
         `}} />
         
-        {/* Schema.org structured data */}
+        {/* SoftwareApplication Schema */}
         <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "SoftwareApplication",
-          name: "FitCoach CRM",
-          description: "AI-Powered Client Management for Fitness Coaches",
-          url: process.env.NEXT_PUBLIC_APP_URL || "https://fitness-coach-crm-five.vercel.app",
-          image: "/og-image.png",
-          applicationCategory: "BusinessApplication",
-          operatingSystem: "Web Browser",
-          offers: {
-            "@type": "Offer",
-            price: "0",
-            priceCurrency: "USD"
-          },
-          aggregateRating: {
-            "@type": "AggregateRating",
-            ratingValue: "4.8",
-            ratingCount: "1250"
-          },
-          softwareVersion: "1.0",
-          copyrightYear: 2025,
-          author: {
-            "@type": "Organization",
-            name: "FitCoach CRM",
-            url: process.env.NEXT_PUBLIC_APP_URL || "https://fitness-coach-crm-five.vercel.app"
+          "@graph": [
+            {
+              "@type": "SoftwareApplication",
+              "name": "FitCoach CRM",
+              "url": process.env.NEXT_PUBLIC_APP_URL || "https://fitness-coach-crm-five.vercel.app",
+              "description": "AI-powered client management CRM built specifically for fitness coaches and personal trainers.",
+              "image": "/og-image.png",
+              "applicationCategory": "BusinessApplication",
+              "operatingSystem": "Web Browser",
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD",
+                "availability": "https://schema.org/InStock"
+              },
+              "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "4.8",
+                "ratingCount": "1250",
+                "bestRating": "5",
+                "worstRating": "1"
+              },
+              "featureList": [
+                "AI workout plan generation",
+                "Client progress tracking",
+                "Built-in messaging",
+                "Payment collection via Stripe",
+                "Smart scheduling",
+                "Mobile responsive design"
+              ]
+            },
+            {
+              "@type": "Organization",
+              "name": "FitCoach CRM",
+              "url": process.env.NEXT_PUBLIC_APP_URL || "https://fitness-coach-crm-five.vercel.app",
+              "logo": "/og-image.png",
+              "sameAs": [],
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "contactType": "Customer Support",
+                "email": "renhongtao2@gmail.com"
+              }
+            }
+          ]
+        })}} />
+        
+        {/* WebSite Schema with SearchAction */}
+        <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "FitCoach CRM",
+          "url": process.env.NEXT_PUBLIC_APP_URL || "https://fitness-coach-crm-five.vercel.app",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "{search_term_string}",
+            "query-input": "required name=search_term_string"
           }
         })}} />
       </head>
