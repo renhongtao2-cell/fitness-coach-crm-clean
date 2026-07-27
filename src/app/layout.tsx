@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import ToastContainer from "@/components/Toast";
 import { TranslationProvider } from "@/hooks/use-translation";
+import AdsenseBanner from "@/components/AdsenseBanner";
 
 export const metadata: Metadata = {
   title: {
@@ -45,7 +46,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "/",
     siteName: "FitCoach CRM",
-    title: "FitCoach CRM ¡ª AI Workout Plans, Client Tracking & Payments for Fitness Coaches",
+    title: "FitCoach CRM ¡ª AI Workout Plans for Fitness Coaches",
     description: "Generate AI training plans, track client progress, accept payments & manage all your fitness clients in one place. Free forever plan available.",
     images: [
       {
@@ -92,6 +93,10 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#4F46E5" />
         <meta name="msapplication-TileColor" content="#4F46E5" />
+        
+        {/* Google AdSense */}
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9901133369141996"
+                 crossOrigin="anonymous"></script>
         
         {/* Google Analytics */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-KWRJ77SQPV"></script>
@@ -167,6 +172,7 @@ export default function RootLayout({
       <body className="antialiased">
         <TranslationProvider>
           {children}
+          <AdsenseBanner position="top" />
           <ToastContainer />
         </TranslationProvider>
       </body>

@@ -1,8 +1,8 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { ArrowLeft, CheckCircle, XCircle, Clock, Weight, Activity, Calendar, Dumbbell, Target, Users } from 'lucide-react'
+import { ArrowLeft, CheckCircle, XCircle, Clock, Weight, Activity, Calendar, Dumbbell, Target, Users, MessageSquare } from 'lucide-react'
 import { useTranslation } from '@/hooks/use-translation';;
 import { showToast } from "@/components/Toast";
 
@@ -83,10 +83,13 @@ export default function CoacheeDetailPage() {
           <button onClick={() => router.back()} className="p-2 hover:bg-gray-200 rounded-lg transition">
             <ArrowLeft className="w-5 h-5 text-gray-600" />
           </button>
+          
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
               {(coachee?.full_name || "?")[0]}
-            </div>
+            </div><button onClick={() => router.push(\`/messages?clientId=\${coacheeId}\`)} className='p-2 hover:bg-blue-50 rounded-lg transition' title='Chat with client'>
+            <MessageSquare className='w-5 h-5 text-blue-600' />
+          </button>
             <div>
               <h1 className="text-xl font-bold text-gray-900">{coachee?.full_name || "Unknown client"}</h1>
               <p className="text-sm text-gray-500">{coachee?.email || ""}</p>

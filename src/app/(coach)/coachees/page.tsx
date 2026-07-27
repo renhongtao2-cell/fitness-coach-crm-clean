@@ -226,11 +226,12 @@ export default function CoacheesPage() {
                 </div>
                 <div className="flex gap-2 mt-4">
                   <button
-                    onClick={() => router.push(`/coachees/${coachee.id}`)}
-                    className="flex-1 py-2 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg text-sm font-medium transition flex items-center justify-center gap-1"
-                  >
-                    <Eye className="w-3 h-3" />Details
-                  </button>
+                              <button onClick={() => router.push(`/messages?clientId=${coachee.id}`)} className="flex-1 py-2.5 bg-blue-50 hover:bg-blue-100 text-blue-700 font-medium rounded-lg transition">            <MessageSquare className="w-3 h-3" />            Chat          </button>
+          <button onClick={() => router.push(\/messages?clientId=\\)} className="flex-1 py-2.5 bg-green-50 hover:bg-green-100 text-green-700 font-medium rounded-lg transition">
+            <MessageSquare className="w-3 h-3" />
+            Chat
+          </button>
+
                   <button
                     onClick={() => openAssignModal(coachee)}
                     className="flex-1 py-2 bg-green-50 hover:bg-green-100 text-green-600 rounded-lg text-sm font-medium transition flex items-center justify-center gap-1"
