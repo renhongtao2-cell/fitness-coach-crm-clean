@@ -1,0 +1,64 @@
+﻿
+> fitness-coach-crm@0.1.0 build
+> next build
+
+▲ Next.js 16.2.10 (Turbopack)
+- Environments: .env.local, .env.production
+
+node.exe : ⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org
+/docs/messages/middleware-to-proxy
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (⚠ The "middlewa...leware-to-proxy:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  Creating an optimized production build ...
+
+> Build error occurred
+Error: Turbopack build failed with 4 errors:
+./src/app/(coach)/coachees/[id]/page.tsx:442:38
+Expected '</', got '<eof>'
+  [90m440 |[0m }
+  [90m441 |[0m
+[31m[1m>[0m [90m442 |[0m <div [36mclass[0m=[32m"flex items-center gap-3"[0m>
+  [90m    |[0m                                      [31m[1m^[0m
+
+Parsing ecmascript source code failed
+
+
+./src/app/promo/page.tsx:1:7659
+Expected '}', got '<eof>'
+[31m[1m>[0m [90m1 |[0m ... reserved.<[35m/p>      </footer[0m>    </div>  );}
+  [90m  |[0m                                                [31m[1m^[0m
+
+Parsing ecmascript source code failed
+
+
+./src/app/(coach)/coachees/page.tsx:457:28
+Expression expected
+  [90m455 |[0m                   <button
+  [90m456 |[0m
+[31m[1m>[0m [90m457 |[0m                               <button onClick={() => router.push([32m`/messages?clientId
+=[0m${co...
+  [90m    |[0m                            [31m[1m^[0m
+  [90m458 |[0m
+  [90m459 |[0m           <button onClick={() => router.push(\/messages?clientId=\\)} className=[32m"flex-1 p...[0m
+  [90m460 |[0m
+
+Parsing ecmascript source code failed
+
+
+./src/app/faq/page.tsx:1:328
+the name `metadata` is defined multiple times
+[31m[1m>[0m [90m1 |[0m ...[32mt, payments, and more.'[0m };;[36mexport[0m [36mconst[0m metadata: [33mMetada
+ta[0m = {  title: [32m"FAQ - FitCoach C...[0m
+  [90m  |[0m                                            [31m[1m^^^^^^^^[0m
+
+Ecmascript file had an error
+
+
+    at <unknown> (./src/app/(coach)/coachees/[id]/page.tsx:442:38)
+    at <unknown> (./src/app/promo/page.tsx:1:7659)
+    at <unknown> (./src/app/(coach)/coachees/page.tsx:457:28)
+    at <unknown> (./src/app/faq/page.tsx:1:328)
