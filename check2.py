@@ -1,1 +1,0 @@
-lines = open("src/app/(coach)/coachees/[id]/page.tsx", encoding="utf-8").readlines(); print("Total lines:", len(lines)); [print(f"{i+1}: {repr(lines[i])}") for i in range(max(0,435), min(len(lines),445))]

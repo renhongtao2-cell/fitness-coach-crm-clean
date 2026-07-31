@@ -1,1 +1,0 @@
-content = open("src/app/(coach)/coachees/[id]/page.tsx", encoding="utf-8").read(); print("Length:", len(content)); print("Last 100 chars:", content[-100:]); print("Contains }}:", "}}" in content); print("Contains }})", "));" in content)
