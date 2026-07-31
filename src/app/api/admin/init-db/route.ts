@@ -8,8 +8,12 @@ export async function POST() {
   try {
     const adminSupabase = await import('@/lib/supabase/server').then(m => m.createAdminClient());
 
-    // Check if table already exists
-    const { data: check } = await adminSupabase.rpc('postgres_check_table', { table_name: 'coach_client_bindings' }).catch(() => ({ data: null }));
+    // Check if table already exists (best-effort, ignore errors if function doesn't exist)
+    try {
+      await adminSupabase.rpc('postgres_check_table', { table_name: 'coach_client_bindings' });
+    } catch {
+      // ignore - table check function may not be installed
+    }
 
     const sql = `
       CREATE TABLE IF NOT EXISTS coach_client_bindings (
