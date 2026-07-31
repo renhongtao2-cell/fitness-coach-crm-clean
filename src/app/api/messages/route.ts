@@ -198,3 +198,28 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
+export async function PATCH(request: NextRequest) {
+  try {
+    const supabase = await createClient();
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
+    const { messageIds } = await request.json();
+    if (!messageIds || !Array.isArray(messageIds) || messageIds.length === 0) {
+      return NextResponse.json({ error: 'messageIds required' }, { status: 400 });
+    }
+
+    const adminSupabase = createAdminClient();
+    const { error } = await adminSupabase
+      .from('messages')
+      .update({ is_read: true })
+      .in('id', messageIds);
+
+    if (error) throw error;
+    return NextResponse.json({ success: true });
+  } catch (error: any) {
+    console.error('Messages PATCH error:', error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}

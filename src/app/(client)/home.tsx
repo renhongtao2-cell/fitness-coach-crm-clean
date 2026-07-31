@@ -1,11 +1,13 @@
 ﻿'use client';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Calendar, Dumbbell, TrendingUp, MessageSquare, User, Clock, CheckCircle, AlertCircle, Loader2, ChevronRight, Send } from 'lucide-react';
 import { useTranslation } from '@/hooks/use-translation';
 import { showToast } from '@/components/Toast';
 
 export default function ClientHome() {
   const { t } = useTranslation();
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<any>(null);
   const [error, setError] = useState<string>('');
@@ -117,10 +119,14 @@ export default function ClientHome() {
           <p className="text-gray-500 mt-1">Keep up the great training today! 💪</p>
         </div>
 
-        <div className="mb-6">
-          <button onClick={() => setShowMsgModal(true)} className="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-medium flex items-center justify-center gap-2 transition shadow-lg shadow-blue-200">
+        <div className="mb-6 flex gap-3">
+          <button onClick={() => setShowMsgModal(true)} className="flex-1 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-medium flex items-center justify-center gap-2 transition shadow-lg shadow-blue-200">
             <MessageSquare className="w-5 h-5" />
             Contact Coach
+          </button>
+          <button onClick={() => router.push('/client/messages')} className="flex-1 py-4 bg-white border-2 border-blue-200 hover:border-blue-400 text-blue-700 rounded-xl font-medium flex items-center justify-center gap-2 transition">
+            <MessageSquare className="w-5 h-5" />
+            Full Conversation
           </button>
         </div>
 
@@ -188,7 +194,7 @@ export default function ClientHome() {
           <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
               <h3 className="font-semibold text-gray-900 flex items-center gap-2"><MessageSquare className="w-5 h-5 text-purple-600" />Recent Messages</h3>
-              <span className="text-sm text-gray-500">Total: {messages.length}</span>
+              <button onClick={() => router.push('/client/messages')} className="text-sm text-blue-600 hover:text-blue-700 font-medium">View All →</button>
             </div>
             <div className="divide-y divide-gray-100">
               {messages.slice(0, 10).map((msg: any) => {

@@ -1,71 +1,74 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Users, Calendar, Dumbbell, MessageSquare, Plus, Target, BarChart3, Gift, Copy, CheckCircle, UserPlus, Trophy } from "lucide-react";
+import { Users, Dumbbell, MessageSquare, ClipboardList, TrendingUp, Plus, Copy, CheckCircle, Gift } from "lucide-react";
+import Link from "next/link";
 import { useTranslation } from "@/hooks/use-translation";
 
-interface StatCardProps {
-  icon: React.ReactNode;
-  label: string;
-  value: string | number;
-  change: string;
-  color: "blue" | "green" | "purple" | "orange";
-}
-
-interface RecentActivity {
-  name: string;
-  exercise: string;
-  time: string;
-  color: string;
+function StatCard({ icon, label, value, sub, color }: { icon: React.ReactNode; label: string; value: number; sub: string; color: string }) {
+  const colors: Record<string, { bg: string; text: string; iconBg: string }> = {
+    orange: { bg: '#FFF5F0', text: '#FF6B35', iconBg: '#FF6B3520' },
+    purple: { bg: '#F8F5FF', text: '#7C3AED', iconBg: '#7C3AED20' },
+    green:  { bg: '#ECFDF5', text: '#10B981', iconBg: '#10B98120' },
+    blue:   { bg: '#EFF6FF', text: '#3B82F6', iconBg: '#3B82F620' },
+  };
+  const c = colors[color] || colors.orange;
+  return (
+    <div className="stat-card bg-white rounded-2xl p-6 border border-gray-100">
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ backgroundColor: c.iconBg, color: c.text }}>
+          {icon}
+        </div>
+        <div>
+          <p className="text-xs font-semibold text-[#a8a29e] uppercase tracking-wider">{label}</p>
+          <p className="text-3xl font-black text-[#1c1917]" style={{ fontFamily: "'Outfit', sans-serif" }}>{value}</p>
+          <p className="text-xs text-[#78716c] mt-0.5">{sub}</p>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default function DashboardPage() {
-    const { t } = useTranslation();
-const [stats, setStats] = useState({ activeCoachees: 0, weeklyWorkouts: 0, programs: 0, unreadMessages: 0 });
-  const [recentActivities, setRecentActivities] = useState<any[]>([]);
+  const { t } = useTranslation();
+  const [stats, setStats] = useState({ activeCoachees: 0, weeklyWorkouts: 0, programs: 0, unreadMessages: 0 });
   const [referralCode, setReferralCode] = useState<string | null>(null);
-  const [referralStats, setReferralStats] = useState<{ total: number; converted: number; rewardMonths: number } | null>(null);
+  const [referralStats, setReferralStats] = useState<any>(null);
   const [copied, setCopied] = useState(false);
-
-  const [systemStats, setSystemStats] = useState({
-    totalUsers: 0,
-    totalCoaches: 0,
-    totalClients: 0,
-    todayRegistrations: 0,
-    todayRegistrationBreakdown: { coaches: 0, clients: 0 },
-  });
-
-  // Admin-only access to system stats
-  const [currentUserEmail, setCurrentUserEmail] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    fetchCurrentUser();
+    fetchDashboardStats();
+    fetchReferralData();
+    checkAdmin();
   }, []);
 
-  const fetchCurrentUser = async () => {
+  const checkAdmin = async () => {
     try {
       const res = await fetch('/api/auth/me');
       if (res.ok) {
         const data = await res.json();
-        const email = data.email || '';
-        setCurrentUserEmail(email);
-        setIsAdmin(email === 'renhongtao2@gmail.com' || email === '344681953@qq.com');
+        setIsAdmin(data.email === 'renhongtao2@gmail.com' || data.email === '344681953@qq.com');
       }
-    } catch (e) {
-      console.error('Failed to load current user:', e);
-    }
+    } catch {}
   };
 
-
-  useEffect(() => {
-    fetchDashboardStats();
-    fetchSystemStats();
-  }, []);
-
-  useEffect(() => {
-    fetchReferralData();
-  }, []);
+  const fetchDashboardStats = async () => {
+    try {
+      const [coacheesRes, programsRes] = await Promise.all([
+        fetch("/api/coachees"),
+        fetch("/api/programs"),
+      ]);
+      const coachees = coacheesRes.ok ? (await coacheesRes.json()).coachees || [] : [];
+      const programs = programsRes.ok ? (await programsRes.json()).programs || [] : [];
+      setStats({
+        activeCoachees: coachees.length,
+        weeklyWorkouts: 0,
+        programs: programs.length,
+        unreadMessages: 0,
+      });
+    } catch {}
+  };
 
   const fetchReferralData = async () => {
     try {
@@ -73,82 +76,56 @@ const [stats, setStats] = useState({ activeCoachees: 0, weeklyWorkouts: 0, progr
         fetch("/api/referral/code"),
         fetch("/api/referral/stats"),
       ]);
-      if (codeRes.ok) {
-        const codeData = await codeRes.json();
-        setReferralCode(codeData.code);
-      }
-      if (statsRes.ok) {
-        const statsData = await statsRes.json();
-        setReferralStats(statsData);
-      }
-    } catch (e) {
-      console.error("Failed to load referral data:", e);
-    }
-  };
-
-
-  const fetchSystemStats = async () => {
-    try {
-      const res = await fetch("/api/stats");
-      if (res.ok) {
-        const data = await res.json();
-        setSystemStats(data);
-      }
-    } catch (e) {
-      console.error("Failed to load system stats:", e);
-    }
-  };
-
-  const handleCopyReferral = async () => {
-    if (!referralCode) return;
-    try {
-      await navigator.clipboard.writeText(referralCode);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (e) {
-      console.error("Failed to copy:", e);
-    }
-  };
-  const fetchDashboardStats = async () => {
-    try {
-      const [coacheesRes, programsRes] = await Promise.all([
-        fetch("/api/coachees"),
-        fetch("/api/programs"),
-      ]);
-      const coacheesResult = coacheesRes.ok ? await coacheesRes.json() : { coachees: [] };
-      const programsResult = programsRes.ok ? await programsRes.json() : { programs: [] };
-      
-      setStats({
-        activeCoachees: (coacheesResult.coachees || []).length,
-        weeklyWorkouts: 0,
-        programs: (programsResult.programs || []).length,
-        unreadMessages: 0,
-      });
-    } catch (err) {
-      console.error("Failed to fetch dashboard stats:", err);
-    }
+      if (codeRes.ok) setReferralCode((await codeRes.json()).code);
+      if (statsRes.ok) setReferralStats(await statsRes.json());
+    } catch {}
   };
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-6 page-enter">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl lg:text-3xl font-black text-[#1c1917]" style={{ fontFamily: "'Outfit', sans-serif" }}>
+            Dashboard
+          </h1>
+          <p className="text-[#78716c] mt-1">Welcome back! Here's your coaching overview.</p>
+        </div>
+        <div className="flex gap-3">
+          <Link href="/coachees" className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-bold transition hover:opacity-90" style={{ background: 'linear-gradient(135deg, #FF6B35, #E85D2C)' }}>
+            <Plus className="w-4 h-4" /> Add Client
+          </Link>
+        </div>
+      </div>
+
+      {/* Stats */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <StatCard icon={<Users className="w-5 h-5" />} label="Active Clients" value={stats.activeCoachees} sub={`${stats.activeCoachees} total`} color="orange" />
+        <StatCard icon={<TrendingUp className="w-5 h-5" />} label="This Week" value={stats.weeklyWorkouts} sub="Workouts logged" color="green" />
+        <StatCard icon={<ClipboardList className="w-5 h-5" />} label="Programs" value={stats.programs} sub={`${stats.programs} active`} color="purple" />
+        <StatCard icon={<MessageSquare className="w-5 h-5" />} label="Messages" value={stats.unreadMessages} sub="Unread" color="blue" />
+      </div>
+
       {/* Referral Banner */}
       {referralCode && (
-        <div className="bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-500 rounded-2xl p-6 text-white shadow-lg">
-          <div className="flex items-center justify-between flex-wrap gap-4">
+        <div className="rounded-2xl p-6 text-white shadow-lg relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #7C3AED, #FF6B35)' }}>
+          <div className="absolute top-0 right-0 w-32 h-32 opacity-10">
+            <Gift className="w-full h-full" />
+          </div>
+          <div className="relative z-10 flex items-center justify-between flex-wrap gap-4">
             <div>
-              <h2 className="text-2xl font-bold mb-2">🎁 Invite Friends, Get 1 Month Free!</h2>
-              <p className="text-blue-100">Share your referral code and both of you get 1 free month on any plan.</p>
+              <h2 className="text-xl font-bold mb-1">🎁 Invite Friends — Get 1 Month Free!</h2>
+              <p className="text-white/80 text-sm">Share your code. Both you and your friend get a free month.</p>
             </div>
-            <div className="flex items-center gap-3 bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2">
+            <div className="flex items-center gap-2 bg-white/20 backdrop-blur rounded-xl px-4 py-2.5">
               <span className="font-mono text-xl font-bold tracking-wider">{referralCode}</span>
-              <button onClick={handleCopyReferral} className="p-2 hover:bg-white/30 rounded-lg transition" title="Copy">
+              <button onClick={async () => { await navigator.clipboard.writeText(referralCode!); setCopied(true); setTimeout(() => setCopied(false), 2000); }} className="p-1.5 hover:bg-white/20 rounded-lg transition">
                 {copied ? <CheckCircle className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
               </button>
-              <a href="/register" className="px-3 py-1 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg text-xs font-semibold transition text-white">Sign Up</a>
             </div>
           </div>
           {referralStats && (referralStats.converted > 0 || referralStats.rewardMonths > 0) && (
-            <div className="mt-4 flex gap-4 text-sm">
+            <div className="mt-4 flex gap-3 text-sm relative z-10">
               <span className="bg-white/20 px-3 py-1 rounded-full">{referralStats.total} Invites</span>
               <span className="bg-white/20 px-3 py-1 rounded-full">{referralStats.converted} Converted</span>
               <span className="bg-white/20 px-3 py-1 rounded-full">{referralStats.rewardMonths} Months Earned</span>
@@ -157,164 +134,26 @@ const [stats, setStats] = useState({ activeCoachees: 0, weeklyWorkouts: 0, progr
         </div>
       )}
 
-      {/* Quick Sign Up Entry */}
-      <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl p-6 text-white shadow-lg flex items-center justify-between">
-        <div>
-          <h3 className="text-xl font-bold mb-1">🚀 Invite Coaches to Join</h3>
-          <p className="text-green-100 text-sm">Start a free 30-day trial. No credit card required.</p>
-        </div>
-        <a href="/register"
-           className="px-6 py-3 bg-white text-green-600 font-bold rounded-xl hover:bg-green-50 transition shadow-md whitespace-nowrap">
-          Sign Up Now
-        </a>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard icon={<Users className="w-5 h-5" />} label="活跃学员" value={stats.activeCoachees} change="+2 本月" color="blue" />
-        <StatCard icon={<Calendar className="w-5 h-5" />} label="本周训练" value={stats.weeklyWorkouts} change="较上周 +15%" color="green" />
-        <StatCard icon={<Dumbbell className="w-5 h-5" />} label="训练计划" value={stats.programs} change="3 进行中" color="purple" />
-        <StatCard icon={<MessageSquare className="w-5 h-5" />} label="未读消息" value={stats.unreadMessages} change="需要回复" color="orange" />
-      </div>
-
-      {isAdmin && (
-        <div className="max-w-7xl mx-auto px-6 sm:px-6 lg:px-8 mb-6">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl border border-blue-100 p-4 hover:shadow-md transition-all">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-sm">
-                  <UserPlus className="w-5 h-5 text-white" />
-                </div>
-                <span className="text-sm font-medium text-gray-600">今日新注册</span>
+      {/* Quick Links */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {[
+          { href: '/coachees', icon: <Users className="w-5 h-5" />, label: 'Manage Clients', desc: 'View and manage your client roster', color: '#FF6B3520', text: '#FF6B35' },
+          { href: '/programs', icon: <Dumbbell className="w-5 h-5" />, label: 'Training Programs', desc: 'Create and edit workout plans', color: '#7C3AED20', text: '#7C3AED' },
+          { href: '/messages', icon: <MessageSquare className="w-5 h-5" />, label: 'Messages', desc: 'Chat with your clients', color: '#10B98120', text: '#10B981' },
+        ].map((link, i) => (
+          <Link key={i} href={link.href} className="group bg-white rounded-2xl p-5 border border-gray-100 hover:border-transparent hover:shadow-lg transition-all duration-200">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110" style={{ backgroundColor: link.color, color: link.text }}>
+                {link.icon}
               </div>
-              <p className="text-2xl font-bold text-gray-900">{systemStats.todayRegistrations ?? 0}</p>
-              <div className="flex gap-2 mt-1 text-xs text-gray-500">
-                <span>教练 {systemStats.todayRegistrationBreakdown?.coaches ?? 0}</span>
-                <span>·</span>
-                <span>学员 {systemStats.todayRegistrationBreakdown?.clients ?? 0}</span>
+              <div>
+                <p className="font-bold text-[#1c1917] text-sm">{link.label}</p>
+                <p className="text-xs text-[#a8a29e] mt-0.5">{link.desc}</p>
               </div>
             </div>
-            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl border border-purple-100 p-4 hover:shadow-md transition-all">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-sm">
-                  <Users className="w-5 h-5 text-white" />
-                </div>
-                <span className="text-sm font-medium text-gray-600">全部教练</span>
-              </div>
-              <p className="text-2xl font-bold text-gray-900">{systemStats.totalCoaches ?? 0}</p>
-            </div>
-            <div className="bg-gradient-to-br from-emerald-50 to-green-50 rounded-xl border border-emerald-100 p-4 hover:shadow-md transition-all">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-green-500 flex items-center justify-center shadow-sm">
-                  <Trophy className="w-5 h-5 text-white" />
-                </div>
-                <span className="text-sm font-medium text-gray-600">全部学员</span>
-              </div>
-              <p className="text-2xl font-bold text-gray-900">{systemStats.totalClients ?? 0}</p>
-            </div>
-            <div className="bg-gradient-to-br from-indigo-50 to-violet-50 rounded-xl border border-indigo-100 p-4 hover:shadow-md transition-all">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center shadow-sm">
-                  <Users className="w-5 h-5 text-white" />
-                </div>
-                <span className="text-sm font-medium text-gray-600">全部用户</span>
-              </div>
-              <p className="text-2xl font-bold text-gray-900">{systemStats.totalUsers ?? 0}</p>
-            </div>
-          </div>
-        </div>
-      )}
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900">最近训练记录</h2>
-            <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">查看全部</button>
-          </div>
-          <div className="space-y-3">
-            {recentActivities.map((item, i) => (
-              <div key={i} className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition">
-                <div className={"w-10 h-10 rounded-full " + item.color + " flex items-center justify-center text-white text-sm font-medium shrink-0"}>
-                  {item.name[0]}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-900">{item.name}</p>
-                  <p className="text-xs text-gray-500">{item.exercise}</p>
-                </div>
-                <span className="text-xs text-gray-400 shrink-0">{item.time}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="space-y-4">
-          <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">快速操作</h2>
-            <div className="space-y-2">
-              <QuickAction label="添加新学员" icon={<Plus className="w-4 h-4" />} color="blue" href="/coachees" />
-              <QuickAction label="创建训练计划" icon={<Calendar className="w-4 h-4" />} color="green" href="/programs" />
-              <QuickAction label="AI 生成计划" icon={<Target className="w-4 h-4" />} color="purple" href="/programs" />
-              <QuickAction label="查看学员进度" icon={<BarChart3 className="w-4 h-4" />} color="orange" href="/progress" />
-            </div>
-          </div>
-
-          <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl p-6 text-white">
-            <h3 className="font-semibold mb-2">本周总结</h3>
-            <div className="space-y-2 text-sm text-blue-100">
-              <div className="flex justify-between">
-                <span>{t('dashboard.trainingCompletionRate')}</span>
-                <span className="font-semibold">87%</span>
-              </div>
-              <div className="w-full bg-blue-800 rounded-full h-2">
-                <div className="bg-white rounded-full h-2" style={{ width: "87%" }}></div>
-              </div>
-              <div className="flex justify-between">
-                <span>{t('dashboard.averageRPE')}</span>
-                <span className="font-semibold">7.2/10</span>
-              </div>
-              <div className="flex justify-between">
-                <span>{t('dashboard.studentSatisfaction')}</span>
-                <span className="font-semibold">4.8/5</span>
-              </div>
-            </div>
-          </div>
-        </div>
+          </Link>
+        ))}
       </div>
     </div>
-  );
-}
-
-function StatCard({ icon, label, value, change, color }: StatCardProps) {
-  const bg: Record<string, string> = {
-    blue: "bg-blue-50 text-blue-600",
-    green: "bg-green-50 text-green-600",
-    purple: "bg-purple-50 text-purple-600",
-    orange: "bg-orange-50 text-orange-600",
-  };
-  return (
-    <div className="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition">
-      <div className={"inline-flex items-center justify-center w-10 h-10 rounded-lg mb-3 " + (bg[color] || bg.blue)}>
-        {icon}
-      </div>
-      <p className="text-2xl font-bold text-gray-900">{value}</p>
-      <p className="text-sm text-gray-500">{label}</p>
-      <p className="text-xs text-gray-400 mt-1">{change}</p>
-    </div>
-  );
-}
-
-function QuickAction({ label, icon, color, href }: { label: string; icon: React.ReactNode; color: "blue" | "green" | "purple" | "orange"; href?: string }) {
-  const bg: Record<string, string> = {
-    blue: "bg-blue-50 text-blue-600 hover:bg-blue-100",
-    green: "bg-green-50 text-green-600 hover:bg-green-100",
-    purple: "bg-purple-50 text-purple-600 hover:bg-purple-100",
-    orange: "bg-orange-50 text-orange-600 hover:bg-orange-100",
-  };
-  if (href) {
-    return <a href={href} className={"w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition " + (bg[color] || bg.blue)}>{icon}{label}</a>;
-  }
-  return (
-    <button className={"w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition " + (bg[color] || bg.blue)}>
-      {icon}
-      {label}
-    </button>
   );
 }

@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { Send, Search, MessageSquare, User, Loader2, AlertCircle } from 'lucide-react';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { Send, Search, MessageSquare, Loader2, AlertCircle } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { useTranslation } from '@/hooks/use-translation';
 import { showToast } from '@/components/Toast';
@@ -16,12 +16,46 @@ export default function MessagesPage() {
   const [sendMessage, setSendMessage] = useState('');
   const [sending, setSending] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [coachProfileId, setCoachProfileId] = useState<string>('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Get current coach profile ID
+  useEffect(() => {
+    fetch('/api/auth/me')
+      .then(r => r.json())
+      .then(data => {
+        if (data.profile?.id) setCoachProfileId(data.profile.id);
+      })
+      .catch(() => {});
+  }, []);
+
+  // Mark messages as read on server
+  const markAsRead = useCallback(async (conv: any) => {
+    if (!conv || !conv.messages) return;
+    const unreadIds = conv.messages
+      .filter((m: any) => !m.is_read && m.coach_id !== coachProfileId)
+      .map((m: any) => m.id);
+    if (unreadIds.length > 0) {
+      try {
+        await fetch('/api/messages', {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messageIds: unreadIds }),
+        });
+        conv.messages.forEach((m: any) => { m.is_read = true; });
+      } catch {}
+    }
+  }, [coachProfileId]);
+
+  const handleSelectConversation = useCallback((conv: any) => {
+    setSelectedConv(conv);
+    markAsRead(conv);
+  }, [markAsRead]);
 
   // Auto-select from URL query param
   useEffect(() => {
     const clientId = searchParams.get("clientId");
-    if (clientId) {
+    if (clientId && conversations.length > 0) {
       const conv = conversations.find((c: any) => c.partnerId === clientId);
       if (conv) {
         handleSelectConversation(conv);
@@ -48,13 +82,6 @@ export default function MessagesPage() {
       else { setConversations(json.conversations || []); }
     } catch (e: any) { setError(e.message); }
     finally { setLoading(false); }
-  };
-
-  const handleSelectConversation = (conv: any) => {
-    setSelectedConv(conv);
-    if (conv.messages) {
-      conv.messages.forEach((m: any) => { m.is_read = true; });
-    }
   };
 
   const handleSend = async () => {
@@ -177,7 +204,7 @@ export default function MessagesPage() {
                 </div>
                 <div className="flex-1 p-4 space-y-3 overflow-y-auto">
                   {(selectedConv.messages || []).map((msg: any) => {
-                    const isMine = msg.coach_id !== undefined;
+                    const isMine = coachProfileId ? msg.coach_id === coachProfileId : msg.coach_id !== undefined;
                     return (
                       <div key={msg.id} className={"flex " + (isMine ? "justify-end" : "justify-start")}>
                         <div className={isMine

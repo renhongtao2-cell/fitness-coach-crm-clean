@@ -165,7 +165,7 @@ export async function POST(request) {
     if (!profile) return NextResponse.json({ error: 'Profile not found' }, { status: 404 });
 
     const body = await request.json();
-    const { action } = body;
+    const { action, content } = body;
 
     if (action === 'mark_complete') {
       const { exerciseLogId, notes } = body;
