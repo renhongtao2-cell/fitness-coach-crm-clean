@@ -3,8 +3,8 @@
 import Link from 'next/link';
 import {
   Dumbbell, Users, Brain, TrendingUp, MessageSquare, CreditCard,
-  Star, ArrowRight, Zap, Award, CheckCircle,
-  BarChart3, Shield, Sparkles, Play,
+  Star, ArrowRight, Zap, CheckCircle,
+  BarChart3, Shield, Sparkles, Play, UserPlus,
 } from 'lucide-react';
 import { useTranslation } from '@/hooks/use-translation';
 import { useState, useEffect, useRef } from "react";
