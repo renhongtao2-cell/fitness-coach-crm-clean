@@ -210,7 +210,7 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ error: 'messageIds required' }, { status: 400 });
     }
 
-    const adminSupabase = createAdminClient();
+    const adminSupabase = await createAdminClient();
     const { error } = await adminSupabase
       .from('messages')
       .update({ is_read: true })
