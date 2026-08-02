@@ -3,8 +3,10 @@ import { useState, useRef, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/use-auth';
-import { useTranslation } from '@/hooks/use-translation';
 import { Dumbbell, Mail, Lock, User, Eye, EyeOff, CheckCircle, XCircle, Gift } from 'lucide-react';
+
+export const metadata = { title: 'Create Account �� FitCoach CRM', description: 'Join FitCoach CRM for free. Manage fitness clients, generate AI workout plans, track progress, and collect payments. No credit card required.' };
+import { useTranslation } from '@/hooks/use-translation';
 
 function RegisterForm() {
   const router = useRouter();
@@ -89,7 +91,7 @@ function RegisterForm() {
   return (
     <div className="w-full max-w-md animate-fade-in">
       <div className="text-center mb-8">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-600 mb-4">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-emerald-600 mb-4">
           <Dumbbell className="w-8 h-8 text-white" />
         </div>
         <h1 className="text-2xl font-bold text-gray-900">{t('register.createAccountTitle')}</h1>
@@ -124,7 +126,7 @@ function RegisterForm() {
               <button
                 type="button"
                 onClick={() => handleChange('role', 'coach')}
-                className={'p-3 border rounded-lg text-center transition ' + (formData.role === 'coach' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-gray-300 hover:border-gray-400')}
+                className={'p-3 border rounded-lg text-center transition ' + (formData.role === 'coach' ? 'border-emerald-500 bg-emerald-50 text-emerald-700' : 'border-gray-300 hover:border-gray-400')}
               >
                 <div className="font-medium">{t('register.fitnessCoachLabel')}</div>
                 <div className="text-xs text-gray-500 mt-0.5">{t('register.manageClients')}</div>
@@ -132,7 +134,7 @@ function RegisterForm() {
               <button
                 type="button"
                 onClick={() => handleChange('role', 'client')}
-                className={'p-3 border rounded-lg text-center transition ' + (formData.role === 'client' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-gray-300 hover:border-gray-400')}
+                className={'p-3 border rounded-lg text-center transition ' + (formData.role === 'client' ? 'border-emerald-500 bg-emerald-50 text-emerald-700' : 'border-gray-300 hover:border-gray-400')}
               >
                 <div className="font-medium">{t('register.viewTrainingLabel')}</div>
               </button>
@@ -147,7 +149,7 @@ function RegisterForm() {
                 type="text"
                 value={formData.fullName}
                 onChange={(e) => handleChange('fullName', e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                 placeholder={t('register.namePlaceholder')}
                 required
                 disabled={isDisabled}
@@ -163,7 +165,7 @@ function RegisterForm() {
                 type="email"
                 value={formData.email}
                 onChange={(e) => handleChange('email', e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                 placeholder="you@example.com"
                 required
                 autoComplete="email"
@@ -180,7 +182,7 @@ function RegisterForm() {
                 type={showPassword ? 'text' : 'password'}
                 value={formData.password}
                 onChange={(e) => handleChange('password', e.target.value)}
-                className="w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                className="w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                 placeholder={t('register.passwordPlaceholderReg')}
                 required
                 autoComplete="new-password"
@@ -206,7 +208,7 @@ function RegisterForm() {
                 type="password"
                 value={formData.confirmPassword}
                 onChange={(e) => handleChange('confirmPassword', e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                 placeholder={t('register.confirmPasswordPlaceholder2')}
                 required
                 autoComplete="new-password"
@@ -219,7 +221,7 @@ function RegisterForm() {
           {/* Referral Code Input */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1.5 flex items-center gap-1.5">
-              <Gift className="w-4 h-4 text-blue-500" />
+              <Gift className="w-4 h-4 text-emerald-500" />
               {t('register.referralCodeLabel')}
             </label>
             <div className="relative">
@@ -228,7 +230,7 @@ function RegisterForm() {
                 type="text"
                 value={formData.referralCode}
                 onChange={(e) => handleChange('referralCode', e.target.value.toUpperCase())}
-                className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-mono"
+                className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none font-mono"
                 placeholder="FIT-XXXXXX"
                 autoComplete="off"
                 disabled={isDisabled}
@@ -240,7 +242,7 @@ function RegisterForm() {
           <button
             type="submit"
             disabled={isDisabled}
-            className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed text-white font-medium rounded-lg transition flex items-center justify-center gap-2"
+            className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:bg-emerald-300 disabled:cursor-not-allowed text-white font-medium rounded-lg transition flex items-center justify-center gap-2"
           >
             {submitting ? t('register.submittingRegister') : t('register.createAccountSubmit')}
           </button>
@@ -248,7 +250,7 @@ function RegisterForm() {
 
         <div className="mt-6 text-center text-sm">
           <span className="text-gray-500">{t('auth.noAccount')}</span>{' '}
-          <Link href="/register" className="text-blue-600 hover:text-blue-700">{t('auth.createAccount')}</Link>
+          <Link href="/register" className="text-emerald-600 hover:text-emerald-700">{t('auth.createAccount')}</Link>
         </div>
       </div>
 

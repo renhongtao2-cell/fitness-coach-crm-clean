@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import { useEffect, useState } from 'react';
 import { CheckCircle, XCircle, X, Info } from 'lucide-react';
 
@@ -55,19 +55,19 @@ export default function ToastContainer() {
   const icons = {
     success: <CheckCircle className="w-5 h-5 text-green-500" />,
     error: <XCircle className="w-5 h-5 text-red-500" />,
-    info: <Info className="w-5 h-5 text-blue-500" />,
+    info: <Info className="w-5 h-5 text-emerald-500" />,
   };
 
   const bgColors = {
     success: 'bg-green-50 border-green-200',
     error: 'bg-red-50 border-red-200',
-    info: 'bg-blue-50 border-blue-200',
+    info: 'bg-emerald-50 border-emerald-200',
   };
 
   const textColors = {
     success: 'text-green-800',
     error: 'text-red-800',
-    info: 'text-blue-800',
+    info: 'text-emerald-800',
   };
 
   return (

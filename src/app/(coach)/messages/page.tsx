@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { Send, Search, MessageSquare, Loader2, AlertCircle } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Send, Search, MessageSquare, User, Loader2, AlertCircle } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { useTranslation } from '@/hooks/use-translation';
 import { showToast } from '@/components/Toast';
@@ -16,46 +16,12 @@ export default function MessagesPage() {
   const [sendMessage, setSendMessage] = useState('');
   const [sending, setSending] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [coachProfileId, setCoachProfileId] = useState<string>('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  // Get current coach profile ID
-  useEffect(() => {
-    fetch('/api/auth/me')
-      .then(r => r.json())
-      .then(data => {
-        if (data.profile?.id) setCoachProfileId(data.profile.id);
-      })
-      .catch(() => {});
-  }, []);
-
-  // Mark messages as read on server
-  const markAsRead = useCallback(async (conv: any) => {
-    if (!conv || !conv.messages) return;
-    const unreadIds = conv.messages
-      .filter((m: any) => !m.is_read && m.coach_id !== coachProfileId)
-      .map((m: any) => m.id);
-    if (unreadIds.length > 0) {
-      try {
-        await fetch('/api/messages', {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ messageIds: unreadIds }),
-        });
-        conv.messages.forEach((m: any) => { m.is_read = true; });
-      } catch {}
-    }
-  }, [coachProfileId]);
-
-  const handleSelectConversation = useCallback((conv: any) => {
-    setSelectedConv(conv);
-    markAsRead(conv);
-  }, [markAsRead]);
 
   // Auto-select from URL query param
   useEffect(() => {
     const clientId = searchParams.get("clientId");
-    if (clientId && conversations.length > 0) {
+    if (clientId) {
       const conv = conversations.find((c: any) => c.partnerId === clientId);
       if (conv) {
         handleSelectConversation(conv);
@@ -82,6 +48,13 @@ export default function MessagesPage() {
       else { setConversations(json.conversations || []); }
     } catch (e: any) { setError(e.message); }
     finally { setLoading(false); }
+  };
+
+  const handleSelectConversation = (conv: any) => {
+    setSelectedConv(conv);
+    if (conv.messages) {
+      conv.messages.forEach((m: any) => { m.is_read = true; });
+    }
   };
 
   const handleSend = async () => {
@@ -128,7 +101,7 @@ export default function MessagesPage() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <Loader2 className="w-10 h-10 border-4 border-emerald-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="text-gray-600">Loading...</p>
         </div>
       </div>
@@ -157,7 +130,7 @@ export default function MessagesPage() {
               <div className="p-4 border-b border-gray-200">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                  <input type="text" placeholder="Search conversations..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none" />
+                  <input type="text" placeholder="Search conversations..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none" />
                 </div>
               </div>
               <div className="flex-1 overflow-y-auto">
@@ -169,8 +142,8 @@ export default function MessagesPage() {
                 ) : (
                   filteredConversations.map((conv: any) => (
                     <div key={conv.partnerId} onClick={() => handleSelectConversation(conv)}
-                      className={"flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition cursor-pointer " + (selectedConv?.partnerId === conv.partnerId ? "bg-blue-50 border-r-2 border-blue-600" : "")}>
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-medium text-sm shrink-0">
+                      className={"flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition cursor-pointer " + (selectedConv?.partnerId === conv.partnerId ? "bg-emerald-50 border-r-2 border-emerald-600" : "")}>
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white font-medium text-sm shrink-0">
                         {conv.avatar}
                       </div>
                       <div className="flex-1 min-w-0">
@@ -181,7 +154,7 @@ export default function MessagesPage() {
                         <p className="text-xs text-gray-500 truncate">{conv.lastMsg}</p>
                       </div>
                       {conv.unread > 0 && (
-                        <span className="w-5 h-5 bg-blue-600 text-white text-xs rounded-full flex items-center justify-center shrink-0">{conv.unread}</span>
+                        <span className="w-5 h-5 bg-emerald-600 text-white text-xs rounded-full flex items-center justify-center shrink-0">{conv.unread}</span>
                       )}
                     </div>
                   ))
@@ -194,9 +167,9 @@ export default function MessagesPage() {
               <div className={"flex-1 flex flex-col " + (selectedConv ? "flex" : "hidden sm:flex")}>
                 <div className="px-6 py-4 border-b border-gray-200 flex items-center gap-3">
                   <button onClick={() => setSelectedConv(null)} className="sm:hidden mr-1 text-gray-500 hover:text-gray-700">
-                    ←
+                    ��
                   </button>
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-medium">{selectedConv.avatar}</div>
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white font-medium">{selectedConv.avatar}</div>
                   <div>
                     <p className="text-sm font-medium text-gray-900">{selectedConv.name}</p>
                     <p className="text-xs text-gray-400">Client</p>
@@ -204,14 +177,14 @@ export default function MessagesPage() {
                 </div>
                 <div className="flex-1 p-4 space-y-3 overflow-y-auto">
                   {(selectedConv.messages || []).map((msg: any) => {
-                    const isMine = coachProfileId ? msg.coach_id === coachProfileId : msg.coach_id !== undefined;
+                    const isMine = msg.sender === 'coach';
                     return (
                       <div key={msg.id} className={"flex " + (isMine ? "justify-end" : "justify-start")}>
                         <div className={isMine
-                          ? "bg-blue-600 text-white rounded-2xl rounded-br-none px-4 py-2.5 max-w-md"
+                          ? "bg-emerald-600 text-white rounded-2xl rounded-br-none px-4 py-2.5 max-w-md"
                           : "bg-gray-100 text-gray-900 rounded-2xl rounded-bl-none px-4 py-2.5 max-w-md"}>
                           <p className="text-sm">{msg.content}</p>
-                          <span className={isMine ? "text-xs text-blue-200 mt-1 block" : "text-xs text-gray-400 mt-1 block"}>
+                          <span className={isMine ? "text-xs text-emerald-200 mt-1 block" : "text-xs text-gray-400 mt-1 block"}>
                             {new Date(msg.created_at).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}
                           </span>
                         </div>
@@ -223,8 +196,8 @@ export default function MessagesPage() {
                 <div className="px-4 py-3 border-t border-gray-200">
                   <div className="flex items-center gap-2">
                     <input type="text" value={sendMessage} onChange={(e) => setSendMessage(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') handleSend(); }}
-                      placeholder="Type a message..." className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm" />
-                    <button onClick={handleSend} disabled={sending || !sendMessage.trim()} className="p-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white rounded-lg transition">
+                      placeholder="Type a message..." className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none text-sm" />
+                    <button onClick={handleSend} disabled={sending || !sendMessage.trim()} className="p-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:bg-emerald-300 text-white rounded-lg transition">
                       {sending ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
                     </button>
                   </div>

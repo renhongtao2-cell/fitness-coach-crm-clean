@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+﻿import { NextRequest, NextResponse } from 'next/server';
 import { createClient, createAdminClient } from '@/lib/supabase/server';
 
 export async function GET(request: NextRequest) {
@@ -114,7 +114,7 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    const unreadCount = (messages || []).filter((m) => !m.is_read && m.coachee_id === coacheeId).length;
+    const unreadCount = (messages || []).filter((m) => !m.is_read && m.sender === 'coach').length;
 
     return NextResponse.json({
       coachee: profile,
@@ -165,7 +165,7 @@ export async function POST(request) {
     if (!profile) return NextResponse.json({ error: 'Profile not found' }, { status: 404 });
 
     const body = await request.json();
-    const { action, content } = body;
+    const { action } = body;
 
     if (action === 'mark_complete') {
       const { exerciseLogId, notes } = body;
@@ -203,7 +203,7 @@ export async function POST(request) {
         
         const { data: msg, error: msgErr } = await adminSupabase
           .from('messages')
-          .insert({ coach_id: programRes.data.coach_id, coachee_id: profile.id, content: content.trim(), is_read: false })
+          .insert({ coach_id: programRes.data.coach_id, coachee_id: profile.id, content: body.content.trim(), is_read: false })
           .select()
           .single();
         if (msgErr) throw msgErr;
@@ -212,7 +212,7 @@ export async function POST(request) {
       
       const { data: msg, error: msgErr } = await adminSupabase
         .from('messages')
-        .insert({ coach_id: bindingRes.data.coach_id, coachee_id: profile.id, content: content.trim(), is_read: false })
+        .insert({ coach_id: bindingRes.data.coach_id, coachee_id: profile.id, content: body.content.trim(), is_read: false })
         .select()
         .single();
       if (msgErr) throw msgErr;

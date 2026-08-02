@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Brain, MessageSquare } from "lucide-react"
 
+export const metadata = { title: 'FAQ �� FitCoach CRM', description: 'Frequently asked questions about FitCoach CRM. Pricing, features, AI workout plans, client management, payments, and more.' };;
+
 export const metadata: Metadata = {
   title: "FAQ - FitCoach CRM Pricing, Features & Setup Guide for Personal Trainers",
   description: "Answers to the most common questions about FitCoach CRM: free plan limits, Stripe payments, AI workout plan generation, client onboarding, GDPR compliance, cancellation policy, and enterprise features for fitness coaching businesses.",
@@ -18,7 +20,7 @@ export const metadata: Metadata = {
     canonical: "/faq",
   },
   openGraph: {
-    title: "FitCoach CRM FAQ — Help Center for Fitness Coaches",
+    title: "FitCoach CRM FAQ �� Help Center for Fitness Coaches",
     description: "Learn about FitCoach CRM pricing, features, AI workout planning, client management, Stripe payments, GDPR compliance, and more.",
     type: "website",
     url: "/faq",
@@ -26,7 +28,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "FitCoach CRM FAQ — Everything You Need to Know",
+    title: "FitCoach CRM FAQ �� Everything You Need to Know",
     description: "Pricing, features, setup, and support for fitness coaches using FitCoach CRM.",
   },
 };
@@ -43,10 +45,10 @@ const faqs = [
 export default function FAQPage() {
   return (
     <div className="min-h-screen bg-white">
-      <header className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-16">
+      <header className="bg-gradient-to-r from-emerald-600 to-purple-600 text-white py-16">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Frequently Asked Questions</h1>
-          <p className="text-xl text-blue-100">Everything you need to know about FitCoach CRM.</p>
+          <p className="text-xl text-emerald-100">Everything you need to know about FitCoach CRM.</p>
         </div>
       </header>
 
@@ -65,7 +67,7 @@ export default function FAQPage() {
       <footer className="bg-gray-900 text-gray-400 py-12 text-center">
         <div className="max-w-4xl mx-auto px-4">
           <div className="flex items-center justify-center gap-3 mb-6">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center"><Brain className="w-5 h-5 text-white" /></div>
+            <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-purple-500 rounded-xl flex items-center justify-center"><Brain className="w-5 h-5 text-white" /></div>
             <span className="text-white font-bold text-xl">FitCoach</span>
           </div>
           <p className="text-sm">? 2025 FitCoach CRM. All rights reserved.</p>

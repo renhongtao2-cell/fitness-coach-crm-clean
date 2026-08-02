@@ -1,0 +1,1 @@
+with open("src/app/(coach)/coachees/page.tsx", "r", encoding="utf-8") as f:\n    content = f.read()\n    idx = content.find("flex gap-2 mt-4")\n    if idx >= 0:\n        start = max(0, idx - 200)\n        end = min(len(content), idx + 200)\n        print(content[start:end])

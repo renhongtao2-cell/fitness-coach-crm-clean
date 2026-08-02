@@ -28,7 +28,7 @@ export default function ProgressPage() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <div className="w-10 h-10 border-4 border-emerald-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="text-gray-600">Loading...</p>
         </div>
       </div>
@@ -40,7 +40,7 @@ export default function ProgressPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <p className="text-red-600 mb-4">{error}</p>
-          <button onClick={() => fetchData()} className="px-4 py-2 bg-blue-600 text-white rounded-lg">Retry</button>
+          <button onClick={() => fetchData()} className="px-4 py-2 bg-emerald-600 text-white rounded-lg">Retry</button>
         </div>
       </div>
     );
@@ -79,7 +79,7 @@ export default function ProgressPage() {
             <p className="text-gray-500 mt-1">View client training results and Body Metrics changes</p>
           </div>
           <div className="flex items-center gap-3">
-            <select value={selectedCoacheeId} onChange={(e) => setSelectedCoacheeId(e.target.value)} className="px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none bg-white pr-8">
+            <select value={selectedCoacheeId} onChange={(e) => setSelectedCoacheeId(e.target.value)} className="px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none bg-white pr-8">
               <option value="">All Clients</option>
               {coachees.map((c: any) => (<option key={c.id} value={c.id}>{c.full_name}</option>))}
             </select>
@@ -123,7 +123,7 @@ export default function ProgressPage() {
                   {assignments.map((a: any) => (
                     <div key={a.id} className="px-6 py-4 flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-blue-50 rounded-full flex items-center justify-center"><Users className="w-4 h-4 text-blue-600" /></div>
+                        <div className="w-8 h-8 bg-emerald-50 rounded-full flex items-center justify-center"><Users className="w-4 h-4 text-emerald-600" /></div>
                         <div><p className="text-sm font-medium text-gray-900">{a.profiles?.full_name || a.coachee_id}</p><p className="text-xs text-gray-500">{a.programs?.name || a.program_id}</p></div>
                       </div>
                       <span className={'px-2 py-1 rounded-full text-xs font-medium ' + getStatusColor(a.status)}>{getStatusLabel(a.status)}</span>
@@ -217,11 +217,11 @@ function computeStats(ms: any[]) {
 
 function formatDate(ds: string) { const d = new Date(ds); return d.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' }); }
 
-function getStatusColor(s: string) { const c: Record<string,string> = { active: 'bg-green-100 text-green-700', completed: 'bg-blue-100 text-blue-700', paused: 'bg-yellow-100 text-yellow-700' }; return c[s] || 'bg-gray-100 text-gray-700'; }
+function getStatusColor(s: string) { const c: Record<string,string> = { active: 'bg-green-100 text-green-700', completed: 'bg-emerald-100 text-emerald-700', paused: 'bg-yellow-100 text-yellow-700' }; return c[s] || 'bg-gray-100 text-gray-700'; }
 function getStatusLabel(s: string) { const l: Record<string,string> = { active: 'In Progress', completed: 'Completed', paused: 'Paused' }; return l[s] || s; }
 
 function StatCard({ label, value, subtitle, trend, goodDirection, icon, color }: any) {
-  const colors: Record<string, string> = { blue: 'bg-blue-50 text-blue-600', green: 'bg-green-50 text-green-600', purple: 'bg-purple-50 text-purple-600', orange: 'bg-orange-50 text-orange-600' };
+  const colors: Record<string, string> = { blue: 'bg-emerald-50 text-emerald-600', green: 'bg-green-50 text-green-600', purple: 'bg-purple-50 text-purple-600', orange: 'bg-orange-50 text-orange-600' };
   const isPositive = trend == null ? true : goodDirection === 'down' ? trend <= 0 : trend >= 0;
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-5">

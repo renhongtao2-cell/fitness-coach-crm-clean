@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -201,7 +201,7 @@ function PricingContent() {
 
         {subscription && (
           <div className="mb-8 text-center">
-            <span className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-medium">
+            <span className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-700 rounded-full text-sm font-medium">
               <Shield className="w-4 h-4" />
               Current Plan: {planNameMap[currentPlan] || "Free"}
               {currentPlan !== "free" && (
@@ -218,17 +218,17 @@ function PricingContent() {
             const isCurrentPlan = currentPlan === plan.type;
             const colorClasses: Record<string, string> = {
               gray: "bg-gray-100 text-gray-600",
-              blue: "bg-blue-100 text-blue-600",
+              blue: "bg-emerald-100 text-emerald-600",
               purple: "bg-purple-100 text-purple-600",
-              indigo: "bg-indigo-100 text-indigo-600",
+              indigo: "bg-teal-100 text-teal-600",
             };
-            const borderClass = plan.highlighted ? "border-blue-500 shadow-lg scale-105" : isCurrentPlan ? "border-green-400 shadow-md" : "border-gray-200";
+            const borderClass = plan.highlighted ? "border-emerald-500 shadow-lg scale-105" : isCurrentPlan ? "border-green-400 shadow-md" : "border-gray-200";
 
             return (
               <div key={plan.type} className={"relative bg-white rounded-2xl border-2 p-6 transition-all duration-300 hover:shadow-lg " + borderClass}>
                 {plan.badge && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <span className="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow">{plan.badge}</span>
+                    <span className="bg-emerald-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow">{plan.badge}</span>
                   </div>
                 )}
                 {isCurrentPlan && !plan.badge && (
@@ -261,7 +261,7 @@ function PricingContent() {
                     </div>
                   ))}
                 </div>
-                <button onClick={() => handleUpgrade(plan.type)} disabled={loading || isCurrentPlan} className={"w-full py-3 rounded-xl font-semibold text-sm transition " + (isCurrentPlan ? "bg-green-50 text-green-600 cursor-default" : loading ? "bg-gray-200 text-gray-400" : plan.highlighted ? "bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-200" : "bg-gray-900 hover:bg-gray-800 text-white")}>
+                <button onClick={() => handleUpgrade(plan.type)} disabled={loading || isCurrentPlan} className={"w-full py-3 rounded-xl font-semibold text-sm transition " + (isCurrentPlan ? "bg-green-50 text-green-600 cursor-default" : loading ? "bg-gray-200 text-gray-400" : plan.highlighted ? "bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-200" : "bg-gray-900 hover:bg-gray-800 text-white")}>
                   {loading ? (
                     <span className="flex items-center justify-center gap-2"><Loader2 className="w-4 h-4 animate-spin" /> Redirecting...</span>
                   ) : isCurrentPlan ? "Current Plan" : plan.type === "free" ? "Downgrade to Free" : "Upgrade Now"}
@@ -306,7 +306,7 @@ function PricingContent() {
 export default function PricingPage() {
     const { t } = useTranslation();
 return (
-    <Suspense fallback={<div className="min-h-screen bg-gray-50 flex items-center justify-center"><div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"/></div>}>
+    <Suspense fallback={<div className="min-h-screen bg-gray-50 flex items-center justify-center"><div className="w-10 h-10 border-4 border-emerald-600 border-t-transparent rounded-full animate-spin"/></div>}>
       <PricingContent />
     </Suspense>
   );

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Users, Search, Plus, Calendar, Dumbbell, Trash2, ClipboardList, Eye, MessageSquare } from 'lucide-react';
+import { Users, Search, Plus, Calendar, Dumbbell, Trash2, ClipboardList, Eye } from 'lucide-react';
 import { useTranslation } from '@/hooks/use-translation';
 import { showToast } from '@/components/Toast';
 
@@ -152,7 +152,7 @@ export default function CoacheesPage() {
   if (loading) return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center">
       <div className="text-center">
-        <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+        <div className="w-10 h-10 border-4 border-emerald-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
         <p className="text-gray-600">Loading...</p>
       </div>
     </div>
@@ -168,7 +168,7 @@ export default function CoacheesPage() {
           </div>
           <button
             onClick={() => setShowAddModal(true)}
-            className="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition"
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition"
           >
             <Plus className="w-4 h-4" />Add Client
           </button>
@@ -182,13 +182,13 @@ export default function CoacheesPage() {
               placeholder="Search clients..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none"
             />
           </div>
           <select
             value={filterLevel}
             onChange={(e) => setFilterLevel(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+            className="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none"
           >
             <option value="all">All Levels</option>
             <option value="beginner">Beginner</option>
@@ -208,7 +208,7 @@ export default function CoacheesPage() {
               <div key={coachee.id} className="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-medium">
+                    <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 font-medium">
                       {coachee.full_name?.[0]?.toUpperCase() || 'U'}
                     </div>
                     <div>
@@ -218,7 +218,7 @@ export default function CoacheesPage() {
                   </div>
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                     coachee.fitness_level === 'beginner' ? 'bg-green-100 text-green-700' :
-                    coachee.fitness_level === 'intermediate' ? 'bg-blue-100 text-blue-700' :
+                    coachee.fitness_level === 'intermediate' ? 'bg-emerald-100 text-emerald-700' :
                     'bg-purple-100 text-purple-700'
                   }`}>
                     {levelLabel(coachee.fitness_level)}
@@ -227,11 +227,12 @@ export default function CoacheesPage() {
                 <div className="flex gap-2 mt-4">
                   <button
                     onClick={() => router.push(`/messages?clientId=${coachee.id}`)}
-                    className="flex-1 py-2.5 bg-blue-50 hover:bg-blue-100 text-blue-700 font-medium rounded-lg transition flex items-center justify-center gap-1"
+                    className="flex-1 py-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-medium rounded-lg transition flex items-center justify-center gap-1"
                   >
                     <MessageSquare className="w-3 h-3" />
                     Chat
                   </button>
+
                   <button
                     onClick={() => openAssignModal(coachee)}
                     className="flex-1 py-2 bg-green-50 hover:bg-green-100 text-green-600 rounded-lg text-sm font-medium transition flex items-center justify-center gap-1"
@@ -258,7 +259,7 @@ export default function CoacheesPage() {
                     type="text"
                     value={addForm.fullName}
                     onChange={(e) => setAddForm({ ...addForm, fullName: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                     placeholder="Client Name"
                     required
                     disabled={adding}
@@ -270,7 +271,7 @@ export default function CoacheesPage() {
                     type="email"
                     value={addForm.email}
                     onChange={(e) => setAddForm({ ...addForm, email: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                     placeholder="Client Email"
                     required
                     disabled={adding}
@@ -281,7 +282,7 @@ export default function CoacheesPage() {
                   <select
                     value={addForm.fitnessLevel}
                     onChange={(e) => setAddForm({ ...addForm, fitnessLevel: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                     disabled={adding}
                   >
                     <option value="beginner">Beginner</option>
@@ -295,7 +296,7 @@ export default function CoacheesPage() {
                     type="text"
                     value={addForm.goals}
                     onChange={(e) => setAddForm({ ...addForm, goals: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                     placeholder="Muscle gain, Fat loss"
                     disabled={adding}
                   />
@@ -305,9 +306,9 @@ export default function CoacheesPage() {
                 <button
                   onClick={handleAdd}
                   disabled={adding}
-                  className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-medium rounded-lg transition"
+                  className="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:bg-emerald-300 text-white font-medium rounded-lg transition"
                 >
-                  {adding ? t("actions.adding") : 'Add'}
+                  {adding ? '{t("actions.adding")}' : 'Add'}
                 </button>
                 <button
                   onClick={() => setShowAddModal(false)}
@@ -336,7 +337,7 @@ export default function CoacheesPage() {
                   <select
                     value={assignForm.programId}
                     onChange={(e) => setAssignForm({ ...assignForm, programId: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                     disabled={assigning}
                   >
                     <option value="">-- Please Select --</option>
@@ -350,9 +351,9 @@ export default function CoacheesPage() {
                 <button
                   onClick={handleAssign}
                   disabled={assigning}
-                  className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-medium rounded-lg transition"
+                  className="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:bg-emerald-300 text-white font-medium rounded-lg transition"
                 >
-                  {assigning ? t("actions.assigning") : t("coachees.assignProgram")}
+                  {assigning ? 'Assigning...' : '{t("coachees.assignProgramConfirm")}'}
                 </button>
                 <button
                   onClick={() => setShowAssignModal(false)}
@@ -369,3 +370,4 @@ export default function CoacheesPage() {
     </div>
   );
 }
+

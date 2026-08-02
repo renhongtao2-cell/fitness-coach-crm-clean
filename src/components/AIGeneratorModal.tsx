@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect } from 'react';
 import { Sparkles, X, Loader2, CheckCircle, AlertCircle, Save, Users } from 'lucide-react';
@@ -212,7 +212,7 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
                   type="text"
                   value={formData.goals}
                   onChange={(e) => setFormData({ ...formData, goals: e.target.value })}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                   placeholder="E.g.: Muscle gain, fat loss, strength improvement"
                 />
               </div>
@@ -223,7 +223,7 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
                   <select
                     value={formData.level}
                     onChange={(e) => setFormData({ ...formData, level: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                   >
                     <option value="beginner">Beginner</option>
                     <option value="intermediate">Intermediate</option>
@@ -236,7 +236,7 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
                     type="number"
                     value={formData.durationWeeks}
                     onChange={(e) => setFormData({ ...formData, durationWeeks: parseInt(e.target.value) || 8 })}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                     min="1"
                     max="52"
                   />
@@ -252,7 +252,7 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
                       onClick={() => toggleEquipment(item)}
                       className={`px-3 py-1.5 rounded-full text-sm transition ${
                         formData.equipment.includes(item)
-                          ? 'bg-blue-600 text-white'
+                          ? 'bg-emerald-600 text-white'
                           : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                       }`}
                     >
@@ -268,7 +268,7 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
                   type="text"
                   value={formData.experience}
                   onChange={(e) => setFormData({ ...formData, experience: e.target.value })}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                   placeholder="E.g.: Has 1 year training experience"
                 />
               </div>
@@ -278,7 +278,7 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
                 <textarea
                   value={formData.preferences}
                   onChange={(e) => setFormData({ ...formData, preferences: e.target.value })}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                   rows={2}
                   placeholder="E.g.: Prefers compound exercises, dislikes too many isolation exercises"
                 />
@@ -342,7 +342,7 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
                         <div className="mt-2 space-y-2">
                           {day.exercises?.map((ex: any, k: number) => (
                             <div key={k} className="text-sm flex items-start gap-2">
-                              <span className="text-blue-600 font-medium shrink-0">{ex.name}</span>
+                              <span className="text-emerald-600 font-medium shrink-0">{ex.name}</span>
                               <span className="text-gray-500">{ex.sets}{ex.sets} sets x {ex.reps} reps, rest {ex.restSeconds}s</span>
                             </div>
                           ))}
@@ -368,7 +368,7 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
                 <button
                   onClick={handleSave}
                   disabled={saving}
-                  className="w-full py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-medium rounded-lg transition flex items-center justify-center gap-2"
+                  className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 disabled:bg-emerald-300 text-white font-medium rounded-lg transition flex items-center justify-center gap-2"
                 >
                   {saving ? (
                     <>
@@ -392,7 +392,7 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
                     <select
                       value={selectedCoachee}
                       onChange={(e) => setSelectedCoachee(e.target.value)}
-                      className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+                      className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none"
                     >
                       <option value="">Select Client</option>
                       {coachees.map((c) => (

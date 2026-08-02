@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "About FitCoach CRM — Built by Coaches, for Coaches",
+  title: "About FitCoach CRM �� Built by Coaches, for Coaches",
   description: "Learn about FitCoach CRM, the AI-powered fitness coaching platform built by a personal trainer and developer to solve real coach pain points.",
   keywords: ["about FitCoach CRM", "fitness coaching platform", "coach software", "personal trainer tools"],
   openGraph: {
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-16 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-emerald-50 py-16 px-4">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-4xl font-bold text-gray-900 mb-6">About FitCoach CRM</h1>
         
@@ -25,7 +25,7 @@ export default function AboutPage() {
         <div className="space-y-6 text-gray-700">
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
             <h2 className="text-xl font-semibold text-gray-900 mb-3">The Problem</h2>
-            <p>Every existing CRM is designed for big gyms with 100+ members. Solo trainers and independent coaches were forced to juggle WhatsApp for messages, Excel for tracking, and spreadsheets for scheduling — with no single source of truth.</p>
+            <p>Every existing CRM is designed for big gyms with 100+ members. Solo trainers and independent coaches were forced to juggle WhatsApp for messages, Excel for tracking, and spreadsheets for scheduling �� with no single source of truth.</p>
           </div>
           
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
@@ -44,11 +44,11 @@ export default function AboutPage() {
             </ul>
           </div>
           
-          <div className="bg-blue-50 rounded-2xl p-6 border border-blue-200">
-            <h2 className="text-xl font-semibold text-blue-900 mb-3">Get Started Free</h2>
-            <p className="text-blue-700 mb-4">No credit card required. Our free plan supports up to 5 clients with full core features.</p>
-            <Link href="/register" className="inline-block px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition">
-              Start Free Today →
+          <div className="bg-emerald-50 rounded-2xl p-6 border border-emerald-200">
+            <h2 className="text-xl font-semibold text-emerald-900 mb-3">Get Started Free</h2>
+            <p className="text-emerald-700 mb-4">No credit card required. Our free plan supports up to 5 clients with full core features.</p>
+            <Link href="/register" className="inline-block px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl transition">
+              Start Free Today ��
             </Link>
           </div>
         </div>

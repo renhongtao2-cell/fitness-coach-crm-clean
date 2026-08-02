@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -66,7 +66,7 @@ export default function BillingPage() {
     canceled: { label: "Canceled", color: "text-gray-600 bg-gray-50" },
     unpaid: { label: "Unpaid", color: "text-red-600 bg-red-50" },
     paid: { label: "Paid", color: "text-green-600 bg-green-50" },
-    pending: { label: "Pending", color: "text-blue-600 bg-blue-50" },
+    pending: { label: "Pending", color: "text-emerald-600 bg-emerald-50" },
     failed: { label: "Failed", color: "text-red-600 bg-red-50" },
   };
 
@@ -74,7 +74,7 @@ export default function BillingPage() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="w-10 h-10 animate-spin text-blue-600 mx-auto mb-4" />
+          <Loader2 className="w-10 h-10 animate-spin text-emerald-600 mx-auto mb-4" />
           <p className="text-gray-600">Loading...</p>
         </div>
       </div>
@@ -99,7 +99,7 @@ export default function BillingPage() {
         <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-              <CreditCard className="w-5 h-5 text-blue-600" />
+              <CreditCard className="w-5 h-5 text-emerald-600" />
               Current Subscription
             </h2>
             <span className={`px-3 py-1 rounded-full text-xs font-medium ${statusMap[subscription?.status || "free"]?.color || "bg-gray-100 text-gray-600"}`}>
@@ -131,7 +131,7 @@ export default function BillingPage() {
           <div className="mt-4 pt-4 border-t border-gray-100 flex gap-3">
             <button
               onClick={() => router.push("/pricing")}
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition"
+              className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-lg transition"
             >
               Change Plan
             </button>
@@ -186,7 +186,7 @@ export default function BillingPage() {
                         <button
                           onClick={() => handleDownloadReceipt(inv.id)}
                           disabled={downloading === inv.id}
-                          className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-700 text-xs font-medium transition disabled:opacity-50"
+                          className="inline-flex items-center gap-1 text-emerald-600 hover:text-emerald-700 text-xs font-medium transition disabled:opacity-50"
                         >
                           {downloading === inv.id ? (
                             <Loader2 className="w-3 h-3 animate-spin" />
@@ -205,12 +205,12 @@ export default function BillingPage() {
         </div>
 
         {/* Payment Methods Info */}
-        <div className="mt-6 bg-blue-50 rounded-xl border border-blue-200 p-4">
+        <div className="mt-6 bg-emerald-50 rounded-xl border border-emerald-200 p-4">
           <div className="flex items-start gap-3">
-            <CreditCard className="w-5 h-5 text-blue-600 mt-0.5 shrink-0" />
+            <CreditCard className="w-5 h-5 text-emerald-600 mt-0.5 shrink-0" />
             <div>
-              <p className="text-sm font-medium text-blue-900">Payment Methods</p>
-              <p className="text-xs text-blue-700 mt-1">
+              <p className="text-sm font-medium text-emerald-900">Payment Methods</p>
+              <p className="text-xs text-emerald-700 mt-1">
                 We support Alipay, WeChat Pay, and bank cards. Stripe secures your payment information.
               </p>
             </div>

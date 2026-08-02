@@ -1,13 +1,11 @@
-﻿'use client';
+'use client';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { Calendar, Dumbbell, TrendingUp, MessageSquare, User, Clock, CheckCircle, AlertCircle, Loader2, ChevronRight, Send } from 'lucide-react';
 import { useTranslation } from '@/hooks/use-translation';
 import { showToast } from '@/components/Toast';
 
 export default function ClientHome() {
   const { t } = useTranslation();
-  const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<any>(null);
   const [error, setError] = useState<string>('');
@@ -84,7 +82,7 @@ export default function ClientHome() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <Loader2 className="w-10 h-10 border-4 border-emerald-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="text-gray-600">Loading...</p>
         </div>
       </div>
@@ -97,7 +95,7 @@ export default function ClientHome() {
         <div className="text-center">
           <AlertCircle className="w-10 h-10 text-red-500 mx-auto mb-3" />
           <p className="text-red-600 mb-4">{error}</p>
-          <button onClick={fetchData} className="px-4 py-2 bg-blue-600 text-white rounded-lg">Retry</button>
+          <button onClick={fetchData} className="px-4 py-2 bg-emerald-600 text-white rounded-lg">Retry</button>
         </div>
       </div>
     );
@@ -119,14 +117,10 @@ export default function ClientHome() {
           <p className="text-gray-500 mt-1">Keep up the great training today! 💪</p>
         </div>
 
-        <div className="mb-6 flex gap-3">
-          <button onClick={() => setShowMsgModal(true)} className="flex-1 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-medium flex items-center justify-center gap-2 transition shadow-lg shadow-blue-200">
+        <div className="mb-6">
+          <button onClick={() => setShowMsgModal(true)} className="w-full py-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white rounded-xl font-medium flex items-center justify-center gap-2 transition shadow-lg shadow-emerald-200">
             <MessageSquare className="w-5 h-5" />
             Contact Coach
-          </button>
-          <button onClick={() => router.push('/client/messages')} className="flex-1 py-4 bg-white border-2 border-blue-200 hover:border-blue-400 text-blue-700 rounded-xl font-medium flex items-center justify-center gap-2 transition">
-            <MessageSquare className="w-5 h-5" />
-            Full Conversation
           </button>
         </div>
 
@@ -139,11 +133,11 @@ export default function ClientHome() {
 
         {/* Today's Log */}
         <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
-          <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2"><Clock className="w-5 h-5 text-blue-600" />'s Training Log</h3>
+          <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2"><Clock className="w-5 h-5 text-emerald-600" />'s Training Log</h3>
           <div className="space-y-3">
-            <input type="text" value={todayLog.exercise} onChange={(e) => setTodayLog({...todayLog, exercise: e.target.value})} placeholder="What training did you do? E.g.: Bench Press 3x10" className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm" disabled={submitting} />
-            <input type="text" value={todayLog.note} onChange={(e) => setTodayLog({...todayLog, note: e.target.value})} placeholder="Notes (optional)" className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm" disabled={submitting} />
-            <button onClick={handleSubmitLog} disabled={submitting || !todayLog.exercise.trim()} className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white font-medium rounded-lg transition flex items-center justify-center gap-2">
+            <input type="text" value={todayLog.exercise} onChange={(e) => setTodayLog({...todayLog, exercise: e.target.value})} placeholder="What training did you do? E.g.: Bench Press 3x10" className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none text-sm" disabled={submitting} />
+            <input type="text" value={todayLog.note} onChange={(e) => setTodayLog({...todayLog, note: e.target.value})} placeholder="Notes (optional)" className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none text-sm" disabled={submitting} />
+            <button onClick={handleSubmitLog} disabled={submitting || !todayLog.exercise.trim()} className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:bg-gray-300 text-white font-medium rounded-lg transition flex items-center justify-center gap-2">
               {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle className="w-4 h-4" />}Submit Training Record
             </button>
           </div>
@@ -153,7 +147,7 @@ export default function ClientHome() {
         {programs.length > 0 && (
           <div className="bg-white rounded-xl border border-gray-200 overflow-hidden mb-6">
             <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-              <h3 className="font-semibold text-gray-900 flex items-center gap-2"><Calendar className="w-5 h-5 text-blue-600" />My Trainining Plan</h3>
+              <h3 className="font-semibold text-gray-900 flex items-center gap-2"><Calendar className="w-5 h-5 text-emerald-600" />My Trainining Plan</h3>
               <span className="text-sm text-gray-500">Total: {programs.length}</span>
             </div>
             <div className="divide-y divide-gray-100">
@@ -194,11 +188,11 @@ export default function ClientHome() {
           <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
               <h3 className="font-semibold text-gray-900 flex items-center gap-2"><MessageSquare className="w-5 h-5 text-purple-600" />Recent Messages</h3>
-              <button onClick={() => router.push('/client/messages')} className="text-sm text-blue-600 hover:text-blue-700 font-medium">View All →</button>
+              <span className="text-sm text-gray-500">Total: {messages.length}</span>
             </div>
             <div className="divide-y divide-gray-100">
               {messages.slice(0, 10).map((msg: any) => {
-                const isFromCoach = msg.coach_id !== myId;
+                const isFromCoach = msg.sender === 'coach';
                 return (
                   <div key={msg.id} className={'px-6 py-4 ' + (isFromCoach ? 'bg-purple-50/50' : '')}>
                     <div className="flex items-center justify-between mb-1">
@@ -228,12 +222,12 @@ export default function ClientHome() {
             ) : (
               <>
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold">C</div>
+                  <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full flex items-center justify-center text-white font-bold">C</div>
                   <div><p className="font-medium text-gray-900">Contact Coach</p><p className="text-xs text-gray-500">Ask me anything about your training</p></div>
                 </div>
-                <textarea value={msgText} onChange={(e) => setMsgText(e.target.value)} placeholder="Tell me your question, e.g.: My knee feels uncomfortable during training..." className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none text-sm resize-none" rows={4} />
+                <textarea value={msgText} onChange={(e) => setMsgText(e.target.value)} placeholder="Tell me your question, e.g.: My knee feels uncomfortable during training..." className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none text-sm resize-none" rows={4} />
                 <div className="flex gap-3 mt-4">
-                  <button onClick={handleSendMessage} disabled={sending || !msgText.trim()} className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white font-medium rounded-lg transition flex items-center justify-center gap-2">
+                  <button onClick={handleSendMessage} disabled={sending || !msgText.trim()} className="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:bg-gray-300 text-white font-medium rounded-lg transition flex items-center justify-center gap-2">
                     {sending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}Send
                   </button>
                   <button onClick={() => setShowMsgModal(false)} disabled={sending} className="px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition">Cancel</button>
@@ -247,9 +241,9 @@ export default function ClientHome() {
   );
 }
 
-function getStatusColor(s: string) { const c: Record<string,string> = { active: 'bg-green-100 text-green-700', completed: 'bg-blue-100 text-blue-700', paused: 'bg-yellow-100 text-yellow-700', cancelled: 'bg-red-100 text-red-700' }; return c[s] || 'bg-gray-100 text-gray-700'; }
+function getStatusColor(s: string) { const c: Record<string,string> = { active: 'bg-green-100 text-green-700', completed: 'bg-emerald-100 text-emerald-700', paused: 'bg-yellow-100 text-yellow-700', cancelled: 'bg-red-100 text-red-700' }; return c[s] || 'bg-gray-100 text-gray-700'; }
 function getStatusLabel(s: string) { const l: Record<string,string> = { active: 'In Progress', completed: 'Completed', paused: 'Paused', cancelled: 'Cancelled' }; return l[s] || s; }
 function SummaryCard({ icon, label, value, color }: any) {
-  const bg: Record<string, string> = { blue: 'bg-blue-50 text-blue-600', green: 'bg-green-50 text-green-600', purple: 'bg-purple-50 text-purple-600', orange: 'bg-orange-50 text-orange-600', pink: 'bg-pink-50 text-pink-600' };
+  const bg: Record<string, string> = { blue: 'bg-emerald-50 text-emerald-600', green: 'bg-green-50 text-green-600', purple: 'bg-purple-50 text-purple-600', orange: 'bg-orange-50 text-orange-600', pink: 'bg-pink-50 text-pink-600' };
   return (<div className="bg-white rounded-xl border border-gray-200 p-4"><div className={'w-10 h-10 rounded-lg flex items-center justify-center mb-3 ' + (bg[color] || bg.blue)}>{icon}</div><p className="text-xl font-bold text-gray-900">{value}</p><p className="text-xs text-gray-500">{label}</p></div>);
 }

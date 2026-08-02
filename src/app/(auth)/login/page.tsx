@@ -3,8 +3,10 @@ import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/use-auth';
-import { useTranslation } from '@/hooks/use-translation';
 import { Dumbbell, Mail, Lock, Eye, EyeOff, XCircle } from 'lucide-react';
+
+export const metadata = { title: 'Sign In �� FitCoach CRM', description: 'Log in to your FitCoach CRM account. Manage clients, track progress, and generate AI training plans.' };
+import { useTranslation } from '@/hooks/use-translation';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -44,7 +46,7 @@ export default function LoginPage() {
   return (
     <div className="w-full max-w-md animate-fade-in">
       <div className="text-center mb-8">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-600 mb-4">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-emerald-600 mb-4">
           <Dumbbell className="w-8 h-8 text-white" />
         </div>
         <h1 className="text-2xl font-bold text-gray-900">{t('auth.welcomeBack')}</h1>
@@ -67,7 +69,7 @@ export default function LoginPage() {
             <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('auth.email')}</label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input type="email" value={formData.email} onChange={(e) => handleChange('email', e.target.value)} className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="you@example.com" required autoComplete="email" disabled={isDisabled} />
+              <input type="email" value={formData.email} onChange={(e) => handleChange('email', e.target.value)} className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="you@example.com" required autoComplete="email" disabled={isDisabled} />
             </div>
           </div>
 
@@ -75,7 +77,7 @@ export default function LoginPage() {
             <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('auth.password')}</label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input type={showPassword ? 'text' : 'password'} value={formData.password} onChange={(e) => handleChange('password', e.target.value)} className="w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder={t('auth.passwordPlaceholder')} required autoComplete="current-password" disabled={isDisabled} />
+              <input type={showPassword ? 'text' : 'password'} value={formData.password} onChange={(e) => handleChange('password', e.target.value)} className="w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none" placeholder={t('auth.passwordPlaceholder')} required autoComplete="current-password" disabled={isDisabled} />
               <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600" disabled={isDisabled}>
                 {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
               </button>
@@ -83,17 +85,17 @@ export default function LoginPage() {
           </div>
 
           <div className="text-right">
-            <Link href="/forgot-password" className="text-sm text-blue-600 hover:text-blue-700">{t('auth.forgotPassword')}</Link>
+            <Link href="/forgot-password" className="text-sm text-emerald-600 hover:text-emerald-700">{t('auth.forgotPassword')}</Link>
           </div>
 
-          <button type="submit" disabled={isDisabled} className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed text-white font-medium rounded-lg transition flex items-center justify-center gap-2">
+          <button type="submit" disabled={isDisabled} className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:bg-emerald-300 disabled:cursor-not-allowed text-white font-medium rounded-lg transition flex items-center justify-center gap-2">
             {submitting ? t('auth.signingIn') : t('auth.signUp')}
           </button>
         </form>
 
         <div className="mt-6 text-center text-sm">
           <span className="text-gray-500">{t('auth.noAccount')}</span>{' '}
-          <Link href="/register" className="text-blue-600 hover:text-blue-700">{t('auth.createAccount')}</Link>
+          <Link href="/register" className="text-emerald-600 hover:text-emerald-700">{t('auth.createAccount')}</Link>
         </div>
       </div>
 

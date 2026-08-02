@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+﻿import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || '';
@@ -57,8 +57,8 @@ export async function POST(request: NextRequest) {
       payment_method_types: ['card'],
       line_items: [{ price: plan.priceId, quantity: 1 }],
       mode: 'subscription',
-      success_url: '$`request.headers.get(`origin`)`/pricing?success=true',
-      cancel_url: '$`request.headers.get(`origin`)`/pricing?canceled=true',
+      success_url: `${request.headers.get('origin')}/pricing?success=true`,
+      cancel_url: `${request.headers.get('origin')}/pricing?canceled=true`,
       metadata: {
         userId: user.id,
         planType,

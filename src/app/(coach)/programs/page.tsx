@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useState } from "react";
 import { Calendar, Plus, Search, Dumbbell, Clock, Target, Sparkles, Edit2, Copy, Trash2 } from "lucide-react";
@@ -19,7 +19,7 @@ interface Program {
 }
 
 const levelLabels: Record<string, string> = { beginner: "Beginner", intermediate: "Intermediate", advanced: "Advanced" };
-const levelColors: Record<string, string> = { beginner: "bg-green-100 text-green-700", intermediate: "bg-blue-100 text-blue-700", advanced: "bg-purple-100 text-purple-700" };
+const levelColors: Record<string, string> = { beginner: "bg-green-100 text-green-700", intermediate: "bg-emerald-100 text-emerald-700", advanced: "bg-purple-100 text-purple-700" };
 
 export default function ProgramsPage() {
   const { t } = useTranslation();
@@ -191,7 +191,7 @@ export default function ProgramsPage() {
           <button onClick={() => setShowAiModal(true)} className="inline-flex items-center gap-2 px-4 py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition text-sm">
             <Sparkles className="w-4 h-4" />AI Generate
           </button>
-          <button onClick={() => setShowCreateModal(true)} className="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition text-sm">
+          <button onClick={() => setShowCreateModal(true)} className="inline-flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition text-sm">
             <Plus className="w-4 h-4" />New Program
           </button>
         </div>
@@ -208,7 +208,7 @@ export default function ProgramsPage() {
 
       <div className="relative max-w-md">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-        <input type="text" placeholder="Search programs..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none" />
+        <input type="text" placeholder="Search programs..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none" />
       </div>
 
       {loading ? (
@@ -228,10 +228,10 @@ export default function ProgramsPage() {
                       <p className="text-sm text-gray-500 mt-0.5 line-clamp-2">{program.description || "No description"}</p>
                     </div>
                     <div className="flex gap-1 ml-2 shrink-0">
-                      <button onClick={() => showToast('info', 'Edit feature under development')} className="p-1.5 text-gray-400 hover:text-blue-600 rounded-lg transition" title="Edit">
+                      <button onClick={() => showToast('info', 'Edit feature under development')} className="p-1.5 text-gray-400 hover:text-emerald-600 rounded-lg transition" title="Edit">
                         <Edit2 className="w-4 h-4" />
                       </button>
-                      <button onClick={() => showToast('info', 'Copy feature coming soon')} className="p-1.5 text-gray-400 hover:text-blue-600 rounded-lg transition" title="Copy">
+                      <button onClick={() => showToast('info', 'Copy feature coming soon')} className="p-1.5 text-gray-400 hover:text-emerald-600 rounded-lg transition" title="Copy">
                         <Copy className="w-4 h-4" />
                       </button>
                       <button onClick={() => { setDeleteProgramId(program.id); setShowDeleteConfirm(true); }} className="p-1.5 text-gray-400 hover:text-red-600 rounded-lg transition" title="Delete">
@@ -255,7 +255,7 @@ export default function ProgramsPage() {
                   <div className="mt-3 pt-3 border-t border-gray-100 flex gap-2">
                     <button
                       onClick={() => handleViewDetail(program)}
-                      className="flex-1 py-2 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg text-sm font-medium transition"
+                      className="flex-1 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-600 rounded-lg text-sm font-medium transition"
                     >
                       View Details
                     </button>
@@ -418,20 +418,20 @@ export default function ProgramsPage() {
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Plan Name</label>
-                <input type="text" value={createForm.name} onChange={(e) => setCreateForm({...createForm, name: e.target.value})} className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="：" required disabled={creating} />
+                <input type="text" value={createForm.name} onChange={(e) => setCreateForm({...createForm, name: e.target.value})} className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="：" required disabled={creating} />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                <textarea value={createForm.description} onChange={(e) => setCreateForm({...createForm, description: e.target.value})} className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" rows={3} placeholder="..." disabled={creating} />
+                <textarea value={createForm.description} onChange={(e) => setCreateForm({...createForm, description: e.target.value})} className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none" rows={3} placeholder="..." disabled={creating} />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Duration (weeks)</label>
-                  <input type="number" value={createForm.weeks} onChange={(e) => setCreateForm({...createForm, weeks: parseInt(e.target.value)||8})} className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" min="1" max="52" disabled={creating} />
+                  <input type="number" value={createForm.weeks} onChange={(e) => setCreateForm({...createForm, weeks: parseInt(e.target.value)||8})} className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none" min="1" max="52" disabled={creating} />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Difficulty</label>
-                  <select value={createForm.level} onChange={(e) => setCreateForm({...createForm, level: e.target.value as "beginner"|"intermediate"|"advanced"})} className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" disabled={creating}>
+                  <select value={createForm.level} onChange={(e) => setCreateForm({...createForm, level: e.target.value as "beginner"|"intermediate"|"advanced"})} className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none" disabled={creating}>
                     <option value="beginner">Beginner</option>
                     <option value="intermediate">Intermediate</option>
                     <option value="advanced">Advanced</option>
@@ -470,7 +470,7 @@ export default function ProgramsPage() {
                 } finally {
                   setCreating(false);
                 }
-              }} disabled={creating} className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-medium rounded-lg transition">{creating ? 'Creating...' : 'Create Plan'}</button>
+              }} disabled={creating} className="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:bg-emerald-300 text-white font-medium rounded-lg transition">{creating ? 'Creating...' : 'Create Plan'}</button>
               <button onClick={() => setShowCreateModal(false)} className="flex-1 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition" disabled={creating}>Cancel</button>
             </div>
           </div>
@@ -509,13 +509,13 @@ export default function ProgramsPage() {
               ) : (
                 <>
                   <div className="flex items-center gap-3 px-3 py-2 bg-gray-50 rounded-lg">
-                    <input type="checkbox" checked={selectedCoacheeIds.length === coacheeList.length && coacheeList.length > 0} onChange={selectAllCoachees} className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" />
+                    <input type="checkbox" checked={selectedCoacheeIds.length === coacheeList.length && coacheeList.length > 0} onChange={selectAllCoachees} className="w-4 h-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500" />
                     <span className="text-sm font-medium text-gray-700">Select All</span>
                   </div>
                   {coacheeList.map((c: any) => (
-                    <button key={c.id} onClick={() => toggleCoacheeSelection(c.id)} className={"w-full px-3 py-3 text-left rounded-lg border transition flex items-center gap-3 " + (selectedCoacheeIds.includes(c.id) ? "border-blue-500 bg-blue-50" : "border-gray-200 hover:bg-gray-50")}>
-                      <input type="checkbox" checked={selectedCoacheeIds.includes(c.id)} onChange={() => {}} className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 pointer-events-none" />
-                      <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-medium text-sm shrink-0">
+                    <button key={c.id} onClick={() => toggleCoacheeSelection(c.id)} className={"w-full px-3 py-3 text-left rounded-lg border transition flex items-center gap-3 " + (selectedCoacheeIds.includes(c.id) ? "border-emerald-500 bg-emerald-50" : "border-gray-200 hover:bg-gray-50")}>
+                      <input type="checkbox" checked={selectedCoacheeIds.includes(c.id)} onChange={() => {}} className="w-4 h-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500 pointer-events-none" />
+                      <div className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 font-medium text-sm shrink-0">
                         {(c.full_name || c.email || "?")[0]}
                       </div>
                       <div className="min-w-0">
@@ -528,7 +528,7 @@ export default function ProgramsPage() {
               )}
             </div>
             <div className="flex gap-3 mt-4 pt-4 border-t border-gray-200">
-              <button onClick={handleAssign} disabled={assigning || selectedCoacheeIds.length === 0} className="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white font-medium rounded-lg transition">
+              <button onClick={handleAssign} disabled={assigning || selectedCoacheeIds.length === 0} className="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:bg-gray-300 text-white font-medium rounded-lg transition">
                 {assigning ? "Assigning..." : `Confirm Assignment (${selectedCoacheeIds.length})`}
               </button>
               <button onClick={() => { setShowAssignModal(false); setSelectedCoacheeIds([]); }} disabled={assigning} className="flex-1 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition">Cancel</button>

@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect } from 'react';
 import { Settings as SettingsIcon, User, Bell, Shield, Globe, Save, LogOut, Eye, EyeOff, CheckCircle, AlertCircle, Loader2, Gift, Copy } from 'lucide-react';
@@ -238,7 +238,7 @@ export default function SettingsPage() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="w-10 h-10 text-blue-600 animate-spin mx-auto mb-4" />
+          <Loader2 className="w-10 h-10 text-emerald-600 animate-spin mx-auto mb-4" />
           <p className="text-gray-600">Loading...</p>
         </div>
       </div>
@@ -261,7 +261,7 @@ export default function SettingsPage() {
               <button
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key)}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-md text-sm font-medium transition ${activeTab === tab.key ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:text-gray-800'}`}
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-md text-sm font-medium transition ${activeTab === tab.key ? 'bg-emerald-100 text-emerald-700' : 'text-gray-600 hover:text-gray-800'}`}
               >
                 <Icon className="w-4 h-4" />
                 {tab.label}
@@ -283,7 +283,7 @@ export default function SettingsPage() {
                     type="text"
                     value={profileForm.full_name}
                     onChange={(e) => setProfileForm({ ...profileForm, full_name: e.target.value })}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                   />
                 </div>
                 <div>
@@ -301,7 +301,7 @@ export default function SettingsPage() {
                     value={profileForm.bio}
                     onChange={(e) => setProfileForm({ ...profileForm, bio: e.target.value })}
                     rows={3}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none"
+                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none resize-none"
                   />
                 </div>
               </div>
@@ -309,7 +309,7 @@ export default function SettingsPage() {
                 <button
                   onClick={handleSaveProfile}
                   disabled={saving}
-                  className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-medium rounded-lg transition flex items-center gap-2"
+                  className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:bg-emerald-300 text-white font-medium rounded-lg transition flex items-center gap-2"
                 >
                   {saving ? <><Loader2 className="w-4 h-4 animate-spin" />Saving...</> : <><Save className="w-4 h-4" />Save Profile</>}
                 </button>
@@ -330,7 +330,7 @@ export default function SettingsPage() {
                       type={showPassword ? 'text' : 'password'}
                       value={passwordForm.currentPassword}
                       onChange={(e) => setPasswordForm({ ...passwordForm, currentPassword: e.target.value })}
-                      className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                      className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                       placeholder="Enter current password"
                     />
                   </div>
@@ -340,7 +340,7 @@ export default function SettingsPage() {
                       type={showPassword ? 'text' : 'password'}
                       value={passwordForm.newPassword}
                       onChange={(e) => setPasswordForm({ ...passwordForm, newPassword: e.target.value })}
-                      className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                      className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                       placeholder="At least 6 characters"
                       minLength={6}
                     />
@@ -353,13 +353,13 @@ export default function SettingsPage() {
                       type="password"
                       value={passwordForm.confirmPassword}
                       onChange={(e) => setPasswordForm({ ...passwordForm, confirmPassword: e.target.value })}
-                      className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                      className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                       placeholder="Enter new password again"
                       minLength={6}
                     />
                   </div>
                   <div className="flex items-end">
-                    <button onClick={() => setShowPassword(!showPassword)} className="text-sm text-blue-600 hover:text-blue-700 flex items-center gap-1">
+                    <button onClick={() => setShowPassword(!showPassword)} className="text-sm text-emerald-600 hover:text-emerald-700 flex items-center gap-1">
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                       {showPassword ? 'Hide' : 'Show'}
                     </button>
@@ -369,7 +369,7 @@ export default function SettingsPage() {
                   <button
                     onClick={handleChangePassword}
                     disabled={passwordSaving}
-                    className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-medium rounded-lg transition flex items-center gap-2"
+                    className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:bg-emerald-300 text-white font-medium rounded-lg transition flex items-center gap-2"
                   >
                     {passwordSaving ? <><Loader2 className="w-4 h-4 animate-spin" />Updating...</> : 'Change Password'}
                   </button>
@@ -409,7 +409,7 @@ export default function SettingsPage() {
                     type="checkbox"
                     checked={notifications[item.key] || false}
                     onChange={(e) => setNotifications({ ...notifications, [item.key]: e.target.checked } as NotifState)}
-                    className="w-5 h-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                    className="w-5 h-5 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500"
                   />
                 </label>
               ))}
@@ -417,7 +417,7 @@ export default function SettingsPage() {
                 <button
                   onClick={handleSaveNotifications}
                   disabled={notifSaving}
-                  className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-medium rounded-lg transition flex items-center gap-2"
+                  className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:bg-emerald-300 text-white font-medium rounded-lg transition flex items-center gap-2"
                 >
                   {notifSaving ? <><Loader2 className="w-4 h-4 animate-spin" />Saving...</> : 'Save Settings'}
                 </button>
@@ -434,7 +434,7 @@ export default function SettingsPage() {
                     onClick={() => setTheme('light')}
                     className={
                       'flex-1 p-4 rounded-lg text-center transition ' +
-                      (theme === 'light' ? 'border-2 border-blue-500 bg-blue-50' : 'border-2 border-gray-200 hover:border-gray-300')
+                      (theme === 'light' ? 'border-2 border-emerald-500 bg-emerald-50' : 'border-2 border-gray-200 hover:border-gray-300')
                     }
                   >
                     <div className="w-8 h-8 bg-white border-2 border-gray-300 rounded-lg mx-auto mb-2" />
@@ -444,7 +444,7 @@ export default function SettingsPage() {
                     onClick={() => setTheme('dark')}
                     className={
                       'flex-1 p-4 rounded-lg text-center transition ' +
-                      (theme === 'dark' ? 'border-2 border-blue-500 bg-blue-50' : 'border-2 border-gray-200 hover:border-gray-300')
+                      (theme === 'dark' ? 'border-2 border-emerald-500 bg-emerald-50' : 'border-2 border-gray-200 hover:border-gray-300')
                     }
                   >
                     <div className="w-8 h-8 bg-gray-900 rounded-lg mx-auto mb-2" />
@@ -457,7 +457,7 @@ export default function SettingsPage() {
                 <select
                   value={language}
                   onChange={(e) => setLanguage(e.target.value)}
-                  className="px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none w-full sm:w-64"
+                  className="px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none w-full sm:w-64"
                 >
                   <option value="zh-CN">简体中文</option>
                   <option value="ja-JP">日本語</option>
@@ -476,19 +476,19 @@ export default function SettingsPage() {
 
           {activeTab === 'referral' && (
             <div className="space-y-6">
-              <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl p-8 text-white">
+              <div className="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl p-8 text-white">
                 <div className="flex items-center gap-3 mb-3">
                   <Gift className="w-8 h-8" />
                   <h2 className="text-2xl font-bold">Invite Friends, Share Benefits</h2>
                 </div>
-                <p className="text-blue-100">Share your referral code. You and your friend both get 1 month of Pro membership free.</p>
+                <p className="text-emerald-100">Share your referral code. You and your friend both get 1 month of Pro membership free.</p>
               </div>
 
               <div className="bg-white rounded-xl border border-gray-200 p-6">
                 <h3 className="font-medium text-gray-900 mb-4">My Referral Code</h3>
                 {referralLoading ? (
                   <div className="flex items-center gap-3">
-                    <Loader2 className="w-5 h-5 animate-spin text-blue-600" />
+                    <Loader2 className="w-5 h-5 animate-spin text-emerald-600" />
                     <span className="text-gray-500 text-sm">Loading...</span>
                   </div>
                 ) : referralCode ? (
@@ -498,7 +498,7 @@ export default function SettingsPage() {
                     </div>
                     <button
                       onClick={handleCopyReferral}
-                      className="px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition flex items-center gap-2 whitespace-nowrap"
+                      className="px-4 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition flex items-center gap-2 whitespace-nowrap"
                     >
                       <Copy className="w-4 h-4" />
                       {copied ? 'Copied!' : 'Copy'}
@@ -519,7 +519,7 @@ export default function SettingsPage() {
                   <p className="text-sm text-gray-500">Successful Referrals</p>
                 </div>
                 <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
-                  <p className="text-2xl font-bold text-blue-600">{referralLoading ? '...' : referralStats?.rewardMonths ?? 0}</p>
+                  <p className="text-2xl font-bold text-emerald-600">{referralLoading ? '...' : referralStats?.rewardMonths ?? 0}</p>
                   <p className="text-sm text-gray-500">Months Earned</p>
                 </div>
               </div>
@@ -528,7 +528,7 @@ export default function SettingsPage() {
                 <h3 className="font-medium text-gray-900 mb-4">How It Works</h3>
                 <div className="space-y-4">
                   <div className="flex items-start gap-4">
-                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-sm flex-shrink-0">1</div>
+                    <div className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 font-bold text-sm flex-shrink-0">1</div>
                     <div>
                       <p className="font-medium text-gray-900">Share Referral Code</p>
                       <p className="text-sm text-gray-500">Share your referral code via email, chat, or social media with friends.</p>
@@ -560,11 +560,11 @@ export default function SettingsPage() {
                     value={appliedCode}
                     onChange={(e) => setAppliedCode(e.target.value.toUpperCase())}
                     placeholder="Enter referral code (e.g.: FIT-ABC123)"
-                    className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-mono"
+                    className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none font-mono"
                   />
                   <button
                     onClick={handleApplyReferral}
-                    className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition"
+                    className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition"
                   >
                     Apply
                   </button>

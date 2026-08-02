@@ -14,8 +14,8 @@ export default function CoachLayout({ children }: { children: React.ReactNode })
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: '#fafaf9' }}>
-        <Loader2 className="w-8 h-8 animate-spin text-[#FF6B35]" />
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-emerald-600" />
       </div>
     );
   }
@@ -27,12 +27,10 @@ export default function CoachLayout({ children }: { children: React.ReactNode })
 
   return (
     <TranslationProvider>
-      <div className="flex min-h-screen" style={{ background: '#fafaf9' }}>
+      <div className="flex min-h-screen bg-gray-50">
         <Sidebar />
         <main className="flex-1 overflow-auto">
-          <div className="p-6 lg:p-8">
-            {children}
-          </div>
+          {children}
         </main>
       </div>
     </TranslationProvider>

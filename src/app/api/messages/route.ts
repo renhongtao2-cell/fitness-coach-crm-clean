@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+﻿import { NextRequest, NextResponse } from 'next/server';
 import { createClient, createAdminClient } from '@/lib/supabase/server';
 
 export async function GET(request: NextRequest) {
@@ -71,11 +71,12 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    // Get ALL messages between this coach and their partners
+    // Get ALL messages between this coach and their bound clients
     const { data: msgs, error } = await adminSupabase
       .from('messages')
       .select('*')
-      .or(`coach_id.eq.${coachProfile.id},coachee_id.in.(${partnerIds.join(',')})`)
+      .eq('coach_id', coachProfile.id)
+      .in('coachee_id', partnerIds)
       .order('created_at', { ascending: false });
 
     if (error) throw error;
@@ -186,6 +187,7 @@ export async function POST(request: NextRequest) {
         coach_id: coachProfile.id,
         coachee_id: coacheeId,
         content,
+        sender: 'coach',
         is_read: false,
       })
       .select()
@@ -195,31 +197,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: msg });
   } catch (error: any) {
     console.error('Messages POST error:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
-}
-
-export async function PATCH(request: NextRequest) {
-  try {
-    const supabase = await createClient();
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-    if (authError || !user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
-    const { messageIds } = await request.json();
-    if (!messageIds || !Array.isArray(messageIds) || messageIds.length === 0) {
-      return NextResponse.json({ error: 'messageIds required' }, { status: 400 });
-    }
-
-    const adminSupabase = await createAdminClient();
-    const { error } = await adminSupabase
-      .from('messages')
-      .update({ is_read: true })
-      .in('id', messageIds);
-
-    if (error) throw error;
-    return NextResponse.json({ success: true });
-  } catch (error: any) {
-    console.error('Messages PATCH error:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

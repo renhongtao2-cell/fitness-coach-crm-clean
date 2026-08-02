@@ -1,0 +1,430 @@
+﻿import { NextRequest, NextResponse } from "next/server";
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { goals, level, equipment, durationWeeks, experience, preferences } = body;
+
+    if (!goals || !level) {
+      return NextResponse.json(
+        { error: "目标和训练水平是必填项" },
+        { status: 400 }
+      );
+    }
+
+    const apiKey = process.env.ANTHROPIC_API_KEY || process.env.OPENAI_API_KEY;
+    const baseUrl = process.env.ANTHROPIC_BASE_URL || process.env.OPENAI_BASE_URL || "https://api.anthropic.com/v1";
+
+    if (!apiKey) {
+      // Fallback to local template generation
+      return generateLocalPlan(body);
+    }
+
+    return await generateWithAI(body, apiKey, baseUrl);
+  } catch (error) {
+    console.error("AI Generate error:", error);
+    return NextResponse.json(
+      { error: "生成失败，请稍后重试" },
+      { status: 500 }
+    );
+  }
+}
+
+async function generateWithAI(body: any, apiKey: string, baseUrl: string) {
+  const { goals, level, equipment, durationWeeks, experience, preferences } = body;
+
+  const systemPrompt = `你是专业的健身教练和运动科学专家。根据用户提供的信息，生成一个结构化、可执行的训练计划。
+输出格式必须是纯 JSON，不要包含任何 markdown 标记或其他文字。JSON 结构如下：
+{
+  "program": {
+    "name": "计划名称",
+    "description": "计划描述",
+    "weeks": 周数,
+    "phases": [
+      {
+        "phase": "阶段名称",
+        "weeks": [起始周, 结束周],
+        "focus": "训练重点",
+        "weeklySchedule": [
+          {
+            "day": "星期几",
+            "workoutType": "训练类型",
+            "exercises": [
+              {
+                "name": "动作名称",
+                "muscleGroup": "肌肉群",
+                "sets": 组数,
+                "reps": "次数范围如 10-12",
+                "restSeconds": 休息秒数,
+                "notes": "注意事项"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "tips": ["建议1", "建议2", "建议3"]
+  }
+}
+
+要求：1. 动作选择要科学，符合训练水平
+2. 每组次数和重量递增
+3. 包含热身和放松环节
+4. 考虑可用器械
+5. 中文输出`;
+
+  const userPrompt = `请为以下情况生成训练计划：
+- 目标：${goals}
+- 训练水平：${level}
+- 可用器械：${equipment?.join(", ") || "自重"}
+- 计划时长：${durationWeeks || 8}周
+- 经验：${experience || "无"}
+- 偏好：${preferences || "无"}`;
+
+  const response = await fetch(`${baseUrl}/chat/completions`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + apiKey,
+    },
+    body: JSON.stringify({
+      model: "agnes-2.0-flash",
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userPrompt },
+      ],
+      temperature: 0.7,
+      max_tokens: 4000,
+    }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    console.error("AI API error:", error);
+    return NextResponse.json(
+      { error: "AI 服务调用失败，请稍后重试" },
+      { status: 502 }
+    );
+  }
+
+  const data = await response.json();
+  const content = data.choices?.[0]?.message?.content || "";
+
+  let parsedPlan;
+  try {
+    let jsonStr = content.trim();
+    // Strip markdown code blocks
+    jsonStr = jsonStr.replace(/`(?:json)?\n?/g, "").replace(/`$/g, "").trim();
+    // Try to find JSON object
+    const braceMatch = jsonStr.match(/\{[\s\S]*\}/);
+    if (!braceMatch) throw new Error("No JSON object found");
+    jsonStr = braceMatch[0];
+    parsedPlan = JSON.parse(jsonStr);
+    // Normalize: ensure we have program.phases
+    if (parsedPlan.program && parsedPlan.program.phases) {
+      // Already correct format
+    } else if (parsedPlan.phases) {
+      // Has phases at top level
+      parsedPlan = { program: parsedPlan };
+    } else if (parsedPlan.program && !parsedPlan.program.phases) {
+      // Has program but no phases
+      console.warn("[AI] Generated plan has no phases field");
+    }
+  } catch (e: any) {
+    console.error("[AI] Parse error:", e.message);
+    parsedPlan = { rawContent: content };
+  }
+  return NextResponse.json({ plan: parsedPlan });
+  return NextResponse.json({ plan: parsedPlan });
+}
+
+function generateLocalPlan(body: any) {
+  const { goals, level, equipment, durationWeeks, experience, preferences } = body;
+
+  const levelMap: Record<string, string> = {
+    beginner: "初学者",
+    intermediate: "中级",
+    advanced: "高级",
+  };
+
+  const equipmentList = equipment && equipment.length > 0 ? equipment.join(", ") : "自重";
+  const weeks = durationWeeks || 8;
+
+  const phaseTemplates: Record<string, any[]> = {
+    增肌: [
+      {
+        phase: "适应期",
+        weeks: [1, 2],
+        focus: "学习动作模式，建立神经肌肉连接",
+        weeklySchedule: [
+          {
+            day: "周一",
+            workoutType: "上肢推",
+            exercises: [
+              { name: "热身 - 肩关节环绕", muscleGroup: "肩部", sets: 2, reps: "15次", restSeconds: 30, notes: "轻重量" },
+              { name: "哑铃卧推", muscleGroup: "胸大肌", sets: 3, reps: "12次", restSeconds: 60, notes: "控制下放速度" },
+              { name: "哑铃肩上推举", muscleGroup: "三角肌", sets: 3, reps: "12次", restSeconds: 60, notes: "核心收紧" },
+              { name: "绳索飞鸟", muscleGroup: "胸大肌", sets: 3, reps: "15次", restSeconds: 45, notes: "感受胸部拉伸" },
+              { name: "放松 - 胸部拉伸", muscleGroup: "胸大肌", sets: 2, reps: "30秒", restSeconds: 0, notes: "每个方向" },
+            ],
+          },
+          {
+            day: "周三",
+            workoutType: "下肢训练",
+            exercises: [
+              { name: "热身 - 原地慢跑", muscleGroup: "全身", sets: 1, reps: "5分钟", restSeconds: 0, notes: "微微出汗" },
+              { name: "徒手深蹲", muscleGroup: "股四头肌", sets: 3, reps: "15次", restSeconds: 60, notes: "膝盖对准脚尖" },
+              { name: "哑铃弓步走", muscleGroup: "臀大肌", sets: 3, reps: "每侧10次", restSeconds: 60, notes: "保持身体稳定" },
+              { name: "腿举器械", muscleGroup: "股四头肌", sets: 3, reps: "12次", restSeconds: 60, notes: "不要锁死膝盖" },
+              { name: "放松 - 腿部拉伸", muscleGroup: "腿部", sets: 2, reps: "每侧30秒", restSeconds: 0, notes: "" },
+            ],
+          },
+          {
+            day: "周五",
+            workoutType: "上肢拉",
+            exercises: [
+              { name: "热身 - 猫牛式", muscleGroup: "脊柱", sets: 1, reps: "10次", restSeconds: 0, notes: "缓慢进行" },
+              { name: "高位下拉", muscleGroup: "背阔肌", sets: 3, reps: "12次", restSeconds: 60, notes: "沉肩发力" },
+              { name: "哑铃划船", muscleGroup: "背阔肌", sets: 3, reps: "每侧10次", restSeconds: 60, notes: "背部夹紧" },
+              { name: "面拉", muscleGroup: "三角肌后束", sets: 3, reps: "15次", restSeconds: 45, notes: "改善体态" },
+              { name: "放松 - 背部拉伸", muscleGroup: "背阔肌", sets: 2, reps: "30秒", restSeconds: 0, notes: "" },
+            ],
+          },
+        ],
+      },
+      {
+        phase: "增长期",
+        weeks: [3, weeks],
+        focus: "渐进超负荷，增加训练容量",
+        weeklySchedule: [
+          {
+            day: "周一",
+            workoutType: "上肢推",
+            exercises: [
+              { name: "热身 - 弹力带推举", muscleGroup: "肩部", sets: 2, reps: "15次", restSeconds: 30, notes: "" },
+              { name: "杠铃卧推", muscleGroup: "胸大肌", sets: 4, reps: "8-10次", restSeconds: 90, notes: "渐进加重" },
+              { name: "哑铃肩上推举", muscleGroup: "三角肌", sets: 4, reps: "10次", restSeconds: 75, notes: "" },
+              { name: "双杠臂屈伸", muscleGroup: "三头肌", sets: 3, reps: "12次", restSeconds: 60, notes: "辅助器械也可" },
+              { name: "放松 - 三头肌拉伸", muscleGroup: "三头肌", sets: 2, reps: "30秒", restSeconds: 0, notes: "" },
+            ],
+          },
+          {
+            day: "周三",
+            workoutType: "下肢训练",
+            exercises: [
+              { name: "热身 - 动态拉伸", muscleGroup: "全身", sets: 1, reps: "5分钟", restSeconds: 0, notes: "" },
+              { name: "杠铃深蹲", muscleGroup: "股四头肌", sets: 4, reps: "8-10次", restSeconds: 90, notes: "核心收紧" },
+              { name: "罗马尼亚硬拉", muscleGroup: "腘绳肌", sets: 4, reps: "10次", restSeconds: 75, notes: "髋部铰链" },
+              { name: "腿弯举", muscleGroup: "腘绳肌", sets: 3, reps: "12次", restSeconds: 60, notes: "" },
+              { name: "放松 - 泡沫轴放松", muscleGroup: "腿部", sets: 1, reps: "5分钟", restSeconds: 0, notes: "重点放松股四头肌" },
+            ],
+          },
+          {
+            day: "周五",
+            workoutType: "上肢拉",
+            exercises: [
+              { name: "热身 - 弹力带划船", muscleGroup: "背部", sets: 2, reps: "15次", restSeconds: 30, notes: "" },
+              { name: "杠铃划船", muscleGroup: "背阔肌", sets: 4, reps: "8-10次", restSeconds: 90, notes: "背部主导" },
+              { name: "单臂哑铃划船", muscleGroup: "背阔肌", sets: 3, reps: "每侧10次", restSeconds: 60, notes: "" },
+              { name: "锤式弯举", muscleGroup: "肱二头肌", sets: 3, reps: "12次", restSeconds: 45, notes: "" },
+              { name: "放松 - 二头肌拉伸", muscleGroup: "肱二头肌", sets: 2, reps: "30秒", restSeconds: 0, notes: "" },
+            ],
+          },
+        ],
+      },
+    ],
+    减脂: [
+      {
+        phase: "燃脂启动期",
+        weeks: [1, Math.ceil(weeks / 2)],
+        focus: "提高代谢，建立有氧基础",
+        weeklySchedule: [
+          {
+            day: "周一",
+            workoutType: "全身HIIT",
+            exercises: [
+              { name: "热身 - 慢跑", muscleGroup: "全身", sets: 1, reps: "5分钟", restSeconds: 0, notes: "" },
+              { name: "波比跳", muscleGroup: "全身", sets: 4, reps: "10次", restSeconds: 30, notes: "组间休息30秒" },
+              { name: "登山跑", muscleGroup: "核心", sets: 4, reps: "30秒", restSeconds: 30, notes: "" },
+              { name: "深蹲跳", muscleGroup: "腿部", sets: 4, reps: "12次", restSeconds: 30, notes: "" },
+              { name: "高抬腿", muscleGroup: "腿部", sets: 4, reps: "30秒", restSeconds: 30, notes: "" },
+              { name: "放松 - 全身拉伸", muscleGroup: "全身", sets: 1, reps: "5分钟", restSeconds: 0, notes: "" },
+            ],
+          },
+          {
+            day: "周三",
+            workoutType: "有氧训练",
+            exercises: [
+              { name: "椭圆机", muscleGroup: "全身", sets: 1, reps: "20分钟", restSeconds: 0, notes: "中等强度" },
+              { name: "核心训练 - 平板支撑", muscleGroup: "核心", sets: 3, reps: "30秒", restSeconds: 30, notes: "" },
+              { name: "放松", muscleGroup: "全身", sets: 1, reps: "5分钟", restSeconds: 0, notes: "" },
+            ],
+          },
+          {
+            day: "周五",
+            workoutType: "全身循环",
+            exercises: [
+              { name: "热身", muscleGroup: "全身", sets: 1, reps: "5分钟", restSeconds: 0, notes: "" },
+              { name: "哑铃硬拉", muscleGroup: "后链", sets: 3, reps: "12次", restSeconds: 30, notes: "循环训练" },
+              { name: "俯卧撑", muscleGroup: "胸肩", sets: 3, reps: "12次", restSeconds: 30, notes: "可做跪姿" },
+              { name: "哑铃推举", muscleGroup: "肩部", sets: 3, reps: "12次", restSeconds: 30, notes: "循环训练" },
+              { name: "仰卧起坐", muscleGroup: "核心", sets: 3, reps: "15次", restSeconds: 30, notes: "" },
+              { name: "放松", muscleGroup: "全身", sets: 1, reps: "5分钟", restSeconds: 0, notes: "" },
+            ],
+          },
+        ],
+      },
+      {
+        phase: "高效燃脂期",
+        weeks: [Math.ceil(weeks / 2) + 1, weeks],
+        focus: "增加强度和容量，突破平台期",
+        weeklySchedule: [
+          {
+            day: "周一",
+            workoutType: "全身HIIT",
+            exercises: [
+              { name: "热身", muscleGroup: "全身", sets: 1, reps: "5分钟", restSeconds: 0, notes: "" },
+              { name: "波比跳", muscleGroup: "全身", sets: 5, reps: "12次", restSeconds: 20, notes: "增加强度" },
+              { name: "登山跑", muscleGroup: "核心", sets: 5, reps: "40秒", restSeconds: 20, notes: "" },
+              { name: "深蹲跳", muscleGroup: "腿部", sets: 5, reps: "15次", restSeconds: 20, notes: "" },
+              { name: "放松", muscleGroup: "全身", sets: 1, reps: "5分钟", restSeconds: 0, notes: "" },
+            ],
+          },
+          {
+            day: "周三",
+            workoutType: "有氧训练",
+            exercises: [
+              { name: "跑步机间歇", muscleGroup: "全身", sets: 1, reps: "25分钟", restSeconds: 0, notes: "快跑1分钟+慢走1分钟" },
+              { name: "核心训练", muscleGroup: "核心", sets: 3, reps: "每动作30秒", restSeconds: 15, notes: "平板支撑+俄罗斯转体+仰卧举腿" },
+              { name: "放松", muscleGroup: "全身", sets: 1, reps: "5分钟", restSeconds: 0, notes: "" },
+            ],
+          },
+          {
+            day: "周五",
+            workoutType: "全身循环",
+            exercises: [
+              { name: "热身", muscleGroup: "全身", sets: 1, reps: "5分钟", restSeconds: 0, notes: "" },
+              { name: "壶铃摇摆", muscleGroup: "后链", sets: 4, reps: "15次", restSeconds: 20, notes: "循环训练" },
+              { name: "俯卧撑", muscleGroup: "胸肩", sets: 4, reps: "15次", restSeconds: 20, notes: "" },
+              { name: "哑铃推举", muscleGroup: "肩部", sets: 4, reps: "12次", restSeconds: 20, notes: "循环训练" },
+              { name: "卷腹", muscleGroup: "核心", sets: 4, reps: "20次", restSeconds: 20, notes: "" },
+              { name: "放松", muscleGroup: "全身", sets: 1, reps: "5分钟", restSeconds: 0, notes: "" },
+            ],
+          },
+        ],
+      },
+    ],
+  };
+
+  const defaultTemplate = [
+    {
+      phase: "基础训练期",
+      weeks: [1, Math.ceil(weeks / 2)],
+      focus: "建立训练基础，学习正确动作",
+      weeklySchedule: [
+        {
+          day: "周一",
+          workoutType: "上肢训练",
+          exercises: [
+            { name: "热身", muscleGroup: "全身", sets: 1, reps: "5分钟", restSeconds: 0, notes: "" },
+            { name: "哑铃卧推", muscleGroup: "胸大肌", sets: 3, reps: "12次", restSeconds: 60, notes: "" },
+            { name: "高位下拉", muscleGroup: "背阔肌", sets: 3, reps: "12次", restSeconds: 60, notes: "" },
+            { name: "哑铃推举", muscleGroup: "三角肌", sets: 3, reps: "12次", restSeconds: 60, notes: "" },
+            { name: "放松", muscleGroup: "全身", sets: 1, reps: "5分钟", restSeconds: 0, notes: "" },
+          ],
+        },
+        {
+          day: "周三",
+          workoutType: "下肢训练",
+          exercises: [
+            { name: "热身", muscleGroup: "全身", sets: 1, reps: "5分钟", restSeconds: 0, notes: "" },
+            { name: "徒手深蹲", muscleGroup: "股四头肌", sets: 3, reps: "15次", restSeconds: 60, notes: "" },
+            { name: "罗马尼亚硬拉", muscleGroup: "腘绳肌", sets: 3, reps: "12次", restSeconds: 60, notes: "" },
+            { name: "弓步走", muscleGroup: "臀大肌", sets: 3, reps: "每侧10次", restSeconds: 60, notes: "" },
+            { name: "放松", muscleGroup: "全身", sets: 1, reps: "5分钟", restSeconds: 0, notes: "" },
+          ],
+        },
+        {
+          day: "周五",
+          workoutType: "全身训练",
+          exercises: [
+            { name: "热身", muscleGroup: "全身", sets: 1, reps: "5分钟", restSeconds: 0, notes: "" },
+            { name: "哑铃划船", muscleGroup: "背阔肌", sets: 3, reps: "12次", restSeconds: 60, notes: "" },
+            { name: "俯卧撑", muscleGroup: "胸大肌", sets: 3, reps: "12次", restSeconds: 60, notes: "" },
+            { name: "平板支撑", muscleGroup: "核心", sets: 3, reps: "30秒", restSeconds: 45, notes: "" },
+            { name: "放松", muscleGroup: "全身", sets: 1, reps: "5分钟", restSeconds: 0, notes: "" },
+          ],
+        },
+      ],
+    },
+    {
+      phase: "进阶训练期",
+      weeks: [Math.ceil(weeks / 2) + 1, weeks],
+      focus: "增加强度和容量，提升训练效果",
+      weeklySchedule: [
+        {
+          day: "周一",
+          workoutType: "上肢训练",
+          exercises: [
+            { name: "热身", muscleGroup: "全身", sets: 1, reps: "5分钟", restSeconds: 0, notes: "" },
+            { name: "杠铃卧推", muscleGroup: "胸大肌", sets: 4, reps: "8-10次", restSeconds: 90, notes: "渐进加重" },
+            { name: "杠铃划船", muscleGroup: "背阔肌", sets: 4, reps: "8-10次", restSeconds: 90, notes: "" },
+            { name: "哑铃推举", muscleGroup: "三角肌", sets: 4, reps: "10次", restSeconds: 75, notes: "" },
+            { name: "放松", muscleGroup: "全身", sets: 1, reps: "5分钟", restSeconds: 0, notes: "" },
+          ],
+        },
+        {
+          day: "周三",
+          workoutType: "下肢训练",
+          exercises: [
+            { name: "热身", muscleGroup: "全身", sets: 1, reps: "5分钟", restSeconds: 0, notes: "" },
+            { name: "杠铃深蹲", muscleGroup: "股四头肌", sets: 4, reps: "8-10次", restSeconds: 90, notes: "" },
+            { name: "传统硬拉", muscleGroup: "后链", sets: 4, reps: "8次", restSeconds: 90, notes: "" },
+            { name: "腿举", muscleGroup: "股四头肌", sets: 3, reps: "12次", restSeconds: 60, notes: "" },
+            { name: "放松", muscleGroup: "全身", sets: 1, reps: "5分钟", restSeconds: 0, notes: "" },
+          ],
+        },
+        {
+          day: "周五",
+          workoutType: "全身训练",
+          exercises: [
+            { name: "热身", muscleGroup: "全身", sets: 1, reps: "5分钟", restSeconds: 0, notes: "" },
+            { name: "引体向上", muscleGroup: "背阔肌", sets: 4, reps: "力竭", restSeconds: 90, notes: "辅助器械也可" },
+            { name: "双杠臂屈伸", muscleGroup: "三头肌", sets: 4, reps: "10次", restSeconds: 75, notes: "" },
+            { name: "悬垂举腿", muscleGroup: "核心", sets: 4, reps: "12次", restSeconds: 60, notes: "" },
+            { name: "放松", muscleGroup: "全身", sets: 1, reps: "5分钟", restSeconds: 0, notes: "" },
+          ],
+        },
+      ],
+    },
+  ];
+
+  const phases = phaseTemplates[goals] || defaultTemplate;
+
+  const plan = {
+    program: {
+      name: `${goals}_${levelMap[level] || level}_训练计划`,
+      description: `专为${levelMap[level] || level}水平设计的${goals}方案，使用${equipmentList}，周期${weeks}周`,
+      weeks: weeks,
+      phases: phases,
+      tips: [
+        "每次训练前务必充分热身5-10分钟",
+        "训练后注意拉伸放松，促进恢复",
+        "保证每天7-8小时睡眠",
+        "饮食配合：增肌需热量盈余，减脂需热量缺口",
+        "每周记录体重和围度变化",
+        "如有不适立即停止训练并咨询医生",
+      ],
+    },
+  };
+
+  return NextResponse.json({ plan });
+}
+
+export async function GET() {
+  return NextResponse.json({
+    message: "POST 请求用于生成训练计划",
+    required_fields: ["goals", "level"],
+    optional_fields: ["equipment", "durationWeeks", "experience", "preferences"],
+  });
+}

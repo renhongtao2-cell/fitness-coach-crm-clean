@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -33,7 +33,7 @@ export default function ForgotPasswordPage() {
   return (
     <div className="w-full max-w-md animate-fade-in">
       <div className="text-center mb-8">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-600 mb-4">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-emerald-600 mb-4">
           <Mail className="w-8 h-8 text-white" />
         </div>
         <h1 className="text-2xl font-bold text-gray-900">{t('auth.forgotPasswordTitle2')}</h1>
@@ -53,17 +53,17 @@ export default function ForgotPasswordPage() {
             <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('auth.email')}</label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input type="email" value={email} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)} className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="you@example.com" required autoComplete="email" />
+              <input type="email" value={email} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)} className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="you@example.com" required autoComplete="email" />
             </div>
           </div>
 
-          <button type="submit" disabled={submitting} className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-medium rounded-lg transition flex items-center justify-center gap-2">
+          <button type="submit" disabled={submitting} className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:bg-emerald-300 text-white font-medium rounded-lg transition flex items-center justify-center gap-2">
             {submitting ? <><span className="spinner" />{t('auth.sendingEmail')}</> : t('auth.sendResetEmail')}
           </button>
         </form>
 
         <div className="mt-6 text-center">
-          <Link href="/login" className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700">
+          <Link href="/login" className="inline-flex items-center gap-1 text-sm text-emerald-600 hover:text-emerald-700">
             <ArrowLeft className="w-4 h-4" /> {t('auth.backToLogin')}
           </Link>
         </div>
