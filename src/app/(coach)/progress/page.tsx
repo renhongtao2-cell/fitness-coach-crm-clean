@@ -221,7 +221,7 @@ function getStatusColor(s: string) { const c: Record<string,string> = { active: 
 function getStatusLabel(s: string) { const l: Record<string,string> = { active: 'In Progress', completed: 'Completed', paused: 'Paused' }; return l[s] || s; }
 
 function StatCard({ label, value, subtitle, trend, goodDirection, icon, color }: any) {
-  const colors: Record<string, string> = { blue: 'bg-emerald-50 text-emerald-600', green: 'bg-green-50 text-green-600', purple: 'bg-purple-50 text-purple-600', orange: 'bg-orange-50 text-orange-600' };
+  const colors: Record<string, string> = { blue: 'bg-emerald-50 text-emerald-600', green: 'bg-green-50 text-green-600', purple: 'bg-emerald-50 text-emerald-600', orange: 'bg-emerald-50 text-emerald-600' };
   const isPositive = trend == null ? true : goodDirection === 'down' ? trend <= 0 : trend >= 0;
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-5">

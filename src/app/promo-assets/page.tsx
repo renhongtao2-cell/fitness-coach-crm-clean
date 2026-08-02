@@ -5,7 +5,7 @@ export default function PromoAssets() {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-emerald-950 to-teal-950 text-white">
       {/* Screen 1: Hero */}
       <section className="py-24 px-12 max-w-6xl mx-auto">
-        <div className="mb-4 flex items-center gap-2 text-purple-400 font-semibold text-sm tracking-wider uppercase">
+        <div className="mb-4 flex items-center gap-2 text-emerald-400 font-semibold text-sm tracking-wider uppercase">
           <span>⚡ AI-Powered</span>
         </div>
         <h1 className="text-6xl font-extrabold mb-6 leading-tight">

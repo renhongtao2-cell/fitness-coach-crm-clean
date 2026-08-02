@@ -19,7 +19,7 @@ interface Program {
 }
 
 const levelLabels: Record<string, string> = { beginner: "Beginner", intermediate: "Intermediate", advanced: "Advanced" };
-const levelColors: Record<string, string> = { beginner: "bg-green-100 text-green-700", intermediate: "bg-emerald-100 text-emerald-700", advanced: "bg-purple-100 text-purple-700" };
+const levelColors: Record<string, string> = { beginner: "bg-green-100 text-green-700", intermediate: "bg-emerald-100 text-emerald-700", advanced: "bg-emerald-100 text-emerald-700" };
 
 export default function ProgramsPage() {
   const { t } = useTranslation();
@@ -188,7 +188,7 @@ export default function ProgramsPage() {
           <p className="text-gray-500 mt-1">Manage and assign training programs to clients</p>
         </div>
         <div className="flex gap-2">
-          <button onClick={() => setShowAiModal(true)} className="inline-flex items-center gap-2 px-4 py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition text-sm">
+          <button onClick={() => setShowAiModal(true)} className="inline-flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition text-sm">
             <Sparkles className="w-4 h-4" />AI Generate
           </button>
           <button onClick={() => setShowCreateModal(true)} className="inline-flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition text-sm">
@@ -242,7 +242,7 @@ export default function ProgramsPage() {
                   <div className="flex items-center gap-3 text-xs text-gray-500 mb-3">
                     <span className="inline-flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{program.duration_weeks} weeks</span>
                     <span className="inline-flex items-center gap-1"><Dumbbell className="w-3.5 h-3.5" />{program.equipment?.join(", ")}</span>
-                    {program.ai_generated && <span className="inline-flex items-center gap-1"><Sparkles className="w-3.5 h-3.5 text-purple-500" />AI</span>}
+                    {program.ai_generated && <span className="inline-flex items-center gap-1"><Sparkles className="w-3.5 h-3.5 text-emerald-500" />AI</span>}
                   </div>
                   <div className="flex items-center justify-between">
                     <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${levelColors[program.level] || levelColors.intermediate}`}>
@@ -262,7 +262,7 @@ export default function ProgramsPage() {
                     {program.ai_generated && (
                       <button
                         onClick={() => openAssignModal(program.id)}
-                        className="py-2 px-3 bg-purple-50 hover:bg-purple-100 text-purple-600 rounded-lg text-sm font-medium transition"
+                        className="py-2 px-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-600 rounded-lg text-sm font-medium transition"
                         title="Assign to Client"
                       >
                         <Target className="w-4 h-4" />
@@ -314,7 +314,7 @@ export default function ProgramsPage() {
                       <Clock className="w-4 h-4" />{selectedProgram.duration_weeks}weeks
                     </span>
                     {programDetail.ai_generated && (
-                      <span className="px-3 py-1 rounded-full text-sm bg-purple-100 text-purple-700 flex items-center gap-1">
+                      <span className="px-3 py-1 rounded-full text-sm bg-emerald-100 text-emerald-700 flex items-center gap-1">
                         <Sparkles className="w-4 h-4" />AI Generate
                       </span>
                     )}
@@ -340,7 +340,7 @@ export default function ProgramsPage() {
                     if (isPhases) {
                       return ws.map((phase: any, pi: number) => (
                         <div key={pi} className="mb-4 border border-gray-200 rounded-lg overflow-hidden">
-                          <div className="bg-purple-50 px-4 py-2 font-medium text-sm text-purple-700">
+                          <div className="bg-emerald-50 px-4 py-2 font-medium text-sm text-emerald-700">
                             {phase.phase || "Phase "+(pi+1)+" Phase "} - {phase.focus || ""}
                             {phase.weeks && phase.weeks.length === 2 && <span className="ml-2 text-gray-400">({phase.weeks[0]}-{phase.weeks[1]}weeks)</span>}
                           </div>

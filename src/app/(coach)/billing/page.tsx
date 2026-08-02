@@ -141,7 +141,7 @@ export default function BillingPage() {
         {/* Invoice History */}
         <div className="bg-white rounded-2xl border border-gray-200 p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <Receipt className="w-5 h-5 text-purple-600" />
+            <Receipt className="w-5 h-5 text-emerald-600" />
             Invoice History
           </h2>
 

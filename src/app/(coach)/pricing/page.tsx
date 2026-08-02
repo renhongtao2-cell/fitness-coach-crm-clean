@@ -219,7 +219,7 @@ function PricingContent() {
             const colorClasses: Record<string, string> = {
               gray: "bg-gray-100 text-gray-600",
               blue: "bg-emerald-100 text-emerald-600",
-              purple: "bg-purple-100 text-purple-600",
+              purple: "bg-emerald-100 text-emerald-600",
               indigo: "bg-teal-100 text-teal-600",
             };
             const borderClass = plan.highlighted ? "border-emerald-500 shadow-lg scale-105" : isCurrentPlan ? "border-green-400 shadow-md" : "border-gray-200";

@@ -542,7 +542,7 @@ export default function SettingsPage() {
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
-                    <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 font-bold text-sm flex-shrink-0">3</div>
+                    <div className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 font-bold text-sm flex-shrink-0">3</div>
                     <div>
                       <p className="font-medium text-gray-900">Both Get 1 Month Free</p>
                       <p className="text-sm text-gray-500">You and your referred friend each get 1 month free on any plan.</p>

@@ -43,7 +43,7 @@ const faqs = [
 export default function FAQPage() {
   return (
     <div className="min-h-screen bg-white">
-      <header className="bg-gradient-to-r from-emerald-600 to-purple-600 text-white py-16">
+      <header className="bg-gradient-to-r from-emerald-600 to-emerald-600 text-white py-16">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Frequently Asked Questions</h1>
           <p className="text-xl text-emerald-100">Everything you need to know about FitCoach CRM.</p>
@@ -65,7 +65,7 @@ export default function FAQPage() {
       <footer className="bg-gray-900 text-gray-400 py-12 text-center">
         <div className="max-w-4xl mx-auto px-4">
           <div className="flex items-center justify-center gap-3 mb-6">
-            <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-purple-500 rounded-xl flex items-center justify-center"><Brain className="w-5 h-5 text-white" /></div>
+            <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-emerald-500 rounded-xl flex items-center justify-center"><Brain className="w-5 h-5 text-white" /></div>
             <span className="text-white font-bold text-xl">FitCoach</span>
           </div>
           <p className="text-sm">? 2025 FitCoach CRM. All rights reserved.</p>

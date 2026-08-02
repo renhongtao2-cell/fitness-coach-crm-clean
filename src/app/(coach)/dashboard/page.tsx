@@ -133,7 +133,7 @@ const [stats, setStats] = useState({ activeCoachees: 0, weeklyWorkouts: 0, progr
     <div className="space-y-6 animate-fade-in">
       {/* Referral Banner */}
       {referralCode && (
-        <div className="bg-gradient-to-r from-purple-600 via-emerald-600 to-cyan-500 rounded-2xl p-6 text-white shadow-lg">
+        <div className="bg-gradient-to-r from-emerald-600 via-emerald-600 to-teal-500 rounded-2xl p-6 text-white shadow-lg">
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div>
               <h2 className="text-2xl font-bold mb-2">🎁 Invite Friends, Get 1 Month Free!</h2>
@@ -178,9 +178,9 @@ const [stats, setStats] = useState({ activeCoachees: 0, weeklyWorkouts: 0, progr
       {isAdmin && (
         <div className="max-w-7xl mx-auto px-6 sm:px-6 lg:px-8 mb-6">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div className="bg-gradient-to-br from-emerald-50 to-cyan-50 rounded-xl border border-emerald-100 p-4 hover:shadow-md transition-all">
+            <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl border border-emerald-100 p-4 hover:shadow-md transition-all">
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center shadow-sm">
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-sm">
                   <UserPlus className="w-5 h-5 text-white" />
                 </div>
                 <span className="text-sm font-medium text-gray-600">今日新注册</span>
@@ -192,9 +192,9 @@ const [stats, setStats] = useState({ activeCoachees: 0, weeklyWorkouts: 0, progr
                 <span>学员 {systemStats.todayRegistrationBreakdown?.clients ?? 0}</span>
               </div>
             </div>
-            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl border border-purple-100 p-4 hover:shadow-md transition-all">
+            <div className="bg-gradient-to-br from-emerald-50 to-emerald-50 rounded-xl border border-emerald-100 p-4 hover:shadow-md transition-all">
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-sm">
+                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-emerald-500 flex items-center justify-center shadow-sm">
                   <Users className="w-5 h-5 text-white" />
                 </div>
                 <span className="text-sm font-medium text-gray-600">全部教练</span>
@@ -286,8 +286,8 @@ function StatCard({ icon, label, value, change, color }: StatCardProps) {
   const bg: Record<string, string> = {
     blue: "bg-emerald-50 text-emerald-600",
     green: "bg-green-50 text-green-600",
-    purple: "bg-purple-50 text-purple-600",
-    orange: "bg-orange-50 text-orange-600",
+    purple: "bg-emerald-50 text-emerald-600",
+    orange: "bg-emerald-50 text-emerald-600",
   };
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition">
@@ -305,8 +305,8 @@ function QuickAction({ label, icon, color, href }: { label: string; icon: React.
   const bg: Record<string, string> = {
     blue: "bg-emerald-50 text-emerald-600 hover:bg-emerald-100",
     green: "bg-green-50 text-green-600 hover:bg-green-100",
-    purple: "bg-purple-50 text-purple-600 hover:bg-purple-100",
-    orange: "bg-orange-50 text-orange-600 hover:bg-orange-100",
+    purple: "bg-emerald-50 text-emerald-600 hover:bg-emerald-100",
+    orange: "bg-emerald-50 text-emerald-600 hover:bg-emerald-100",
   };
   if (href) {
     return <a href={href} className={"w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition " + (bg[color] || bg.blue)}>{icon}{label}</a>;

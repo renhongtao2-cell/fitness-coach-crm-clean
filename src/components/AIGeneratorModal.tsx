@@ -194,7 +194,7 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
       <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto animate-fade-in">
         <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between z-10">
           <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-purple-600" />
+            <Sparkles className="w-5 h-5 text-emerald-600" />
             AI Training Plan Generator
           </h2>
           <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg transition">
@@ -289,7 +289,7 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
           {/* Loading */}
           {generating && (
             <div className="text-center py-12">
-              <Loader2 className="w-12 h-12 text-purple-600 animate-spin mx-auto mb-4" />
+              <Loader2 className="w-12 h-12 text-emerald-600 animate-spin mx-auto mb-4" />
               <p className="text-gray-600">AI is generating your training plan...</p>
               <p className="text-sm text-gray-400 mt-2">Takes approximately 10-30 seconds</p>
             </div>
@@ -427,7 +427,7 @@ export default function AIGeneratorModal({ isOpen, onClose, onSaved }: AIGenerat
           {!result && !generating && (
             <button
               onClick={handleGenerate}
-              className="px-6 py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition flex items-center gap-2"
+              className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition flex items-center gap-2"
             >
               <Sparkles className="w-4 h-4" />
               Start Generation

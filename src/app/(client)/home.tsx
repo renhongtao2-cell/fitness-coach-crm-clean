@@ -187,16 +187,16 @@ export default function ClientHome() {
         {messages.length > 0 && (
           <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-              <h3 className="font-semibold text-gray-900 flex items-center gap-2"><MessageSquare className="w-5 h-5 text-purple-600" />Recent Messages</h3>
+              <h3 className="font-semibold text-gray-900 flex items-center gap-2"><MessageSquare className="w-5 h-5 text-emerald-600" />Recent Messages</h3>
               <span className="text-sm text-gray-500">Total: {messages.length}</span>
             </div>
             <div className="divide-y divide-gray-100">
               {messages.slice(0, 10).map((msg: any) => {
                 const isFromCoach = msg.sender === 'coach';
                 return (
-                  <div key={msg.id} className={'px-6 py-4 ' + (isFromCoach ? 'bg-purple-50/50' : '')}>
+                  <div key={msg.id} className={'px-6 py-4 ' + (isFromCoach ? 'bg-emerald-50/50' : '')}>
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-xs font-medium text-purple-600">{isFromCoach ? 'Coach' : 'Me'}</span>
+                      <span className="text-xs font-medium text-emerald-600">{isFromCoach ? 'Coach' : 'Me'}</span>
                       <span className="text-xs text-gray-400">{new Date(msg.created_at).toLocaleString('zh-CN')}</span>
                     </div>
                     <p className="text-sm text-gray-700">{msg.content}</p>
@@ -244,6 +244,6 @@ export default function ClientHome() {
 function getStatusColor(s: string) { const c: Record<string,string> = { active: 'bg-green-100 text-green-700', completed: 'bg-emerald-100 text-emerald-700', paused: 'bg-yellow-100 text-yellow-700', cancelled: 'bg-red-100 text-red-700' }; return c[s] || 'bg-gray-100 text-gray-700'; }
 function getStatusLabel(s: string) { const l: Record<string,string> = { active: 'In Progress', completed: 'Completed', paused: 'Paused', cancelled: 'Cancelled' }; return l[s] || s; }
 function SummaryCard({ icon, label, value, color }: any) {
-  const bg: Record<string, string> = { blue: 'bg-emerald-50 text-emerald-600', green: 'bg-green-50 text-green-600', purple: 'bg-purple-50 text-purple-600', orange: 'bg-orange-50 text-orange-600', pink: 'bg-pink-50 text-pink-600' };
+  const bg: Record<string, string> = { blue: 'bg-emerald-50 text-emerald-600', green: 'bg-green-50 text-green-600', purple: 'bg-emerald-50 text-emerald-600', orange: 'bg-emerald-50 text-emerald-600', pink: 'bg-emerald-50 text-emerald-600' };
   return (<div className="bg-white rounded-xl border border-gray-200 p-4"><div className={'w-10 h-10 rounded-lg flex items-center justify-center mb-3 ' + (bg[color] || bg.blue)}>{icon}</div><p className="text-xl font-bold text-gray-900">{value}</p><p className="text-xs text-gray-500">{label}</p></div>);
 }

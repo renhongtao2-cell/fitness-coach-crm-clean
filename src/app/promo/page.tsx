@@ -7,19 +7,19 @@ export default function PromoPage() {
   const spotsLeft = 100; // Will be overridden by server
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-950 to-teal-950 text-white">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-emerald-950 to-teal-950 text-white">
       {/* Hero Section */}
       <section className="relative overflow-hidden py-24 px-6">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-500/20 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-500/20 via-transparent to-transparent" />
         <div className="max-w-4xl mx-auto text-center relative">
-          <div className="inline-flex items-center gap-2 bg-purple-500/20 border border-purple-500/30 rounded-full px-4 py-1.5 text-sm font-medium text-purple-300 mb-8">
+          <div className="inline-flex items-center gap-2 bg-emerald-500/20 border border-emerald-500/30 rounded-full px-4 py-1.5 text-sm font-medium text-emerald-300 mb-8">
             <Gift className="w-4 h-4" />
             Launch Promotion �� Limited Spots
           </div>
 
           <h1 className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
             Join the First{" "}
-            <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-emerald-400 to-emerald-400 bg-clip-text text-transparent">
               100 Coaches
             </span>
           </h1>
@@ -34,7 +34,7 @@ export default function PromoPage() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/register?role=coach" className="group inline-flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-purple-600 hover:from-emerald-500 hover:to-purple-500 text-white font-bold text-lg px-8 py-4 rounded-xl transition-all shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40">
+            <Link href="/register?role=coach" className="group inline-flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-emerald-600 hover:from-emerald-500 hover:to-emerald-500 text-white font-bold text-lg px-8 py-4 rounded-xl transition-all shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40">
               Claim Your Spot
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
@@ -56,7 +56,7 @@ export default function PromoPage() {
             <span className="text-sm font-bold text-yellow-400">{spotsLeft} spots remaining</span>
           </div>
           <div className="w-full bg-white/10 rounded-full h-2">
-            <div className="bg-gradient-to-r from-yellow-400 to-orange-500 h-2 rounded-full transition-all" style={{ width: `${(100 - spotsLeft) / 1}%` }} />
+            <div className="bg-gradient-to-r from-yellow-400 to-emerald-500 h-2 rounded-full transition-all" style={{ width: `${(100 - spotsLeft) / 1}%` }} />
           </div>
         </div>
       </section>
@@ -76,8 +76,8 @@ export default function PromoPage() {
               { icon: <Check className="w-6 h-6" />, title: "Built-in Messaging", desc: "Chat with clients, send reminders, and share feedback." },
               { icon: <Gift className="w-6 h-6" />, title: "10 Languages Supported", desc: "Serve international clients with built-in translation." },
             ].map((f) => (
-              <div key={f.title} className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:border-purple-500/30 transition-all">
-                <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center text-purple-400 mb-4">
+              <div key={f.title} className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:border-emerald-500/30 transition-all">
+                <div className="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4">
                   {f.icon}
                 </div>
                 <h3 className="text-lg font-bold mb-2">{f.title}</h3>
@@ -99,7 +99,7 @@ export default function PromoPage() {
               { step: "3", title: "Start Managing Clients", desc: "Upload your first client, generate a workout plan, and see the difference." },
             ].map((item) => (
               <div key={item.step} className="flex gap-4 items-start">
-                <div className="w-12 h-12 shrink-0 rounded-full bg-gradient-to-br from-emerald-500 to-purple-600 flex items-center justify-center font-bold text-lg">
+                <div className="w-12 h-12 shrink-0 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center font-bold text-lg">
                   {item.step}
                 </div>
                 <div>
@@ -119,7 +119,7 @@ export default function PromoPage() {
           <p className="text-gray-400 text-lg mb-8">
             After 100 signups, new users will only get the Free plan. Be one of the founders.
           </p>
-          <Link href="/register?role=coach" className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-purple-600 hover:from-emerald-500 hover:to-purple-500 text-white font-bold text-lg px-10 py-4 rounded-xl transition-all shadow-lg shadow-purple-500/25">
+          <Link href="/register?role=coach" className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-emerald-600 hover:from-emerald-500 hover:to-emerald-500 text-white font-bold text-lg px-10 py-4 rounded-xl transition-all shadow-lg shadow-emerald-500/25">
             Register Now �� It&apos;s Free
             <ArrowRight className="w-5 h-5" />
           </Link>

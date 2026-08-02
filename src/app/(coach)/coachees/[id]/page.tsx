@@ -219,7 +219,7 @@ export default function CoacheesPage() {
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                     coachee.fitness_level === 'beginner' ? 'bg-green-100 text-green-700' :
                     coachee.fitness_level === 'intermediate' ? 'bg-emerald-100 text-emerald-700' :
-                    'bg-purple-100 text-purple-700'
+                    'bg-emerald-100 text-emerald-700'
                   }`}>
                     {levelLabel(coachee.fitness_level)}
                   </span>

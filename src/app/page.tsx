@@ -102,16 +102,16 @@ function DashboardPreview() {
   var bars = [60, 45, 70, 55, 80, 65, 90, 50, 75, 85, 60, 70];
   var plans = ['Free','Basic','Pro','Enterprise'];
   var percs = [12, 28, 35, 25];
-  var colors = ['bg-gray-400','bg-emerald-500','bg-purple-500','bg-orange-500'];
+  var colors = ['bg-gray-400','bg-emerald-500','bg-emerald-500','bg-emerald-500'];
   var actItems = [
-    { n: 'Sarah Chen', a: 'completed Leg Day', t: '2m ago', c: 'bg-pink-500' },
+    { n: 'Sarah Chen', a: 'completed Leg Day', t: '2m ago', c: 'bg-emerald-500' },
     { n: 'James Liu', a: 'submitted body measurement', t: '15m ago', c: 'bg-emerald-500' },
-    { n: 'Emma Wilson', a: 'AI plan generated: PPL', t: '1h ago', c: 'bg-purple-500' },
+    { n: 'Emma Wilson', a: 'AI plan generated: PPL', t: '1h ago', c: 'bg-emerald-500' },
     { n: 'David Park', a: 'checked in: Upper Body', t: '2h ago', c: 'bg-green-500' },
   ];
   return (
     <div className="relative max-w-4xl mx-auto">
-      <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-purple-600 rounded-2xl blur-3xl opacity-20 scale-105" />
+      <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-2xl blur-3xl opacity-20 scale-105" />
       <div className="relative bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
         <div className="bg-gradient-to-r from-slate-900 to-slate-800 px-6 py-3 flex items-center gap-3">
           <div className="flex gap-1.5">
@@ -127,7 +127,7 @@ function DashboardPreview() {
               <h3 className="text-lg font-bold text-gray-900">Coach Dashboard</h3>
               <p className="text-sm text-gray-500">Welcome back, Coach Mike</p>
             </div>
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-purple-600" />
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600" />
           </div>
           <div className="grid grid-cols-4 gap-3 mb-6">
             {[
@@ -157,7 +157,7 @@ function DashboardPreview() {
               <div className="flex items-end gap-1.5 h-24">
                 {bars.map(function(h, i) {
                   return (
-                    <div key={i} className={'flex-1 '+(i%3===0?'bg-purple-400':'bg-emerald-500')} style={{height:h+'%'}} />
+                    <div key={i} className={'flex-1 '+(i%3===0?'bg-emerald-400':'bg-emerald-500')} style={{height:h+'%'}} />
                   );
                 })}
               </div>
@@ -313,11 +313,11 @@ export default function Home() {
   ];
 
   const features = [
-    { icon: Brain, title: 'AI Training Plans', desc: 'Generate science-backed, multi-phase training programs in seconds. Customize by goal, fitness level, equipment, and preferences.', color: 'bg-purple-100 text-purple-600', gradient: 'from-purple-500 to-pink-500' },
-    { icon: Users, title: 'Client Management', desc: 'Organize unlimited clients with detailed profiles, fitness levels, goals, body measurements, and communication history.', color: 'bg-emerald-100 text-emerald-600', gradient: 'from-emerald-500 to-cyan-500' },
+    { icon: Brain, title: 'AI Training Plans', desc: 'Generate science-backed, multi-phase training programs in seconds. Customize by goal, fitness level, equipment, and preferences.', color: 'bg-emerald-100 text-emerald-600', gradient: 'from-emerald-500 to-emerald-500' },
+    { icon: Users, title: 'Client Management', desc: 'Organize unlimited clients with detailed profiles, fitness levels, goals, body measurements, and communication history.', color: 'bg-emerald-100 text-emerald-600', gradient: 'from-emerald-500 to-teal-500' },
     { icon: TrendingUp, title: 'Progress Analytics', desc: 'Beautiful charts for weight, body fat %, measurements, and workout logs. Visualize every client transformation journey.', color: 'bg-green-100 text-green-600', gradient: 'from-green-500 to-emerald-500' },
-    { icon: MessageSquare, title: 'Built-in Messaging', desc: 'Real-time chat with clients. Share updates, motivate, and stay connected - all within the platform.', color: 'bg-orange-100 text-orange-600', gradient: 'from-orange-500 to-red-500' },
-    { icon: Calendar, title: 'Smart Scheduling', desc: 'Track workout schedules, session dates, and deadlines. Never miss a check-in or follow-up again.', color: 'bg-teal-100 text-teal-600', gradient: 'from-teal-500 to-purple-500' },
+    { icon: MessageSquare, title: 'Built-in Messaging', desc: 'Real-time chat with clients. Share updates, motivate, and stay connected - all within the platform.', color: 'bg-emerald-100 text-emerald-600', gradient: 'from-emerald-500 to-teal-500' },
+    { icon: Calendar, title: 'Smart Scheduling', desc: 'Track workout schedules, session dates, and deadlines. Never miss a check-in or follow-up again.', color: 'bg-teal-100 text-teal-600', gradient: 'from-teal-500 to-emerald-500' },
     { icon: Shield, title: 'Enterprise Security', desc: 'Bank-grade encryption with row-level security. Your client data stays private and protected at all times.', color: 'bg-teal-100 text-teal-600', gradient: 'from-teal-500 to-emerald-500' },
   ];
 
@@ -336,10 +336,10 @@ export default function Home() {
   ];
 
   const testimonials = [
-    { name: 'Mike Johnson', role: 'Personal Trainer, 5 years', quote: 'FitCoach completely transformed how I manage my 80+ clients. The AI plan generator saves me hours every week.', avatar: 'bg-gradient-to-br from-emerald-500 to-cyan-500' },
-    { name: 'Sarah Chen', role: 'Online Fitness Coach', quote: 'I went from juggling 5 different apps to just FitCoach. Revenue doubled in 6 months.', avatar: 'bg-gradient-to-br from-purple-500 to-pink-500' },
+    { name: 'Mike Johnson', role: 'Personal Trainer, 5 years', quote: 'FitCoach completely transformed how I manage my 80+ clients. The AI plan generator saves me hours every week.', avatar: 'bg-gradient-to-br from-emerald-500 to-teal-500' },
+    { name: 'Sarah Chen', role: 'Online Fitness Coach', quote: 'I went from juggling 5 different apps to just FitCoach. Revenue doubled in 6 months.', avatar: 'bg-gradient-to-br from-emerald-500 to-emerald-500' },
     { name: 'David Park', role: 'CrossFit Box Owner', quote: 'Managing my CrossFit box with FitCoach is seamless. The analytics help me see which programs work best.', avatar: 'bg-gradient-to-br from-green-500 to-emerald-500' },
-    { name: 'Emma Wilson', role: 'Yoga Instructor to Full Coach', quote: 'FitCoach gave me the tools to expand my services and double my client base.', avatar: 'bg-gradient-to-br from-orange-500 to-red-500' },
+    { name: 'Emma Wilson', role: 'Yoga Instructor to Full Coach', quote: 'FitCoach gave me the tools to expand my services and double my client base.', avatar: 'bg-gradient-to-br from-emerald-500 to-teal-500' },
   ];
 
   const faqs = [
@@ -357,7 +357,7 @@ export default function Home() {
       <nav className={'fixed top-0 left-0 right-0 z-50 transition-all duration-300 '+(scrolled ? 'bg-white/95 backdrop-blur-xl shadow-lg border-b border-gray-100' : 'bg-white/80 backdrop-blur-md border-b border-gray-100/50')}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 bg-gradient-to-br from-emerald-600 to-purple-600 rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform shadow-lg shadow-emerald-200">
+            <div className="w-10 h-10 bg-gradient-to-br from-emerald-600 to-emerald-600 rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform shadow-lg shadow-emerald-200">
               <Dumbbell className="w-5 h-5 text-white" />
             </div>
             <span className="text-xl font-bold text-gray-900 tracking-tight">FitCoach</span>
@@ -383,7 +383,7 @@ export default function Home() {
               )}
             </button>
             <Link href="/login" className="px-5 py-2.5 text-sm font-medium text-gray-700 hover:text-emerald-600 transition">Sign In</Link>
-            <Link href="/register" className="px-6 py-2.5 bg-gradient-to-r from-emerald-600 to-purple-600 hover:from-emerald-700 hover:to-purple-700 text-white text-sm font-semibold rounded-xl transition-all shadow-lg shadow-emerald-200 hover:shadow-xl hover:scale-105 flex items-center gap-1">
+            <Link href="/register" className="px-6 py-2.5 bg-gradient-to-r from-emerald-600 to-emerald-600 hover:from-emerald-700 hover:to-emerald-700 text-white text-sm font-semibold rounded-xl transition-all shadow-lg shadow-emerald-200 hover:shadow-xl hover:scale-105 flex items-center gap-1">
               Start Free <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -399,7 +399,7 @@ export default function Home() {
             <div className="pt-2 border-t border-gray-100 flex gap-2">
               <button onClick={() => setMobileOpen(false)} className="block w-full text-left px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-xl cursor-pointer">{selectedLangName}</button>
               <Link href="/login" onClick={() => setMobileOpen(false)} className="flex-1 px-4 py-3 text-center text-sm font-medium text-gray-700 bg-gray-50 rounded-xl">Sign In</Link>
-              <Link href="/register" onClick={() => setMobileOpen(false)} className="flex-1 px-4 py-3 text-center text-sm font-semibold text-white bg-gradient-to-r from-emerald-600 to-purple-600 rounded-xl">Start Free</Link>
+              <Link href="/register" onClick={() => setMobileOpen(false)} className="flex-1 px-4 py-3 text-center text-sm font-semibold text-white bg-gradient-to-r from-emerald-600 to-emerald-600 rounded-xl">Start Free</Link>
             </div>
           </div>
         )}
@@ -409,16 +409,16 @@ export default function Home() {
       <section className="relative pt-32 pb-20 px-4 sm:px-6">
         <ParticleBG />
         <div className="absolute top-20 left-1/4 w-96 h-96 bg-emerald-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse" />
-        <div className="absolute top-40 right-1/4 w-96 h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse" style={{animationDelay:'2s'}} />
-        <div className="absolute bottom-20 left-1/3 w-96 h-96 bg-pink-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse" style={{animationDelay:'4s'}} />
+        <div className="absolute top-40 right-1/4 w-96 h-96 bg-emerald-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse" style={{animationDelay:'2s'}} />
+        <div className="absolute bottom-20 left-1/3 w-96 h-96 bg-emerald-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse" style={{animationDelay:'4s'}} />
         <div className="relative max-w-7xl mx-auto">
           <div className="text-center max-w-4xl mx-auto mb-16">
-            <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-emerald-50 to-purple-50 border border-emerald-100 rounded-full text-sm font-medium text-emerald-700 mb-8 shadow-sm">
+            <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-emerald-50 to-emerald-50 border border-emerald-100 rounded-full text-sm font-medium text-emerald-700 mb-8 shadow-sm">
               <Sparkles className="w-4 h-4" />AI-Powered Fitness CRM - Trusted by 500+ Coaches
             </div>
             <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold text-gray-900 mb-8 leading-[1.1] tracking-tight">
               The CRM Built{' '}
-              <span className="bg-gradient-to-r from-emerald-600 via-purple-600 to-pink-600 bg-clip-text text-transparent" style={{backgroundImage:'linear-gradient(135deg,#2563eb,#7c3aed,#db2777)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>
+              <span className="bg-gradient-to-r from-emerald-600 via-emerald-600 to-emerald-600 bg-clip-text text-transparent" style={{backgroundImage:'linear-gradient(135deg,#2563eb,#7c3aed,#db2777)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>
                 Specifically
               </span>
               <br />for Fitness Coaches
@@ -428,7 +428,7 @@ export default function Home() {
               <span className="block mt-2 font-medium text-gray-900">No spreadsheets. No chaos. Just results.</span>
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
-              <Link href="/register" className="group px-8 py-4 bg-gradient-to-r from-emerald-600 to-purple-600 hover:from-emerald-700 hover:to-purple-700 text-white font-semibold rounded-2xl transition-all shadow-xl shadow-emerald-200 hover:shadow-2xl text-lg flex items-center justify-center gap-2 hover:scale-105">
+              <Link href="/register" className="group px-8 py-4 bg-gradient-to-r from-emerald-600 to-emerald-600 hover:from-emerald-700 hover:to-emerald-700 text-white font-semibold rounded-2xl transition-all shadow-xl shadow-emerald-200 hover:shadow-2xl text-lg flex items-center justify-center gap-2 hover:scale-105">
                 Start Free - No Card Needed <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
               <a href="#features" className="px-8 py-4 bg-white hover:bg-gray-50 text-gray-700 font-semibold rounded-2xl transition-all border-2 border-gray-200 text-lg flex items-center justify-center gap-2 hover:border-gray-300 hover:shadow-lg">
@@ -463,7 +463,7 @@ export default function Home() {
           <Reveal>
             <div className="text-center mb-20">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 border border-emerald-100 rounded-full text-sm font-medium text-emerald-600 mb-6"><Zap className="w-4 h-4" />Powerful Features</div>
-              <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">Everything You Need to{' '}<span className="bg-gradient-to-r from-emerald-600 to-purple-600 bg-clip-text text-transparent">Scale Your Coaching</span></h2>
+              <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">Everything You Need to{' '}<span className="bg-gradient-to-r from-emerald-600 to-emerald-600 bg-clip-text text-transparent">Scale Your Coaching</span></h2>
               <p className="text-xl text-gray-500 max-w-2xl mx-auto">From client onboarding to progress tracking, FitCoach handles it all.</p>
             </div>
           </Reveal>
@@ -480,8 +480,8 @@ export default function Home() {
         <div className="max-w-6xl mx-auto">
           <Reveal>
             <div className="text-center mb-20">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-50 border border-purple-100 rounded-full text-sm font-medium text-purple-600 mb-6"><Rocket className="w-4 h-4" />Simple Setup</div>
-              <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">Up and Running in{' '}<span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Minutes</span></h2>
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 border border-emerald-100 rounded-full text-sm font-medium text-emerald-600 mb-6"><Rocket className="w-4 h-4" />Simple Setup</div>
+              <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">Up and Running in{' '}<span className="bg-gradient-to-r from-emerald-600 to-emerald-600 bg-clip-text text-transparent">Minutes</span></h2>
               <p className="text-xl text-gray-500 max-w-2xl mx-auto">Four simple steps to transform how you coach.</p>
             </div>
           </Reveal>
@@ -490,10 +490,10 @@ export default function Home() {
               return (
                 <Reveal key={i} delay={i*0.15}>
                   <div className="relative text-center">
-                    {i < steps.length-1 && <div className="hidden lg:block absolute top-12 left-[60%] w-[80%] h-px bg-gradient-to-r from-emerald-300 to-purple-300" />}
-                    <div className="relative inline-flex items-center justify-center w-24 h-24 rounded-3xl bg-gradient-to-br from-emerald-50 to-purple-50 border border-emerald-100 mb-6">
+                    {i < steps.length-1 && <div className="hidden lg:block absolute top-12 left-[60%] w-[80%] h-px bg-gradient-to-r from-emerald-300 to-emerald-300" />}
+                    <div className="relative inline-flex items-center justify-center w-24 h-24 rounded-3xl bg-gradient-to-br from-emerald-50 to-emerald-50 border border-emerald-100 mb-6">
                       <step.icon className="w-10 h-10 text-emerald-600" />
-                      <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-br from-emerald-600 to-purple-600 rounded-lg flex items-center justify-center text-white text-xs font-bold shadow-lg">{step.num}</div>
+                      <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-br from-emerald-600 to-emerald-600 rounded-lg flex items-center justify-center text-white text-xs font-bold shadow-lg">{step.num}</div>
                     </div>
                     <h3 className="text-lg font-bold text-gray-900 mb-2">{step.title}</h3>
                     <p className="text-gray-500 text-sm leading-relaxed">{step.desc}</p>
@@ -508,13 +508,13 @@ export default function Home() {
       {/* AI SHOWCASE */}
       <section className="py-28 px-4 sm:px-6 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white overflow-hidden relative">
         <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500 rounded-full mix-blend-overlay filter blur-3xl opacity-10" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500 rounded-full mix-blend-overlay filter blur-3xl opacity-10" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500 rounded-full mix-blend-overlay filter blur-3xl opacity-10" />
         <div className="max-w-6xl mx-auto relative">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <Reveal>
               <div>
                 <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 rounded-full text-sm font-medium text-emerald-300 mb-8"><Sparkles className="w-4 h-4" />AI-Powered Engine</div>
-                <h2 className="text-4xl md:text-5xl font-extrabold mb-6 leading-tight">Let AI Build Your{' '}<span className="bg-gradient-to-r from-emerald-400 to-purple-400 bg-clip-text text-transparent">Training Plans</span></h2>
+                <h2 className="text-4xl md:text-5xl font-extrabold mb-6 leading-tight">Let AI Build Your{' '}<span className="bg-gradient-to-r from-emerald-400 to-emerald-400 bg-clip-text text-transparent">Training Plans</span></h2>
                 <p className="text-lg text-slate-300 mb-8 leading-relaxed">Stop spending hours creating programs. Describe your client needs and our AI generates comprehensive training plans in seconds.</p>
                 <div className="space-y-4">
                   {[
@@ -537,13 +537,13 @@ export default function Home() {
               <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-8">
                 <div className="space-y-4">
                   <div className="flex gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-purple-500 flex items-center justify-center shrink-0"><Brain className="w-4 h-4 text-white" /></div>
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-500 flex items-center justify-center shrink-0"><Brain className="w-4 h-4 text-white" /></div>
                     <div className="bg-white/10 rounded-2xl rounded-tl-md p-4 flex-1">
                       <p className="text-sm text-slate-200"><strong>Coach Mike:</strong> Create a 12-week hypertrophy program for intermediate level, dumbbells and barbell. Focus on chest and back.</p>
                     </div>
                   </div>
                   <div className="flex gap-3 justify-end">
-                    <div className="bg-gradient-to-r from-emerald-600 to-purple-600 rounded-2xl rounded-tr-md p-4 max-w-lg flex-1">
+                    <div className="bg-gradient-to-r from-emerald-600 to-emerald-600 rounded-2xl rounded-tr-md p-4 max-w-lg flex-1">
                       <p className="text-sm text-white font-medium mb-2">AI-Generated: Home Hypertrophy 12-Week</p>
                       <div className="space-y-2 text-xs text-emerald-100">
                         <div className="flex items-center gap-2"><CheckCircle className="w-3 h-3 text-green-400" /><span>Phase 1 (Wk 1-4): Volume Accumulation</span></div>
@@ -590,7 +590,7 @@ export default function Home() {
           <Reveal>
             <div className="text-center mb-16">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-50 border border-yellow-100 rounded-full text-sm font-medium text-yellow-700 mb-6"><Star className="w-4 h-4" />Loved by Coaches</div>
-              <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">Trusted by{' '}<span className="bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent">500+ Fitness Coaches</span></h2>
+              <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">Trusted by{' '}<span className="bg-gradient-to-r from-yellow-500 to-emerald-500 bg-clip-text text-transparent">500+ Fitness Coaches</span></h2>
               <p className="text-xl text-gray-500 max-w-2xl mx-auto">Real coaches, real results.</p>
             </div>
           </Reveal>
@@ -621,7 +621,7 @@ export default function Home() {
 
       {/* FINAL CTA */}
       <section className="py-28 px-4 sm:px-6 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 via-purple-600 to-pink-600" />
+        <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 via-emerald-600 to-emerald-600" />
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 left-10 w-40 h-40 border border-white rounded-full" />
           <div className="absolute bottom-10 right-10 w-60 h-60 border border-white rounded-full" />
@@ -653,7 +653,7 @@ export default function Home() {
           <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
             <div className="col-span-2">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-purple-500 rounded-xl flex items-center justify-center">
+                <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-emerald-500 rounded-xl flex items-center justify-center">
                   <Dumbbell className="w-5 h-5 text-white" />
                 </div>
                 <span className="text-white font-bold text-xl">FitCoach</span>
