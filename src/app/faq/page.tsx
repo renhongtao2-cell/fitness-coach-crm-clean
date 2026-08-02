@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Brain, MessageSquare } from "lucide-react"
 
-export const metadata = { title: 'FAQ �� FitCoach CRM', description: 'Frequently asked questions about FitCoach CRM. Pricing, features, AI workout plans, client management, payments, and more.' };;
-
 export const metadata: Metadata = {
   title: "FAQ - FitCoach CRM Pricing, Features & Setup Guide for Personal Trainers",
   description: "Answers to the most common questions about FitCoach CRM: free plan limits, Stripe payments, AI workout plan generation, client onboarding, GDPR compliance, cancellation policy, and enterprise features for fitness coaching businesses.",

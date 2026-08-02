@@ -3,8 +3,6 @@
 import Link from "next/link";
 import { Check, Zap, Gift, ArrowRight, Timer, Trophy } from "lucide-react"
 
-export const metadata = { title: 'Free 3-Month Basic �� FitCoach CRM Launch Promotion', description: 'First 100 users get 3 months of Basic plan ( value) completely FREE. AI-powered fitness coaching CRM with workout plans, client tracking, messaging and payments.' };;
-
 export default function PromoPage() {
   const spotsLeft = 100; // Will be overridden by server
 

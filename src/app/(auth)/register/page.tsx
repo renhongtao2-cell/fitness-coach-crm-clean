@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { useAuth } from '@/hooks/use-auth';
 import { Dumbbell, Mail, Lock, User, Eye, EyeOff, CheckCircle, XCircle, Gift } from 'lucide-react';
 
-export const metadata = { title: 'Create Account �� FitCoach CRM', description: 'Join FitCoach CRM for free. Manage fitness clients, generate AI workout plans, track progress, and collect payments. No credit card required.' };
 import { useTranslation } from '@/hooks/use-translation';
 
 function RegisterForm() {

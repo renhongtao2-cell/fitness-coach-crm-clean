@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { useAuth } from '@/hooks/use-auth';
 import { Dumbbell, Mail, Lock, Eye, EyeOff, XCircle } from 'lucide-react';
 
-export const metadata = { title: 'Sign In �� FitCoach CRM', description: 'Log in to your FitCoach CRM account. Manage clients, track progress, and generate AI training plans.' };
 import { useTranslation } from '@/hooks/use-translation';
 
 export default function LoginPage() {
