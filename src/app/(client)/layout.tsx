@@ -1,9 +1,9 @@
-import { useAuth } from '@/hooks/use-auth';
-import { redirect } from 'next/navigation';
-import { ReactNode } from 'react';
+﻿import { useAuth } from "@/hooks/use-auth";
+import { redirect } from "next/navigation";
+import { ReactNode } from "react";
 
 export default function ClientLayout({ children }: { children: ReactNode }) {
-  const { user, isLoading, role } = useAuth();
+  const { user, isLoading, error } = useAuth();
 
   if (isLoading) {
     return (
@@ -14,11 +14,11 @@ export default function ClientLayout({ children }: { children: ReactNode }) {
   }
 
   if (!user) {
-    redirect('/login');
+    redirect("/login");
   }
 
-  if (role !== 'client') {
-    redirect('/dashboard');
+  if (user.role !== "client") {
+    redirect("/dashboard");
   }
 
   return (
