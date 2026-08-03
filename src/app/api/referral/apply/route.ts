@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
-import { getServiceClient } from '@/lib/supabase/service';
+import { createClient, createAdminClient } from '@/lib/supabase/server';
 
 // POST /api/referral/apply
 // Body: { code: string }
@@ -22,7 +21,7 @@ export async function POST(request: NextRequest) {
     }
 
     const refereeId = session.user.id;
-    const adminSupabase = await getServiceClient();
+    const adminSupabase = await createAdminClient();
 
     // Find the referrer by code
     const { data: codeRow, error: codeErr } = await adminSupabase

@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
-import { getServiceClient } from '@/lib/supabase/service';
+import { createClient, createAdminClient } from '@/lib/supabase/server';
 
 // Generate a random referral code (8 chars, uppercase alphanumeric)
 function generateReferralCode(): string {
@@ -21,7 +20,7 @@ export async function GET(request: NextRequest) {
     }
 
     const userId = session.user.id;
-    const adminSupabase = await getServiceClient();
+    const adminSupabase = await createAdminClient();
 
     // Check if user already has a referral code
     const { data: existing, error: lookupErr } = await adminSupabase
