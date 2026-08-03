@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Users, Search, Plus, Calendar, Dumbbell, Trash2, ClipboardList, Eye } from 'lucide-react';
+import { Users, Search, Plus, Calendar, Dumbbell, MessageSquare, Trash2, ClipboardList, Eye } from 'lucide-react';
 import { useTranslation } from '@/hooks/use-translation';
 import { showToast } from '@/components/Toast';
 
@@ -92,7 +92,7 @@ export default function CoacheesPage() {
         showToast('error', 'Failed to add: ' + (data.error || 'Unknown error'));
         return;
       }
-      showToast('success', '✅ Added successfully！');
+      showToast('success', '? Added successfully!');
       setAddForm({ fullName: '', email: '', fitnessLevel: 'beginner', goals: '' });
       setShowAddModal(false);
       setTimeout(fetchCoachees, 500);
@@ -120,7 +120,7 @@ export default function CoacheesPage() {
       });
       const data = await res.json();
       if (res.ok) {
-        showToast('success', '✅ Assigned successfully！');
+        showToast('success', '✓ Assigned successfully!');
         setTimeout(() => {
           setShowAssignModal(false);
           setSelectedCoachee(null);
@@ -370,4 +370,5 @@ export default function CoacheesPage() {
     </div>
   );
 }
+
 
