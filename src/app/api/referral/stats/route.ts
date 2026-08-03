@@ -1,22 +1,51 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { createClient } from '@/lib/supabase/server';
+import { getServiceClient } from '@/lib/supabase/service';
 
-// TODO: Implement this endpoint
 export async function GET(request: NextRequest) {
-  return NextResponse.json({ error: 'Not implemented' }, { status: 501 });
-}
+  try {
+    const supabase = await createClient();
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
-export async function POST(request: NextRequest) {
-  return NextResponse.json({ error: 'Not implemented' }, { status: 501 });
-}
+    const userId = session.user.id;
+    const adminSupabase = await getServiceClient();
 
-export async function PUT(request: NextRequest) {
-  return NextResponse.json({ error: 'Not implemented' }, { status: 501 });
-}
+    // Total referrals (where this user is the referrer)
+    const { count: total, error: totalErr } = await adminSupabase
+      .from('referrals')
+      .select('id', { count: 'exact', head: true })
+      .eq('referrer_id', userId);
 
-export async function PATCH(request: NextRequest) {
-  return NextResponse.json({ error: 'Not implemented' }, { status: 501 });
-}
+    if (totalErr) {
+      console.error('Referral stats total error:', totalErr);
+      return NextResponse.json({ error: totalErr.message }, { status: 500 });
+    }
 
-export async function DELETE(request: NextRequest) {
-  return NextResponse.json({ error: 'Not implemented' }, { status: 501 });
+    // Converted referrals
+    const { count: converted, error: convertedErr } = await adminSupabase
+      .from('referrals')
+      .select('id', { count: 'exact', head: true })
+      .eq('referrer_id', userId)
+      .eq('status', 'converted');
+
+    if (convertedErr) {
+      console.error('Referral stats converted error:', convertedErr);
+      return NextResponse.json({ error: convertedErr.message }, { status: 500 });
+    }
+
+    // Reward: 1 month per converted referral (capped at 12)
+    const rewardMonths = Math.min(converted || 0, 12);
+
+    return NextResponse.json({
+      total: total || 0,
+      converted: converted || 0,
+      rewardMonths,
+    });
+  } catch (e: any) {
+    console.error('Referral stats API error:', e);
+    return NextResponse.json({ error: e.message || 'Internal error' }, { status: 500 });
+  }
 }
