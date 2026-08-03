@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Users, Search, Plus, Calendar, Dumbbell, Trash2, ClipboardList, Eye } from 'lucide-react';
+import { Users, Search, Plus, Calendar, Dumbbell, MessageSquare, Trash2, ClipboardList, Eye } from 'lucide-react';
 import { useTranslation } from '@/hooks/use-translation';
 import { showToast } from '@/components/Toast';
 
