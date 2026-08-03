@@ -185,7 +185,7 @@ const [stats, setStats] = useState({ activeCoachees: 0, weeklyWorkouts: 0, progr
                 </div>
                 <span className="text-sm font-medium text-gray-600">今日新注册</span>
               </div>
-              <p className="text-2xl font-bold text-gray-900">{systemStats.todayRegistrations ?? 0 ?? 0}</p>
+              <p className="text-2xl font-bold text-gray-900">{systemStats.todayRegistrations ?? 0}</p>
               <div className="flex gap-2 mt-1 text-xs text-gray-500">
                 <span>教练 {systemStats.todayRegistrationBreakdown?.coaches ?? 0}</span>
                 <span>·</span>
@@ -199,7 +199,7 @@ const [stats, setStats] = useState({ activeCoachees: 0, weeklyWorkouts: 0, progr
                 </div>
                 <span className="text-sm font-medium text-gray-600">全部教练</span>
               </div>
-              <p className="text-2xl font-bold text-gray-900">{systemStats.totalCoaches ?? 0 ?? 0}</p>
+              <p className="text-2xl font-bold text-gray-900">{systemStats.totalCoaches ?? 0}</p>
             </div>
             <div className="bg-gradient-to-br from-emerald-50 to-green-50 rounded-xl border border-emerald-100 p-4 hover:shadow-md transition-all">
               <div className="flex items-center gap-3 mb-2">
@@ -208,7 +208,7 @@ const [stats, setStats] = useState({ activeCoachees: 0, weeklyWorkouts: 0, progr
                 </div>
                 <span className="text-sm font-medium text-gray-600">全部学员</span>
               </div>
-              <p className="text-2xl font-bold text-gray-900">{systemStats.totalClients ?? 0 ?? 0}</p>
+              <p className="text-2xl font-bold text-gray-900">{systemStats.totalClients ?? 0}</p>
             </div>
             <div className="bg-gradient-to-br from-teal-50 to-violet-50 rounded-xl border border-teal-100 p-4 hover:shadow-md transition-all">
               <div className="flex items-center gap-3 mb-2">
@@ -217,7 +217,7 @@ const [stats, setStats] = useState({ activeCoachees: 0, weeklyWorkouts: 0, progr
                 </div>
                 <span className="text-sm font-medium text-gray-600">全部用户</span>
               </div>
-              <p className="text-2xl font-bold text-gray-900">{systemStats.totalUsers ?? 0 ?? 0}</p>
+              <p className="text-2xl font-bold text-gray-900">{systemStats.totalUsers ?? 0}</p>
             </div>
           </div>
         </div>
