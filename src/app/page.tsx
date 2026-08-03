@@ -214,13 +214,14 @@ function DashboardPreview() {
 /* Feature Card */
 function FeatureCard({ icon: Icon, title, desc, color, gradient }) {
   return (
-    <div className="group relative bg-white rounded-2xl p-8 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-500 overflow-hidden">
-      <div className={'absolute inset-0 '+gradient+' opacity-0 group-hover:opacity-5 transition-opacity duration-500'} />
-      <div className={'inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-6 '+color+' group-hover:scale-110 transition-transform duration-300'}>
+    <div className="group relative bg-white rounded-3xl p-8 border border-gray-100 hover:border-emerald-200 hover:shadow-2xl hover:shadow-emerald-100/50 transition-all duration-500 hover:-translate-y-1 overflow-hidden">
+      <div className={'absolute inset-0 bg-gradient-to-br ' + gradient + ' opacity-0 group-hover:opacity-[0.06] transition-opacity duration-500'} />
+      <div className={'inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-6 ' + color + ' group-hover:scale-110 transition-transform duration-300 shadow-sm'}>
         <Icon className="w-7 h-7" />
       </div>
       <h3 className="text-xl font-bold text-gray-900 mb-3">{title}</h3>
       <p className="text-gray-500 leading-relaxed">{desc}</p>
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-emerald-300 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
     </div>
   );
 }
@@ -228,15 +229,15 @@ function FeatureCard({ icon: Icon, title, desc, color, gradient }) {
 /* Testimonial Card */
 function TestimonialCard({ name, role, quote, avatar }) {
   return (
-    <div className="bg-white rounded-2xl p-8 border border-gray-100 hover:shadow-lg transition-all duration-300">
+    <div className="bg-white rounded-3xl p-8 border border-gray-100 hover:shadow-xl hover:shadow-emerald-100/30 transition-all duration-300 hover:-translate-y-1">
       <div className="flex gap-1 mb-4">
         {[1,2,3,4,5].map(function(i) {
-          return <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />;
+          return <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />;
         })}
       </div>
       <p className="text-gray-700 leading-relaxed mb-6 italic">{'"'+quote+'"'}</p>
-      <div className="flex items-center gap-3">
-        <div className={'w-12 h-12 rounded-full '+avatar+' flex items-center justify-center text-white font-bold text-lg'}>{name[0]}</div>
+      <div className="flex items-center gap-3 border-t border-gray-100 pt-4">
+        <div className={'w-12 h-12 rounded-full '+avatar+' flex items-center justify-center text-white font-bold text-lg shadow-md'}>{name[0]}</div>
         <div><div className="font-semibold text-gray-900">{name}</div><div className="text-sm text-gray-500">{role}</div></div>
       </div>
     </div>
@@ -261,15 +262,15 @@ function FAQItem({ question, answer }) {
 function PricingCard({ tier, billingCycle, onUpgrade }) {
   var isDark = tier.popular;
   return (
-    <div className={'relative rounded-2xl p-8 transition-all duration-300 hover:scale-[1.02] '+(isDark ? 'bg-gradient-to-br from-slate-900 to-slate-800 text-white shadow-2xl ring-4 ring-emerald-200' : 'bg-white border border-gray-200 hover:shadow-xl')}>
-      {tier.badge && <div className="absolute -top-3 left-1/2 -translate-x-1/2"><span className={""+(isDark?"bg-emerald-500 text-white":"bg-gray-900 text-white")+" px-4 py-1.5 rounded-full text-xs font-bold"}>{tier.badge}</span></div>}
+    <div className={'relative rounded-3xl p-8 transition-all duration-500 hover:scale-[1.03] '+(isDark ? 'bg-gradient-to-br from-slate-900 to-slate-800 text-white shadow-2xl shadow-emerald-200/40 ring-2 ring-emerald-400/60' : 'bg-white border border-gray-200 hover:shadow-xl hover:border-emerald-200')}>
+      {tier.badge && <div className="absolute -top-3.5 left-1/2 -translate-x-1/2"><span className={(isDark?"bg-emerald-500 text-white":"bg-gray-900 text-white")+" px-5 py-1.5 rounded-full text-xs font-bold tracking-wider shadow-lg"}>{tier.badge}</span></div>}
       <div className="flex items-center gap-3 mb-4">
-        <div className={'w-12 h-12 rounded-xl flex items-center justify-center '+(isDark?'bg-white/10':'bg-gray-100')}><tier.icon className={'w-6 h-6 '+(isDark?'text-white':'text-gray-600')} /></div>
+        <div className={'w-12 h-12 rounded-2xl flex items-center justify-center transition-transform '+(isDark?'bg-white/10 group-hover:bg-white/15':'bg-gray-100')}><tier.icon className={'w-6 h-6 '+(isDark?'text-white':'text-gray-600')} /></div>
         <h3 className={'text-xl font-bold '+(isDark?'text-white':'text-gray-900')}>{tier.name}</h3>
       </div>
       <p className={'text-sm mb-6 '+(isDark?'text-gray-300':'text-gray-500')}>{tier.desc}</p>
       <div className="mb-6">
-        <div className="flex items-baseline"><span className={'text-4xl font-bold '+(isDark?'text-white':'text-gray-900')}>{tier.price}</span><span className={'ml-1 '+(isDark?'text-gray-400':'text-gray-500')}>/mo</span></div>
+        <div className="flex items-baseline"><span className={'text-4xl font-extrabold tracking-tight '+(isDark?'text-white':'text-gray-900')}>{tier.price}</span><span className={'ml-1 '+(isDark?'text-gray-400':'text-gray-500')}>/mo</span></div>
         {billingCycle==='yearly' && tier.name !== 'Free' && <p className={'text-xs mt-1 '+(isDark?'text-gray-400':'text-gray-400')}>Billed annually - save ~20%</p>}
       </div>
       <div className="space-y-3 mb-8">
@@ -282,7 +283,7 @@ function PricingCard({ tier, billingCycle, onUpgrade }) {
           );
         })}
       </div>
-      <button onClick={onUpgrade} className={'w-full py-3.5 rounded-xl font-semibold text-sm transition '+(isDark?'bg-emerald-500 hover:bg-emerald-400 text-white shadow-lg shadow-emerald-500/30':'bg-gray-900 hover:bg-gray-800 text-white')}>{tier.cta}</button>
+      <button onClick={onUpgrade} className={'w-full py-3.5 rounded-2xl font-semibold text-sm transition-all duration-300 '+(isDark?'bg-emerald-500 hover:bg-emerald-400 text-white shadow-lg shadow-emerald-500/40 hover:shadow-xl hover:-translate-y-0.5':'bg-gray-900 hover:bg-gray-800 text-white hover:shadow-lg hover:-translate-y-0.5')}>{tier.cta}</button>
     </div>
   );
 }
@@ -416,9 +417,9 @@ export default function Home() {
             <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-emerald-50 to-emerald-50 border border-emerald-100 rounded-full text-sm font-medium text-emerald-700 mb-8 shadow-sm">
               <Sparkles className="w-4 h-4" />AI-Powered Fitness CRM - Trusted by 500+ Coaches
             </div>
-            <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold text-gray-900 mb-8 leading-[1.1] tracking-tight">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold text-gray-900 mb-8 leading-[1.08] tracking-tight">
               The CRM Built{' '}
-              <span className="bg-gradient-to-r from-emerald-600 via-emerald-600 to-emerald-600 bg-clip-text text-transparent" style={{backgroundImage:'linear-gradient(135deg,#2563eb,#7c3aed,#db2777)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>
+              <span className="bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-500 bg-clip-text text-transparent">
                 Specifically
               </span>
               <br />for Fitness Coaches
