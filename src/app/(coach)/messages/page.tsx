@@ -30,7 +30,7 @@ export default function MessagesPage() {
         window.history.replaceState({}, document.title, url.toString());
       }
     }
-  }, [conversations, searchParams, handleSelectConversation]);
+  }, [conversations, searchParams]);
 
   useEffect(() => { fetchConversations(); }, []);
 
@@ -50,12 +50,12 @@ export default function MessagesPage() {
     finally { setLoading(false); }
   };
 
-  const handleSelectConversation = (conv: any) => {
+  function handleSelectConversation(conv: any) {
     setSelectedConv(conv);
     if (conv.messages) {
       conv.messages.forEach((m: any) => { m.is_read = true; });
     }
-  };
+  }
 
   const handleSend = async () => {
     if (!sendMessage.trim() || !selectedConv || sending) return;
