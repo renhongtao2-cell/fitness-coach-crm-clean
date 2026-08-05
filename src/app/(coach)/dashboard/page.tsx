@@ -98,20 +98,6 @@ export default function DashboardPage() {
     }
   };
 
-
-  const fetchCurrentUser = async () => {
-    try {
-      const res = await fetch("/api/auth/me");
-      if (res.ok) {
-        const data = await res.json();
-        setCurrentUserEmail(data.email || "");
-        setIsAdmin(data.role === "admin");
-      }
-    } catch (e) {
-      console.error("Failed to fetch current user:", e);
-    }
-  };
-
   const fetchSystemStats = async () => {
     try {
       const res = await fetch("/api/stats");
