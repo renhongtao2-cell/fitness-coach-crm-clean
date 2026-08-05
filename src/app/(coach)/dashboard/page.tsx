@@ -43,9 +43,14 @@ export default function DashboardPage() {
   const [currentUserEmail, setCurrentUserEmail] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
   const [animStats, setAnimStats] = useState({ activeCoachees: 0, weeklyWorkouts: 0, programs: 0, unreadMessages: 0 });
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [notifications, setNotifications] = useState<any[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const notifRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetchCurrentUser();
+    fetchNotifications();
   }, []);
 
   useEffect(() => {
@@ -219,10 +224,42 @@ export default function DashboardPage() {
             <p className="text-slate-400 text-sm">Here's what's happening with your clients today</p>
           </div>
           <div className="flex items-center gap-3">
-            <button className="p-2.5 bg-white/10 hover:bg-white/20 rounded-xl transition backdrop-blur-sm relative">
-              <Bell className="w-5 h-5 text-white" />
-              <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 rounded-full text-[10px] flex items-center justify-center font-bold">3</span>
-            </button>
+            <div className="relative" ref={notifRef}>
+              <button onClick={() => setShowNotifications(!showNotifications)} className="p-2.5 bg-white/10 hover:bg-white/20 rounded-xl transition backdrop-blur-sm relative">
+                <Bell className="w-5 h-5 text-white" />
+                {unreadCount > 0 && <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 rounded-full text-[10px] flex items-center justify-center font-bold">{unreadCount}</span>}
+              </button>
+              {showNotifications && (
+                <div className="absolute right-0 top-12 w-80 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden z-50">
+                  <div className="px-4 py-3 bg-gradient-to-r from-emerald-600 to-teal-500 text-white">
+                    <p className="font-semibold text-sm">Notifications</p>
+                    <p className="text-xs text-white/80">{unreadCount} unread messages</p>
+                  </div>
+                  <div className="max-h-80 overflow-y-auto">
+                    {notifications.length === 0 ? (
+                      <div className="px-4 py-8 text-center text-slate-400 text-sm">No new notifications</div>
+                    ) : notifications.map((n, i) => (
+                      <a key={i} href="/messages" className="flex items-start gap-3 px-4 py-3 hover:bg-emerald-50 transition border-b border-gray-50 last:border-0">
+                        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white text-sm font-bold shrink-0">
+                          {(n.name || "?")[0]}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-gray-900">{n.name}</p>
+                          <p className="text-xs text-slate-500 truncate">{n.lastMsg || "No messages"}</p>
+                          <p className="text-xs text-slate-400 mt-0.5">
+                            {n.time ? new Date(n.time).toLocaleString("zh-CN", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" }) : ""}
+                          </p>
+                        </div>
+                        {n.unread > 0 && <span className="w-5 h-5 bg-red-500 rounded-full text-[10px] text-white flex items-center justify-center font-bold shrink-0">{n.unread}</span>}
+                      </a>
+                    ))}
+                  </div>
+                  <div className="px-4 py-2.5 bg-gray-50 text-center">
+                    <a href="/messages" className="text-xs text-emerald-600 font-medium hover:text-emerald-700">View all messages →</a>
+                  </div>
+                </div>
+              )}
+            </div>
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center font-bold text-white shadow-lg">
               C
             </div>
