@@ -1,8 +1,8 @@
-﻿-- Migration: 001_initial_schema
+-- Migration: 001_initial_schema
 -- Description: Complete database schema for Fitness Coach CRM
 
 -- Enable UUID extension
-CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- Profiles table
 CREATE TABLE IF NOT EXISTS profiles (
@@ -166,22 +166,22 @@ CREATE TABLE IF NOT EXISTS notifications (
 );
 
 -- Indexes for performance
-CREATE INDEX idx_profiles_email ON profiles(email);
-CREATE INDEX idx_profiles_role ON profiles(role);
-CREATE INDEX idx_programs_coach_id ON programs(coach_id);
-CREATE INDEX idx_programs_is_template ON programs(is_template);
-CREATE INDEX idx_coachee_programs_coach_id ON coachee_programs(coach_id);
-CREATE INDEX idx_coachee_programs_coachee_id ON coachee_programs(coachee_id);
-CREATE INDEX idx_coachee_programs_status ON coachee_programs(status);
-CREATE INDEX idx_workout_logs_coachee_program_id ON workout_logs(coachee_program_id);
-CREATE INDEX idx_workout_logs_date ON workout_logs(date);
-CREATE INDEX idx_workout_sets_workout_log_id ON workout_sets(workout_log_id);
-CREATE INDEX idx_body_measurements_coachee_id ON body_measurements(coachee_id);
-CREATE INDEX idx_body_measurements_date ON body_measurements(date);
-CREATE INDEX idx_payments_user_id ON payments(user_id);
-CREATE INDEX idx_messages_conversation ON messages(coach_id, coachee_id);
-CREATE INDEX idx_notifications_user_id ON notifications(user_id);
-CREATE INDEX idx_notifications_is_read ON notifications(is_read);
+CREATE INDEX IF NOT EXISTS idx_profiles_email ON profiles(email);
+CREATE INDEX IF NOT EXISTS idx_profiles_role ON profiles(role);
+CREATE INDEX IF NOT EXISTS idx_programs_coach_id ON programs(coach_id);
+CREATE INDEX IF NOT EXISTS idx_programs_is_template ON programs(is_template);
+CREATE INDEX IF NOT EXISTS idx_coachee_programs_coach_id ON coachee_programs(coach_id);
+CREATE INDEX IF NOT EXISTS idx_coachee_programs_coachee_id ON coachee_programs(coachee_id);
+CREATE INDEX IF NOT EXISTS idx_coachee_programs_status ON coachee_programs(status);
+CREATE INDEX IF NOT EXISTS idx_workout_logs_coachee_program_id ON workout_logs(coachee_program_id);
+CREATE INDEX IF NOT EXISTS idx_workout_logs_date ON workout_logs(date);
+CREATE INDEX IF NOT EXISTS idx_workout_sets_workout_log_id ON workout_sets(workout_log_id);
+CREATE INDEX IF NOT EXISTS idx_body_measurements_coachee_id ON body_measurements(coachee_id);
+CREATE INDEX IF NOT EXISTS idx_body_measurements_date ON body_measurements(date);
+CREATE INDEX IF NOT EXISTS idx_payments_user_id ON payments(user_id);
+CREATE INDEX IF NOT EXISTS idx_messages_conversation ON messages(coach_id, coachee_id);
+CREATE INDEX IF NOT EXISTS idx_notifications_user_id ON notifications(user_id);
+CREATE INDEX IF NOT EXISTS idx_notifications_is_read ON notifications(is_read);
 
 -- Row Level Security (RLS)
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
@@ -196,20 +196,25 @@ ALTER TABLE messages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE notifications ENABLE ROW LEVEL SECURITY;
 
 -- RLS Policies for profiles
-CREATE POLICY \"Users can view own profile\" ON profiles FOR SELECT
+DROP POLICY IF EXISTS "Users can view own profile" ON profiles;
+CREATE POLICY "Users can view own profile" ON profiles FOR SELECT
     USING (auth.uid() = id);
 
-CREATE POLICY \"Users can update own profile\" ON profiles FOR UPDATE
+DROP POLICY IF EXISTS "Users can update own profile" ON profiles;
+CREATE POLICY "Users can update own profile" ON profiles FOR UPDATE
     USING (auth.uid() = id);
 
-CREATE POLICY \"Coaches can view public profiles\" ON profiles FOR SELECT
+DROP POLICY IF EXISTS "Coaches can view public profiles" ON profiles;
+CREATE POLICY "Coaches can view public profiles" ON profiles FOR SELECT
     USING (role = 'coach');
 
 -- RLS Policies for programs
-CREATE POLICY \"Coaches can manage own programs\" ON programs FOR ALL
+DROP POLICY IF EXISTS "Coaches can manage own programs" ON programs;
+CREATE POLICY "Coaches can manage own programs" ON programs FOR ALL
     USING (auth.uid() = coach_id);
 
-CREATE POLICY \"Active coachees can view assigned programs\" ON programs FOR SELECT
+DROP POLICY IF EXISTS "Active coachees can view assigned programs" ON programs;
+CREATE POLICY "Active coachees can view assigned programs" ON programs FOR SELECT
     USING (
         EXISTS (
             SELECT 1 FROM coachee_programs cp
@@ -224,14 +229,17 @@ CREATE POLICY \"Active coachees can view assigned programs\" ON programs FOR SEL
     );
 
 -- RLS Policies for coachee_programs
-CREATE POLICY \"Coaches can manage coachee programs\" ON coachee_programs FOR ALL
+DROP POLICY IF EXISTS "Coaches can manage coachee programs" ON coachee_programs;
+CREATE POLICY "Coaches can manage coachee programs" ON coachee_programs FOR ALL
     USING (auth.uid() = coach_id);
 
-CREATE POLICY \"Coachees can view their programs\" ON coachee_programs FOR SELECT
+DROP POLICY IF EXISTS "Coachees can view their programs" ON coachee_programs;
+CREATE POLICY "Coachees can view their programs" ON coachee_programs FOR SELECT
     USING (auth.uid() = coachee_id);
 
 -- RLS Policies for workout_logs
-CREATE POLICY \"Coaches and coachees can manage logs\" ON workout_logs FOR ALL
+DROP POLICY IF EXISTS "Coaches and coachees can manage logs" ON workout_logs;
+CREATE POLICY "Coaches and coachees can manage logs" ON workout_logs FOR ALL
     USING (
         EXISTS (
             SELECT 1 FROM coachee_programs cp
@@ -241,7 +249,8 @@ CREATE POLICY \"Coaches and coachees can manage logs\" ON workout_logs FOR ALL
     );
 
 -- RLS Policies for workout_sets
-CREATE POLICY \"Workout sets follow workout logs policies\" ON workout_sets FOR ALL
+DROP POLICY IF EXISTS "Workout sets follow workout logs policies" ON workout_sets;
+CREATE POLICY "Workout sets follow workout logs policies" ON workout_sets FOR ALL
     USING (
         EXISTS (
             SELECT 1 FROM workout_logs wl
@@ -252,7 +261,8 @@ CREATE POLICY \"Workout sets follow workout logs policies\" ON workout_sets FOR 
     );
 
 -- RLS Policies for body_measurements
-CREATE POLICY \"Coaches and coachees can manage measurements\" ON body_measurements FOR ALL
+DROP POLICY IF EXISTS "Coaches and coachees can manage measurements" ON body_measurements;
+CREATE POLICY "Coaches and coachees can manage measurements" ON body_measurements FOR ALL
     USING (
         EXISTS (
             SELECT 1 FROM coachee_programs cp
@@ -262,36 +272,43 @@ CREATE POLICY \"Coaches and coachees can manage measurements\" ON body_measureme
     );
 
 -- RLS Policies for messages
-CREATE POLICY \"Participants can view messages\" ON messages FOR SELECT
+DROP POLICY IF EXISTS "Participants can view messages" ON messages;
+CREATE POLICY "Participants can view messages" ON messages FOR SELECT
     USING (
         auth.uid() = coach_id OR auth.uid() = coachee_id
     );
 
-CREATE POLICY \"Coach can send messages\" ON messages FOR INSERT
+DROP POLICY IF EXISTS "Coach can send messages" ON messages;
+CREATE POLICY "Coach can send messages" ON messages FOR INSERT
     WITH CHECK (auth.uid() = coach_id);
 
-CREATE POLICY \"Coachee can send messages\" ON messages FOR INSERT
+DROP POLICY IF EXISTS "Coachee can send messages" ON messages;
+CREATE POLICY "Coachee can send messages" ON messages FOR INSERT
     WITH CHECK (auth.uid() = coachee_id);
 
 -- RLS Policies for notifications
-CREATE POLICY \"Users can view own notifications\" ON notifications FOR SELECT
+DROP POLICY IF EXISTS "Users can view own notifications" ON notifications;
+CREATE POLICY "Users can view own notifications" ON notifications FOR SELECT
     USING (auth.uid() = user_id);
 
 -- Functions and Triggers
 CREATE OR REPLACE FUNCTION update_updated_at_column()
-RETURNS TRIGGER AS 
+RETURNS TRIGGER AS $$
 BEGIN
     NEW.updated_at = NOW();
     RETURN NEW;
 END;
- LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS update_profiles_updated_at ON profiles;
 CREATE TRIGGER update_profiles_updated_at BEFORE UPDATE ON profiles
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_programs_updated_at ON programs;
 CREATE TRIGGER update_programs_updated_at BEFORE UPDATE ON programs
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_coachee_programs_updated_at ON coachee_programs;
 CREATE TRIGGER update_coachee_programs_updated_at BEFORE UPDATE ON coachee_programs
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
