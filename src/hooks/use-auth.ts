@@ -1,5 +1,5 @@
-﻿"use client";
-import { useEffect, useState, useCallback } from "react";
+"use client";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useAuthStore, type User } from "@/stores/auth-store";
 
@@ -8,9 +8,16 @@ export function useAuth() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const supabase = createClient();
+  // 浏览器端惰性创建 Supabase 客户端：避免 SSG 预渲染（构建期）因缺少
+  // NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY 而直接抛错退构建。
+  const supabaseRef = useRef<ReturnType<typeof createClient> | null>(null);
+  useEffect(() => {
+    supabaseRef.current = createClient();
+  }, []);
 
   const fetchUser = useCallback(async () => {
+    const supabase = supabaseRef.current;
+    if (!supabase) return;
     setIsLoading(true);
     setLoading(true);
     try {
@@ -41,9 +48,11 @@ export function useAuth() {
       setIsLoading(false);
       setLoading(false);
     }
-  }, [supabase, setUser, setIsLoading]);
+  }, [setUser, setIsLoading]);
 
   useEffect(() => {
+    const supabase = supabaseRef.current;
+    if (!supabase) return;
     fetchUser();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -55,11 +64,13 @@ export function useAuth() {
     });
 
     return () => subscription.unsubscribe();
-  }, [fetchUser, supabase, setUser]);
+  }, [fetchUser, setUser]);
 
   const signIn = async (email: string, password: string) => {
     setError(null);
     try {
+      const supabase = supabaseRef.current;
+      if (!supabase) throw new Error("Supabase client not ready");
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -87,6 +98,8 @@ export function useAuth() {
   ) => {
     setError(null);
     try {
+      const supabase = supabaseRef.current;
+      if (!supabase) throw new Error("Supabase client not ready");
       const body: any = { email, password, fullName, role };
       if (referralCode) {
         body.referralCode = referralCode;
@@ -129,12 +142,15 @@ export function useAuth() {
   };
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    const supabase = supabaseRef.current;
+    if (supabase) await supabase.auth.signOut();
     storeSignOut();
   };
 
   const resetPassword = async (email: string) => {
     try {
+      const supabase = supabaseRef.current;
+      if (!supabase) return { error: "Supabase client not ready" };
       await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: typeof window !== "undefined" ? window.location.origin + "/forgot-password" : "",
       });
