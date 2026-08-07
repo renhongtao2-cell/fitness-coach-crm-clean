@@ -1,4 +1,4 @@
-﻿import { createServerClient } from '@supabase/ssr';
+import { createServerClient } from '@supabase/ssr';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { cookies } from 'next/headers';
@@ -7,23 +7,33 @@ export async function middleware(request: NextRequest) {
   let response = NextResponse.next();
   const cookieStore = await cookies();
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() { return cookieStore.getAll(); },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => {
-            cookieStore.set(name, value, options);
-            response.cookies.set(name, value, options);
-          });
+  // 临时兜底：Supabase 环境变量缺失时不要让整个中间件崩溃，否则全站 500。
+  // 等 Vercel 配好 NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY 后，
+  // 这段 try/catch 可以移除或收紧为严格鉴权。
+  let session = null;
+  try {
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll() { return cookieStore.getAll(); },
+          setAll(cookiesToSet) {
+            cookiesToSet.forEach(({ name, value, options }) => {
+              cookieStore.set(name, value, options);
+              response.cookies.set(name, value, options);
+            });
+          },
         },
-      },
-    }
-  );
+      }
+    );
 
-  const { data: { session } } = await supabase.auth.getSession();
+    const { data: { session: s } } = await supabase.auth.getSession();
+    session = s;
+  } catch (error) {
+    console.error('Middleware Supabase init failed. Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY?', error);
+    return response;
+  }
 
   const protectedPaths = ['/dashboard', '/coachees', '/programs', '/progress', '/messages', '/settings'];
   const clientPaths = ['/client'];
@@ -33,11 +43,7 @@ export async function middleware(request: NextRequest) {
   const isClientPath = clientPaths.some(path => request.nextUrl.pathname.startsWith(path));
   const isAuthPath = authPaths.some(path => request.nextUrl.pathname.startsWith(path));
 
-  if (isProtectedPath && !session) {
-    return NextResponse.redirect(new URL('/login', request.url));
-  }
-
-  if (isClientPath && !session) {
+  if ((isProtectedPath || isClientPath) && !session) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
@@ -63,11 +69,11 @@ export async function middleware(request: NextRequest) {
   }
 
   response.headers.set("Cache-Control", "no-cache, no-store, must-revalidate");
-    response.headers.set("Pragma", "no-cache");
-    response.headers.set("Expires", "0");
-    return response;
+  response.headers.set("Pragma", "no-cache");
+  response.headers.set("Expires", "0");
+  return response;
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|google*|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|google*|.*\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
 };
