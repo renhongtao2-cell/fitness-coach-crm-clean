@@ -1,0 +1,23 @@
+name: Build Check
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Show node version
+        run: node -v
+      - name: Install deps
+        run: npm install --no-audit --no-fund
+      - name: Next build (NO env vars, to surface build-time errors like Vercel)
+        run: npm run build
