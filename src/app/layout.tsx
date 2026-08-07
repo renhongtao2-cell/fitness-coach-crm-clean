@@ -1,7 +1,20 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import "./globals.css";
 import ToastContainer from "@/components/Toast";
 import { TranslationProvider } from "@/hooks/use-translation";
+
+
+const APP_URL_FALLBACK = "https://fitcoach.app";
+function resolveAppUrl(): string {
+  const raw = process.env.NEXT_PUBLIC_APP_URL;
+  if (!raw) return APP_URL_FALLBACK;
+  try {
+    return new URL(raw).href;
+  } catch {
+    return APP_URL_FALLBACK;
+  }
+}
+const appUrl = resolveAppUrl();
 
 export const metadata: Metadata = {
   title: {
@@ -31,7 +44,7 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://fitcoach.app"),
+  metadataBase: new URL(appUrl),
   alternates: {
     canonical: "/",
     languages: {
@@ -98,7 +111,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="canonical" href={process.env.NEXT_PUBLIC_APP_URL || "https://fitcoach.app"} />
+        <link rel="canonical" href={appUrl} />
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -120,7 +133,7 @@ export default function RootLayout({
           "@type": "SoftwareApplication",
           name: "FitCoach CRM",
           description: "AI-Powered Client Management for Fitness Coaches",
-          url: process.env.NEXT_PUBLIC_APP_URL || "https://fitcoach.app",
+          url: appUrl,
           image: "/og-image.png",
           applicationCategory: "BusinessApplication",
           operatingSystem: "Web Browser",
@@ -139,7 +152,7 @@ export default function RootLayout({
           author: {
             "@type": "Organization",
             name: "FitCoach CRM",
-            url: process.env.NEXT_PUBLIC_APP_URL || "https://fitcoach.app"
+            url: appUrl
           }
         })}} />
       </head>
