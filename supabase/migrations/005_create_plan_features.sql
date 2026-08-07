@@ -31,8 +31,8 @@ INSERT INTO plan_features (feature_key, feature_name, feature_desc, plan_type, l
 ('ai_generations', 'AI Generation', 'Monthly AI generations', 'basic', 20),
 ('storage', 'Training Logs', 'Stored workout records', 'basic', 200),
 ('messages', 'Messages', 'Client messages per month', 'basic', 200),
-('custom_branding', 'Custom Branding', 'White-label options', 'basic', false),
-('api_access', 'API Access', 'REST API access', 'basic', false),
+('custom_branding', 'Custom Branding', 'White-label options', 'basic', NULL),
+('api_access', 'API Access', 'REST API access', 'basic', NULL),
 
 -- Pro plan
 ('coachees', 'Clients', 'Max managed clients', 'pro', 50),
@@ -40,9 +40,9 @@ INSERT INTO plan_features (feature_key, feature_name, feature_desc, plan_type, l
 ('ai_generations', 'AI Generation', 'Monthly AI generations', 'pro', 50),
 ('storage', 'Training Logs', 'Stored workout records', 'pro', 500),
 ('messages', 'Messages', 'Client messages per month', 'pro', 500),
-('custom_branding', 'Custom Branding', 'White-label options', 'pro', true),
-('api_access', 'API Access', 'REST API access', 'pro', false),
-('white_label', 'White Label', 'Remove branding', 'pro', true),
+('custom_branding', 'Custom Branding', 'White-label options', 'pro', NULL),
+('api_access', 'API Access', 'REST API access', 'pro', NULL),
+('white_label', 'White Label', 'Remove branding', 'pro', NULL),
 
 -- Enterprise plan
 ('coachees', 'Clients', 'Max managed clients', 'enterprise', -1),
@@ -50,11 +50,11 @@ INSERT INTO plan_features (feature_key, feature_name, feature_desc, plan_type, l
 ('ai_generations', 'AI Generation', 'Monthly AI generations', 'enterprise', -1),
 ('storage', 'Training Logs', 'Stored workout records', 'enterprise', -1),
 ('messages', 'Messages', 'Client messages per month', 'enterprise', -1),
-('custom_branding', 'Custom Branding', 'White-label options', 'enterprise', true),
-('api_access', 'API Access', 'Full REST API + webhooks', 'enterprise', true),
-('white_label', 'White Label', 'Remove all branding', 'enterprise', true),
-('priority_support', 'Priority Support', 'Dedicated support channel', 'enterprise', true),
-('custom_integrations', 'Custom Integrations', 'Tailored API integrations', 'enterprise', true);
+('custom_branding', 'Custom Branding', 'White-label options', 'enterprise', NULL),
+('api_access', 'API Access', 'Full REST API + webhooks', 'enterprise', NULL),
+('white_label', 'White Label', 'Remove all branding', 'enterprise', NULL),
+('priority_support', 'Priority Support', 'Dedicated support channel', 'enterprise', NULL),
+('custom_integrations', 'Custom Integrations', 'Tailored API integrations', 'enterprise', NULL);
 
 -- Indexes for performance
 CREATE INDEX IF NOT EXISTS idx_plan_features_plan_type ON plan_features(plan_type);
