@@ -1,6 +1,6 @@
 'use client';
 
-import { pgTable, text, integer, boolean, timestamp, jsonb, uuid, decimal, serial, varchar } from "drizzle-orm/pg-core";
+import { pgTable, text, integer, boolean, timestamp, jsonb, uuid, decimal } from "drizzle-orm/pg-core";
 
 export const profiles = pgTable("profiles", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -111,18 +111,21 @@ export const bodyMeasurements = pgTable("body_measurements", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-export const payments = pgTable("payments", {
+// FIX: 真实运行用的是 `subscriptions` 表（见 seed_demo.sql 与所有 API 路由），
+// 原先这个 schema.ts 里缺 subscriptions、却多了一个没人用的 `payments` 孤儿表。
+// 这里补上 subscriptions 定义，并删掉 orphaned 的 payments 表。
+export const subscriptions = pgTable("subscriptions", {
   id: uuid("id").primaryKey().defaultRandom(),
-  userId: uuid("user_id").references(() => profiles.id).notNull(),
+  userId: uuid("user_id").notNull(),
+  status: text("status").notNull().default("free"),
+  planType: text("plan_type").notNull().default("free"),
   stripeCustomerId: text("stripe_customer_id"),
   stripeSubscriptionId: text("stripe_subscription_id"),
-  amount: decimal("amount").notNull(),
+  stripeCurrentPeriodEnd: timestamp("stripe_current_period_end"),
+  amountCents: integer("amount_cents").default(0),
   currency: text("currency").default("usd"),
-  status: text("status").notNull(),
-  periodStart: timestamp("period_start"),
-  periodEnd: timestamp("period_end"),
-  invoiceUrl: text("invoice_url"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
 export const messages = pgTable("messages", {
@@ -161,8 +164,8 @@ export type WorkoutSet = typeof workoutSets.$inferSelect;
 export type NewWorkoutSet = typeof workoutSets.$inferInsert;
 export type BodyMeasurement = typeof bodyMeasurements.$inferSelect;
 export type NewBodyMeasurement = typeof bodyMeasurements.$inferInsert;
-export type Payment = typeof payments.$inferSelect;
-export type NewPayment = typeof payments.$inferInsert;
+export type Subscription = typeof subscriptions.$inferSelect;
+export type NewSubscription = typeof subscriptions.$inferInsert;
 export type Message = typeof messages.$inferSelect;
 export type NewMessage = typeof messages.$inferInsert;
 export type Notification = typeof notifications.$inferSelect;

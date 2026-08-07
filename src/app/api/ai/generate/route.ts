@@ -1,7 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createClient } from "@/lib/supabase/server";
 
 export async function POST(request: NextRequest) {
   try {
+    // SECURITY FIX: 原先这个接口完全没有鉴权，任何人都能白嫖你的 API key。
+    // 现在要求登录用户才能调用。
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const body = await request.json();
     const { goals, level, equipment, durationWeeks, experience, preferences } = body;
 
@@ -92,7 +101,12 @@ CRITICAL RULES:
 
 Create a comprehensive plan with at least 2 phases. Every exercise must include name, muscleGroup, sets, reps, restSeconds, and notes.`;
 
-  console.log("[AI] Calling API with model: agnes-2.0-flash");
+  // FIX: 原模型名 "agnes-2.0-flash" 不是真实模型，调用必失败。
+  // 改为可由环境变量 AI_MODEL 覆盖，默认用 OpenAI 兼容的 gpt-4o-mini。
+  // 注意：下方接口是 /chat/completions（OpenAI 格式）。若你配的是 Anthropic key，
+  // 请把 ANTHROPIC_BASE_URL 指向 OpenAI 兼容网关，或改用 Anthropic 的 /v1/messages 接口。
+  const model = process.env.AI_MODEL || "gpt-4o-mini";
+  console.log("[AI] Calling API with model:", model);
 
   const response = await fetch(`${baseUrl}/chat/completions`, {
     method: "POST",
@@ -101,7 +115,7 @@ Create a comprehensive plan with at least 2 phases. Every exercise must include 
       "Authorization": "Bearer " + apiKey,
     },
     body: JSON.stringify({
-      model: "agnes-2.0-flash",
+      model: model,
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: userPrompt },

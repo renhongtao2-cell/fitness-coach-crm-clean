@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import Link from 'next/link';
 import {
@@ -262,7 +262,7 @@ function PricingCard({ tier, billingCycle, onUpgrade }) {
   var isDark = tier.popular;
   return (
     <div className={'relative rounded-2xl p-8 transition-all duration-300 hover:scale-[1.02] '+(isDark ? 'bg-gradient-to-br from-slate-900 to-slate-800 text-white shadow-2xl ring-4 ring-blue-200' : 'bg-white border border-gray-200 hover:shadow-xl')}>
-      {tier.badge && <div className="absolute -top-3 left-1/2 -translate-x-1/2"><span className={""+(isDark?"bg-blue-500 text-white":"bg-gray-900 text-white")+" px-4 py-1.5 rounded-full text-xs font-bold"}>{tier.badge}</span></div>}
+      {tier.badge && <div className="absolute -top-3 left-1/2 -translate-x-1/2"><span className={''+(isDark?"bg-blue-500 text-white":"bg-gray-900 text-white")+" px-4 py-1.5 rounded-full text-xs font-bold"}>{tier.badge}</span></div>}
       <div className="flex items-center gap-3 mb-4">
         <div className={'w-12 h-12 rounded-xl flex items-center justify-center '+(isDark?'bg-white/10':'bg-gray-100')}><tier.icon className={'w-6 h-6 '+(isDark?'text-white':'text-gray-600')} /></div>
         <h3 className={'text-xl font-bold '+(isDark?'text-white':'text-gray-900')}>{tier.name}</h3>
@@ -309,7 +309,7 @@ export default function Home() {
     { label: 'Pricing', href: '/pricing' },
     { label: 'Testimonials', href: '#testimonials' },
     { label: 'FAQ', href: '#faq' },
-    { label: '🎉 Promo', href: '/promo' },
+    { label: 'Promo', href: '/promo' },
   ];
 
   const features = [
@@ -318,6 +318,7 @@ export default function Home() {
     { icon: TrendingUp, title: 'Progress Analytics', desc: 'Beautiful charts for weight, body fat %, measurements, and workout logs. Visualize every client transformation journey.', color: 'bg-green-100 text-green-600', gradient: 'from-green-500 to-emerald-500' },
     { icon: MessageSquare, title: 'Built-in Messaging', desc: 'Real-time chat with clients. Share updates, motivate, and stay connected - all within the platform.', color: 'bg-orange-100 text-orange-600', gradient: 'from-orange-500 to-red-500' },
     { icon: Calendar, title: 'Smart Scheduling', desc: 'Track workout schedules, session dates, and deadlines. Never miss a check-in or follow-up again.', color: 'bg-indigo-100 text-indigo-600', gradient: 'from-indigo-500 to-purple-500' },
+    { icon: CreditCard, title: 'Payments & Subscriptions', desc: 'Collect client payments, set up recurring subscriptions, and track revenue automatically with Stripe. Stop chasing invoices and get paid on time.', color: 'bg-emerald-100 text-emerald-600', gradient: 'from-emerald-500 to-green-500' },
     { icon: Shield, title: 'Enterprise Security', desc: 'Bank-grade encryption with row-level security. Your client data stays private and protected at all times.', color: 'bg-teal-100 text-teal-600', gradient: 'from-teal-500 to-blue-500' },
   ];
 
@@ -336,17 +337,15 @@ export default function Home() {
   ];
 
   const testimonials = [
-    { name: 'Mike Johnson', role: 'Personal Trainer, 5 years', quote: 'FitCoach completely transformed how I manage my 80+ clients. The AI plan generator saves me hours every week.', avatar: 'bg-gradient-to-br from-blue-500 to-cyan-500' },
-    { name: 'Sarah Chen', role: 'Online Fitness Coach', quote: 'I went from juggling 5 different apps to just FitCoach. Revenue doubled in 6 months.', avatar: 'bg-gradient-to-br from-purple-500 to-pink-500' },
-    { name: 'David Park', role: 'CrossFit Box Owner', quote: 'Managing my CrossFit box with FitCoach is seamless. The analytics help me see which programs work best.', avatar: 'bg-gradient-to-br from-green-500 to-emerald-500' },
-    { name: 'Emma Wilson', role: 'Yoga Instructor to Full Coach', quote: 'FitCoach gave me the tools to expand my services and double my client base.', avatar: 'bg-gradient-to-br from-orange-500 to-red-500' },
+    { name: 'Founding Coach', role: 'Limited to first 50', quote: 'Lock in founding pricing for life plus a 1:1 onboarding call. Help shape the product you actually want - no stock photos, no fake reviews.', avatar: 'bg-gradient-to-br from-blue-500 to-cyan-500' },
+    { name: 'Be Our First Story', role: 'We feature you', quote: 'Join free. If FitCoach helps you land or keep clients, we will spotlight your real story right here on this page.', avatar: 'bg-gradient-to-br from-purple-500 to-pink-500' },
   ];
 
   const faqs = [
     { q: 'Is there really a free plan?', a: 'Yes! Our free plan supports up to 5 clients with core features. No credit card required.' },
     { q: 'How does the AI plan generator work?', a: 'Describe your client goals, fitness level, equipment, and preferences. Our AI generates a complete multi-phase training program with exercises, sets, reps, and rest times.' },
     { q: 'Can I import clients from other tools?', a: 'Currently you can add clients manually or via email referral links. CSV import is coming soon.' },
-    { q: 'What payment methods do you accept?', a: 'We accept all major credit cards (Visa, Mastercard, Amex) through Stripe.' },
+    { q: 'What payment methods do you accept?', a: 'We accept all major credit cards (Visa, Mastercard, Amex) through Stripe. You can also collect payments and subscriptions from your own clients via Stripe.' },
     { q: 'Is my client data secure?', a: 'Absolutely. We use industry-standard encryption with row-level security on Supabase. All data is GDPR compliant.' },
     { q: 'Can I cancel anytime?', a: 'Yes, cancel anytime. Access continues until the end of your billing period. No hidden fees.' },
   ];
@@ -414,7 +413,7 @@ export default function Home() {
         <div className="relative max-w-7xl mx-auto">
           <div className="text-center max-w-4xl mx-auto mb-16">
             <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-100 rounded-full text-sm font-medium text-blue-700 mb-8 shadow-sm">
-              <Sparkles className="w-4 h-4" />AI-Powered Fitness CRM - Trusted by 500+ Coaches
+              <Sparkles className="w-4 h-4" />AI-Powered Fitness CRM - Now Live for Coaches
             </div>
             <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold text-gray-900 mb-8 leading-[1.1] tracking-tight">
               The CRM Built{' '}
@@ -424,7 +423,7 @@ export default function Home() {
               <br />for Fitness Coaches
             </h1>
             <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed">
-              Manage clients, generate AI training plans, track progress, and scale your coaching business - all in one powerful platform.
+              Manage clients, generate AI training plans, get paid on time, and scale your coaching business - all in one powerful platform.
               <span className="block mt-2 font-medium text-gray-900">No spreadsheets. No chaos. Just results.</span>
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
@@ -445,10 +444,10 @@ export default function Home() {
       <section className="py-16 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900">
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            {[{v:10000,s:'+',l:'AI Plans Generated'},{v:500,s:'+',l:'Active Coaches'},{v:50000,s:'+',l:'Clients Managed'},{v:4,s:'',d:'.9',l:'Avg Rating'}].map(function(st,i) {
+            {[{l:'Free Forever',v:'$0'},{l:'AI Plan',v:'~10s'},{l:'Languages',v:'10',useNum:true},{l:'Payments',v:'Stripe'}].map(function(st,i) {
               return (
                 <div key={i}>
-                  <div className="text-4xl md:text-5xl font-extrabold text-white mb-2"><AnimatedNumber target={st.v} />{st.s}{st.d||''}</div>
+                  <div className="text-4xl md:text-5xl font-extrabold text-white mb-2">{st.useNum ? <AnimatedNumber target={10} /> : st.v}</div>
                   <div className="text-sm text-slate-400">{st.l}</div>
                 </div>
               );
@@ -589,9 +588,9 @@ export default function Home() {
         <div className="max-w-6xl mx-auto">
           <Reveal>
             <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-50 border border-yellow-100 rounded-full text-sm font-medium text-yellow-700 mb-6"><Star className="w-4 h-4" />Loved by Coaches</div>
-              <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">Trusted by{' '}<span className="bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent">500+ Fitness Coaches</span></h2>
-              <p className="text-xl text-gray-500 max-w-2xl mx-auto">Real coaches, real results.</p>
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-50 border border-yellow-100 rounded-full text-sm font-medium text-yellow-700 mb-6"><Star className="w-4 h-4" />Join as a Founding Coach</div>
+              <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">Be Our First{' '}<span className="bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent">Success Story</span></h2>
+              <p className="text-xl text-gray-500 max-w-2xl mx-auto">We just launched. No fake reviews - just early access to shape the product you want.</p>
             </div>
           </Reveal>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -629,7 +628,7 @@ export default function Home() {
         </div>
         <div className="relative max-w-4xl mx-auto text-center text-white">
           <Reveal>
-            <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium mb-8"><Heart className="w-4 h-4" />Join 500+ Coaches Already Growing</div>
+            <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium mb-8"><Heart className="w-4 h-4" />Now Live - Join as a Founding Coach</div>
             <h2 className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">Ready to Transform<br />Your Coaching Business?</h2>
             <p className="text-xl text-blue-100 mb-10 max-w-2xl mx-auto leading-relaxed">Start free today. No credit card required. Scale when you are ready.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -706,4 +705,3 @@ export default function Home() {
     </div>
   );
 }
-

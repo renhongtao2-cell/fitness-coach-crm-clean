@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/server';
 
 export async function POST(req: Request) {
   const signature = req.headers.get('stripe-signature') || '';
@@ -24,8 +24,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Webhook signature verification failed' }, { status: 400 });
     }
 
-    // Get Supabase admin client
-    const supabase = await createClient();
+    // FIX: Webhook 由 Stripe 触发、没有用户会话，必须用 service-role admin client，
+    // 不能用 anon client（否则 RLS 把请求当匿名，订阅可能写不进库 → 付费用户停在 free）。
+    // server.ts 里已存在 createAdminClient()，使用 SUPABASE_SERVICE_ROLE_KEY。
+    const supabase = await createAdminClient();
 
     switch (event.type) {
       case 'checkout.session.completed': {
@@ -103,13 +105,11 @@ export async function POST(req: Request) {
           price_enterprise: 'enterprise',
         };
 
-        // Determine plan type from price ID in subscription
         let planType = sub.metadata?.planType;
         if (!planType) {
           const lineItem = sub.items?.data?.[0];
           if (lineItem?.price) {
             const priceId = lineItem.price.id;
-            // Match common Stripe price ID patterns
             if (priceId.includes('basic')) planType = 'basic';
             else if (priceId.includes('pro')) planType = 'pro';
             else if (priceId.includes('enterprise')) planType = 'enterprise';
@@ -154,14 +154,12 @@ export async function POST(req: Request) {
       case 'invoice.payment_succeeded': {
         const invoice = event.data.object as any;
         console.log('[Webhook] invoice.payment_succeeded for', invoice.subscription);
-        // Subscription already updated via customer.subscription.updated
         break;
       }
 
       case 'invoice.payment_failed': {
         const invoice = event.data.object as any;
         console.error('[Webhook] invoice.payment_failed for', invoice.subscription);
-        // Update subscription to past_due
         const { data: subData } = await supabase
           .from('subscriptions')
           .select('id')
@@ -190,5 +188,4 @@ export async function POST(req: Request) {
   }
 }
 
-// Required for Next.js API routes to disable body parsing
 export const dynamic = 'force-dynamic';

@@ -43,7 +43,6 @@ export async function POST(request: NextRequest) {
 
     if (!plan.priceId) {
       console.warn('Price ID missing for:', planType, billingCycle);
-      // Fallback: use monthly price as default
       return NextResponse.json(
         { error: `Stripe price ID not configured for ${planType} ${billingCycle}. Please set STRIPE_PRICE_${planType.toUpperCase()}${billingCycle === "yearly" ? "_YEARLY" : "_MONTHLY"} in Vercel env vars.` },
         { status: 503 }
@@ -53,12 +52,16 @@ export async function POST(request: NextRequest) {
     const stripe = (await import('stripe')).default;
     const stripeClient = new stripe(STRIPE_SECRET_KEY, { apiVersion: '2026-06-24.dahlia' });
 
+    // FIX: 用真实的模板字符串，从请求里取 origin 拼接绝对地址
+    // (原代码写成了 '$`request.headers.get(`origin`)`/pricing?...' 这种坏掉的字符串字面量，
+    //  付款成功后用户会被弹到一个打不开的网址)
+    const origin = request.nextUrl.origin;
     const session = await stripeClient.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [{ price: plan.priceId, quantity: 1 }],
       mode: 'subscription',
-      success_url: '$`request.headers.get(`origin`)`/pricing?success=true',
-      cancel_url: '$`request.headers.get(`origin`)`/pricing?canceled=true',
+      success_url: `${origin}/pricing?success=true`,
+      cancel_url: `${origin}/pricing?canceled=true`,
       metadata: {
         userId: user.id,
         planType,
