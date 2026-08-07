@@ -6,11 +6,13 @@ DROP POLICY IF EXISTS "Users can view own profile" ON profiles;
 DROP POLICY IF EXISTS "Coaches can view public profiles" ON profiles;
 
 -- New policy: Authenticated users (any logged-in user) can view all profiles
+DROP POLICY IF EXISTS "Authenticated users can view all profiles" ON profiles;
 CREATE POLICY "Authenticated users can view all profiles" ON profiles
     FOR SELECT
     USING (auth.uid() IS NOT NULL);
 
 -- Coaches can insert new profiles (for referral flow)
+DROP POLICY IF EXISTS "Coach can insert profiles" ON profiles;
 CREATE POLICY "Coach can insert profiles" ON profiles
     FOR INSERT
     WITH CHECK (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'coach'));
